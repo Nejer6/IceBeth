@@ -1,0 +1,18 @@
+package com.example.icebeth.shared.util
+
+import io.ktor.client.HttpClient
+import io.ktor.client.call.body
+import io.ktor.client.network.sockets.ConnectTimeoutException
+import io.ktor.client.statement.HttpResponse
+
+suspend inline fun <reified T> HttpClient.safeRequest(
+    block: HttpClient.() -> HttpResponse
+): ApiResponse<T> = try {
+    val response = block()
+    when (response.status.value) {
+        in 200..299 -> ApiResponse.Success(response.body<T>())
+        else -> ApiResponse.Error.Http(response.status)
+    }
+} catch (e: ConnectTimeoutException) {
+    ApiResponse.Error.Network
+}

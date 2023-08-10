@@ -7,8 +7,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import com.example.icebeth.ui.navigation.AppNavigation
-import com.example.icebeth.ui.theme.IceBethTheme
+import com.example.icebeth.core.presentation.navigation.AppNavigation
+import com.example.icebeth.shared.presentation.theme.IceBethTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

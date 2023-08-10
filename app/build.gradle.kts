@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     kotlin("kapt")
     id("com.google.dagger.hilt.android")
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.8.10"
 }
 
 android {
@@ -79,6 +80,15 @@ dependencies {
 
     //Icons
     implementation("androidx.compose.material:material-icons-extended")
+
+    //Ktor
+    implementation("io.ktor:ktor-client-core:2.3.2")
+    implementation("io.ktor:ktor-client-android:2.3.2")
+    implementation("io.ktor:ktor-client-serialization:2.3.2")
+    implementation("io.ktor:ktor-client-logging:2.3.2")
+    implementation("io.ktor:ktor-client-content-negotiation:2.3.2")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.2")
+    implementation("io.ktor:ktor-client-auth:2.3.2")
 }
 
 kapt {

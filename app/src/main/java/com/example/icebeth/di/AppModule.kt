@@ -3,6 +3,7 @@ package com.example.icebeth.di
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

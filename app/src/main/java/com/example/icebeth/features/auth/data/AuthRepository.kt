@@ -1,6 +1,7 @@
-package com.example.icebeth.features.auth.data.remote
+package com.example.icebeth.features.auth.data
 
 import android.content.SharedPreferences
+import com.example.icebeth.features.auth.data.remote.AuthApi
 import com.example.icebeth.features.auth.data.remote.response.LoginResponse
 import com.example.icebeth.shared.util.ApiResponse
 import javax.inject.Inject

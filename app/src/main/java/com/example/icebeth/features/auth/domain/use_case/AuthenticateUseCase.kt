@@ -1,6 +1,6 @@
 package com.example.icebeth.features.auth.domain.use_case
 
-import com.example.icebeth.features.auth.data.remote.AuthRepository
+import com.example.icebeth.features.auth.data.AuthRepository
 import javax.inject.Inject
 import javax.inject.Singleton
 

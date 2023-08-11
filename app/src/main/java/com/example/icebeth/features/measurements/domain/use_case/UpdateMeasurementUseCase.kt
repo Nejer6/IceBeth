@@ -19,9 +19,21 @@ class UpdateMeasurementUseCase @Inject constructor(
         snowHeight: String,
         id: Int
     ): MeasurementCreateResult {
-        val cylinderHeightError = if (cylinderHeight.toFloatOrNull() == null) MeasurementError.NotNumber else null
-        val massOfSnowError = if (massOfSnow.toFloatOrNull() == null) MeasurementError.NotNumber else null
-        val snowHeightError = if (snowHeight.toFloatOrNull() == null) MeasurementError.NotNumber else null
+        fun validate(string: String): MeasurementError? {
+            return string.let {
+                if (it.isBlank()) return@let MeasurementError.Empty
+                if (it.toFloatOrNull() == null) return@let MeasurementError.NotNumber
+                return@let null
+            }
+        }
+
+        val newCylinderHeight = cylinderHeight.replace(',', '.')
+        val newMassOfSnow = massOfSnow.replace(',', '.')
+        val newSnowHeight = snowHeight.replace(',', '.')
+
+        val cylinderHeightError = validate(newCylinderHeight)
+        val massOfSnowError = validate(newMassOfSnow)
+        val snowHeightError = validate(newSnowHeight)
 
         if (cylinderHeightError != null || massOfSnowError != null || snowHeightError != null) {
             return MeasurementCreateResult(
@@ -29,15 +41,17 @@ class UpdateMeasurementUseCase @Inject constructor(
             )
         }
 
-        return MeasurementCreateResult(content = measurementRepository.updateMeasurement(
-            MeasurementCreateRequest(
-                cylinderHeight.toFloat(),
-                groundFrozzed,
-                massOfSnow.toFloat(),
-                snowCrust,
-                snowHeight.toFloat()
-            ),
-            id
-        ))
+        return MeasurementCreateResult(
+            content = measurementRepository.updateMeasurement(
+                MeasurementCreateRequest(
+                    newCylinderHeight.toFloat(),
+                    groundFrozzed,
+                    newMassOfSnow.toFloat(),
+                    snowCrust,
+                    newSnowHeight.toFloat()
+                ),
+                id
+            )
+        )
     }
 }

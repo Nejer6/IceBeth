@@ -18,8 +18,20 @@ class LoginViewModel @Inject constructor(
 
     override fun handleEvents(event: LoginContract.Event) {
         when (event) {
-            is LoginContract.Event.SetLogin -> setState { copy(login = event.value) }
-            is LoginContract.Event.SetPassword -> setState { copy(password = event.value) }
+            is LoginContract.Event.SetLogin -> setState {
+                copy(
+                    login = event.value,
+                    loginError = null
+                )
+            }
+
+            is LoginContract.Event.SetPassword -> setState {
+                copy(
+                    password = event.value,
+                    passwordError = null
+                )
+            }
+
             LoginContract.Event.Submit -> submitData()
         }
     }

@@ -49,15 +49,15 @@ class AddMeasurementViewModel @Inject constructor(
     fun onEvent(event: AddMeasurementEvent) {
         when (event) {
             is AddMeasurementEvent.SetCylinderHeight -> {
-                state = state.copy(cylinderHeight = event.value)
+                state = state.copy(cylinderHeight = event.value, cylinderHeightError = null)
             }
 
             is AddMeasurementEvent.SetMassOfSnow -> {
-                state = state.copy(massOfSnow = event.value)
+                state = state.copy(massOfSnow = event.value, massOfSnowError = null)
             }
 
             is AddMeasurementEvent.SetSnowHeight -> {
-                state = state.copy(snowHeight = event.value)
+                state = state.copy(snowHeight = event.value, snowHeightError = null)
             }
 
             AddMeasurementEvent.ToggleGroundFrozzed -> {

@@ -18,9 +18,21 @@ class CreateMeasurementUseCase @Inject constructor(
         snowCrust: Boolean,
         snowHeight: String
     ): MeasurementCreateResult {
-        val cylinderHeightError = if (cylinderHeight.toFloatOrNull() == null) MeasurementError.NotNumber else null
-        val massOfSnowError = if (massOfSnow.toFloatOrNull() == null) MeasurementError.NotNumber else null
-        val snowHeightError = if (snowHeight.toFloatOrNull() == null) MeasurementError.NotNumber else null
+        fun validate(string: String): MeasurementError? {
+            return string.let {
+                if (it.isBlank()) return@let MeasurementError.Empty
+                if (it.toFloatOrNull() == null) return@let MeasurementError.NotNumber
+                return@let null
+            }
+        }
+
+        val newCylinderHeight = cylinderHeight.replace(',', '.')
+        val newMassOfSnow = massOfSnow.replace(',', '.')
+        val newSnowHeight = snowHeight.replace(',', '.')
+
+        val cylinderHeightError = validate(newCylinderHeight)
+        val massOfSnowError = validate(newMassOfSnow)
+        val snowHeightError = validate(newSnowHeight)
 
         if (cylinderHeightError != null || massOfSnowError != null || snowHeightError != null) {
             return MeasurementCreateResult(
@@ -28,14 +40,16 @@ class CreateMeasurementUseCase @Inject constructor(
             )
         }
 
-        return MeasurementCreateResult(content = measurementRepository.createMeasurement(
-            MeasurementCreateRequest(
-                cylinderHeight.toFloat(),
-                groundFrozzed,
-                massOfSnow.toFloat(),
-                snowCrust,
-                snowHeight.toFloat()
+        return MeasurementCreateResult(
+            content = measurementRepository.createMeasurement(
+                MeasurementCreateRequest(
+                    newCylinderHeight.toFloat(),
+                    groundFrozzed,
+                    newMassOfSnow.toFloat(),
+                    snowCrust,
+                    newSnowHeight.toFloat()
+                )
             )
-        ))
+        )
     }
 }

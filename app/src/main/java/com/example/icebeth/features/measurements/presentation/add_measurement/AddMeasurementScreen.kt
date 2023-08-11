@@ -24,6 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.icebeth.features.measurements.domain.util.MeasurementError
 import com.example.icebeth.shared.presentation.theme.IceBethTheme
 import com.example.icebeth.shared.presentation.theme.spacing
 
@@ -73,7 +74,18 @@ fun AddMeasurementScreen(
                 },
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Number
-                )
+                ),
+                supportingText = {
+                    if (state.massOfSnowError != null) {
+                        Text(
+                            text = when (state.massOfSnowError) {
+                                MeasurementError.Empty -> "Введите массу снега"
+                                MeasurementError.NotNumber -> "Введите число"
+                            },
+                            color = MaterialTheme.colorScheme.error
+                        )
+                    }
+                }
             )
             OutlinedTextField(
                 value = state.snowHeight,
@@ -86,7 +98,18 @@ fun AddMeasurementScreen(
                 },
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Number
-                )
+                ),
+                supportingText = {
+                    if (state.snowHeightError != null) {
+                        Text(
+                            text = when (state.snowHeightError) {
+                                MeasurementError.Empty -> "Введите высоту снега"
+                                MeasurementError.NotNumber -> "Введите число"
+                            },
+                            color = MaterialTheme.colorScheme.error
+                        )
+                    }
+                }
             )
             OutlinedTextField(
                 value = state.cylinderHeight,
@@ -99,7 +122,18 @@ fun AddMeasurementScreen(
                 },
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Number
-                )
+                ),
+                supportingText = {
+                    if (state.cylinderHeightError != null) {
+                        Text(
+                            text = when (state.cylinderHeightError) {
+                                MeasurementError.Empty -> "Введите высоту цилиндра"
+                                MeasurementError.NotNumber -> "Введите число"
+                            },
+                            color = MaterialTheme.colorScheme.error
+                        )
+                    }
+                }
             )
 
             Row(

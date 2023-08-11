@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.icebeth.features.measurements.domain.use_case.DeleteMeasurementUseCase
 import com.example.icebeth.features.measurements.domain.use_case.GetMeasurementsUseCase
 import com.example.icebeth.shared.util.ApiResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,7 +15,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val getMeasurementsUseCase: GetMeasurementsUseCase
+    private val getMeasurementsUseCase: GetMeasurementsUseCase,
+    private val deleteMeasurementUseCase: DeleteMeasurementUseCase
 ) : ViewModel() {
 
     var state by mutableStateOf(MainState())
@@ -22,6 +24,23 @@ class MainViewModel @Inject constructor(
 
     init {
         getMeasurements()
+    }
+
+    fun onEvent(event: MainEvent) {
+        when (event) {
+            is MainEvent.Delete -> viewModelScope.launch {
+                when (deleteMeasurementUseCase(event.id)) {
+                    is ApiResponse.Success -> {
+                        state = state.copy(
+                            measurements = state.measurements.filter {
+                                it.id != event.id
+                            }
+                        )
+                    }
+                    else -> {}
+                }
+            }
+        }
     }
 
     fun getMeasurements() {

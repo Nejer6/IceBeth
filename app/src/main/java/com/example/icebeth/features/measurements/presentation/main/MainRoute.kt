@@ -17,6 +17,7 @@ fun MainRoute(
     MainScreen(
         state = viewModel.state,
         openDrawer = openDrawer,
-        navigate = navigate
+        navigate = navigate,
+        onEvent = viewModel::onEvent
     )
 }

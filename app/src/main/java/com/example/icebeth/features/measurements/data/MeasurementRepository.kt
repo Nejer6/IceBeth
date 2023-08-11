@@ -16,4 +16,7 @@ class MeasurementRepository @Inject constructor(
 
     suspend fun updateMeasurement(measurementCreateRequest: MeasurementCreateRequest, id: Int) =
         measurementApi.updateMeasurement(measurementCreateRequest, id)
+
+    suspend fun deleteMeasurement(measurementId: Int) =
+        measurementApi.deleteMeasurement(measurementId)
 }

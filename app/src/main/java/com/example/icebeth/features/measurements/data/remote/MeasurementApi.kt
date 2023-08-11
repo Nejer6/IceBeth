@@ -5,6 +5,7 @@ import com.example.icebeth.features.measurements.data.remote.response.Measuremen
 import com.example.icebeth.shared.util.ApiResponse
 import com.example.icebeth.shared.util.safeRequest
 import io.ktor.client.HttpClient
+import io.ktor.client.request.delete
 import io.ktor.client.request.get
 import io.ktor.client.request.post
 import io.ktor.client.request.put
@@ -37,5 +38,10 @@ class MeasurementApi @Inject constructor(
                 setBody(measurementCreateRequest)
                 contentType(ContentType.Application.Json)
             }
+        }
+
+    suspend fun deleteMeasurement(measurementId: Int) =
+        httpClient.safeRequest<Measurement> {
+            delete("misures/$measurementId")
         }
 }

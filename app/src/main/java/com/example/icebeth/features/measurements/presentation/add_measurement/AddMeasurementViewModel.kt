@@ -3,26 +3,48 @@ package com.example.icebeth.features.measurements.presentation.add_measurement
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.icebeth.features.measurements.data.remote.response.Measurement
 import com.example.icebeth.features.measurements.domain.use_case.CreateMeasurementUseCase
+import com.example.icebeth.features.measurements.domain.use_case.UpdateMeasurementUseCase
 import com.example.icebeth.shared.presentation.util.UiEffect
+import com.example.icebeth.shared.util.removeZero
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
+import kotlinx.serialization.json.Json
 import javax.inject.Inject
 
 @HiltViewModel
 class AddMeasurementViewModel @Inject constructor(
-    private val createMeasurementUseCase: CreateMeasurementUseCase
+    private val createMeasurementUseCase: CreateMeasurementUseCase,
+    private val updateMeasurementUseCase: UpdateMeasurementUseCase,
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
-
     var state by mutableStateOf(AddMeasurementState())
         private set
 
     private val _effectFlow = MutableSharedFlow<UiEffect>()
     val effectFlow = _effectFlow.asSharedFlow()
+
+    init {
+        val savedState: String? = savedStateHandle["measurement"]
+        if (savedState != null) {
+            val measurement = Json.decodeFromString<Measurement>(savedState)
+            state = state.copy(
+                cylinderHeight = measurement.cylinderHeight.removeZero(),
+                massOfSnow = measurement.massOfSnow.removeZero(),
+                groundFrozzed = measurement.groundFrozzed,
+                snowHeight = measurement.snowHeight.removeZero(),
+                snowCrust = measurement.snowCrust,
+                type = TypeMeasurement.EDIT,
+                id = measurement.id
+            )
+        }
+    }
 
     fun onEvent(event: AddMeasurementEvent) {
         when (event) {
@@ -51,13 +73,23 @@ class AddMeasurementViewModel @Inject constructor(
             }
 
             AddMeasurementEvent.Save -> viewModelScope.launch {
-                val result = createMeasurementUseCase(
-                    cylinderHeight = state.cylinderHeight,
-                    groundFrozzed = state.groundFrozzed,
-                    massOfSnow = state.massOfSnow,
-                    snowCrust = state.snowCrust,
-                    snowHeight = state.snowHeight
-                )
+                val result = when (state.type) {
+                    TypeMeasurement.ADD -> createMeasurementUseCase(
+                        cylinderHeight = state.cylinderHeight,
+                        groundFrozzed = state.groundFrozzed,
+                        massOfSnow = state.massOfSnow,
+                        snowCrust = state.snowCrust,
+                        snowHeight = state.snowHeight
+                    )
+                    TypeMeasurement.EDIT -> updateMeasurementUseCase(
+                        cylinderHeight = state.cylinderHeight,
+                        groundFrozzed = state.groundFrozzed,
+                        massOfSnow = state.massOfSnow,
+                        snowCrust = state.snowCrust,
+                        snowHeight = state.snowHeight,
+                        id = state.id
+                    )
+                }
 
                 if (result.content == null) {
                     state = state.copy(

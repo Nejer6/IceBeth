@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.icebeth.features.auth.presentation.login.LoginScreenDestination
 import com.example.icebeth.features.auth.presentation.splash.SplashScreenDestination
 import com.example.icebeth.features.measurements.presentation.add_measurement.AddMeasurementRoute
@@ -37,7 +38,12 @@ fun AppNavigation() {
             )
         }
 
-        composable(AppRoute.AddMeasurementScreen.route) {
+        composable(
+            "${AppRoute.AddMeasurementScreen.route}?measurement={measurement}",
+            arguments = listOf(
+                navArgument("measurement") { nullable = true }
+            )
+        ) {
             AddMeasurementRoute(
                 navigateUp = navController::navigateUp
             )

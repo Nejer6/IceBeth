@@ -36,7 +36,14 @@ fun AddMeasurementScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(text = "Новый замер") },
+                title = {
+                    Text(
+                        text = when (state.type) {
+                            TypeMeasurement.ADD -> "Новый замер"
+                            TypeMeasurement.EDIT -> "Изменение замера №${state.id}"
+                        }
+                    )
+                },
                 navigationIcon = {
                     IconButton(onClick = { onEvent(AddMeasurementEvent.Close) }) {
                         Icon(Icons.Default.Close, contentDescription = "Закрыть")

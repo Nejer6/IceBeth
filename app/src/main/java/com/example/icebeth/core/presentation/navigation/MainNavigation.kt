@@ -21,24 +21,39 @@ import androidx.compose.material3.NavigationDrawerItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.icebeth.features.measurements.presentation.main.MainRoute
 import com.example.icebeth.shared.presentation.theme.spacing
 import com.example.icebeth.shared.presentation.util.MainRoute
+import com.example.icebeth.shared.presentation.util.UiEffect
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainNavigation(
-    navigate: (String) -> Unit
+    navigate: (String) -> Unit,
+    logout: () -> Unit,
+    viewModel: MainViewModel = hiltViewModel()
 ) {
     val navController = rememberNavController()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
+
+    LaunchedEffect(key1 = true) {
+        viewModel.effectFlow.collectLatest {
+            when (it) {
+                UiEffect.Logout -> logout()
+                else -> {}
+            }
+        }
+    }
 
     ModalNavigationDrawer(
         drawerContent = {
@@ -95,7 +110,10 @@ fun MainNavigation(
                     NavigationDrawerItem(
                         label = { Text(text = "Выйти") },
                         selected = false,
-                        onClick = { scope.launch { drawerState.close() } },
+                        onClick = {
+                            viewModel.onEvent(MainEvent.Logout)
+                            scope.launch { drawerState.close() }
+                        },
                         icon = {
                             Icon(imageVector = Icons.Default.Logout, contentDescription = null)
                         }

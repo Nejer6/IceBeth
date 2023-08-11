@@ -35,7 +35,7 @@ class AuthApi @Inject constructor(
                 is ApiResponse.Success -> {
                     httpClient.plugin(Auth).bearer {
                         loadTokens {
-                            BearerTokens("bearer ${response.body.accessToken}", "")
+                            BearerTokens(response.body.accessToken, "")
                         }
                     }
                 }

@@ -25,7 +25,11 @@ fun AppNavigation() {
 
         composable(AppRoute.MainRoute.route) {
             MainNavigation(
-                navigate = navController::navigate
+                navigate = navController::navigate,
+                logout = {
+                    navController.popBackStack()
+                    navController.navigate(AppRoute.LoginScreen.route)
+                }
             )
         }
 

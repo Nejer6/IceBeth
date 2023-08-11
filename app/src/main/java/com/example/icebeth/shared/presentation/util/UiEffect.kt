@@ -7,4 +7,5 @@ sealed class UiEffect : ViewSideEffect {
     data class Navigate(val route: String) : UiEffect()
     object NavigateUp : UiEffect()
     object OnLogin : UiEffect()
+    object Logout : UiEffect()
 }

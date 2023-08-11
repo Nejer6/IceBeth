@@ -6,6 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.icebeth.features.auth.presentation.login.LoginScreenDestination
 import com.example.icebeth.features.auth.presentation.splash.SplashScreenDestination
+import com.example.icebeth.features.measurements.presentation.add_measurement.AddMeasurementRoute
 import com.example.icebeth.shared.presentation.util.AppRoute
 
 @Composable
@@ -22,7 +23,9 @@ fun AppNavigation() {
         }
 
         composable(AppRoute.MainRoute.route) {
-            MainNavigation()
+            MainNavigation(
+                navigate = navController::navigate
+            )
         }
 
         composable(AppRoute.LoginScreen.route) {
@@ -31,6 +34,12 @@ fun AppNavigation() {
                     navController.popBackStack()
                     navController.navigate(AppRoute.MainRoute.route)
                 }
+            )
+        }
+
+        composable(AppRoute.AddMeasurementScreen.route) {
+            AddMeasurementRoute(
+                navigateUp = navController::navigateUp
             )
         }
     }

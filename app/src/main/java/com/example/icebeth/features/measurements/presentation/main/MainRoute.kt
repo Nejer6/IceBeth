@@ -1,15 +1,22 @@
 package com.example.icebeth.features.measurements.presentation.main
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
 fun MainRoute(
+    navigate: (String) -> Unit,
     openDrawer: () -> Unit,
     viewModel: MainViewModel = hiltViewModel()
 ) {
+    LaunchedEffect(key1 = true) {
+        viewModel.getMeasurements()
+    }
+
     MainScreen(
         state = viewModel.state,
-        openDrawer = openDrawer
+        openDrawer = openDrawer,
+        navigate = navigate
     )
 }

@@ -33,9 +33,11 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainNavigation() {
+fun MainNavigation(
+    navigate: (String) -> Unit
+) {
     val navController = rememberNavController()
-    val drawerState = rememberDrawerState(initialValue = DrawerValue.Open)
+    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 
     ModalNavigationDrawer(
@@ -106,9 +108,12 @@ fun MainNavigation() {
     ) {
         NavHost(navController = navController, startDestination = MainRoute.MainScreen.route) {
             composable(MainRoute.MainScreen.route) {
-                MainRoute(openDrawer = {
-                    scope.launch { drawerState.open() }
-                })
+                MainRoute(
+                    openDrawer = {
+                        scope.launch { drawerState.open() }
+                    },
+                    navigate = navigate
+                )
             }
 
             composable(MainRoute.InfoScreen.route) {

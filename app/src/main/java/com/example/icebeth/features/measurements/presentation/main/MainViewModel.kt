@@ -24,7 +24,7 @@ class MainViewModel @Inject constructor(
         getMeasurements()
     }
 
-    private fun getMeasurements() {
+    fun getMeasurements() {
         viewModelScope.launch {
             when(val response = getMeasurementsUseCase()) {
                 is ApiResponse.Success -> {

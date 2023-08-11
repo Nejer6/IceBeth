@@ -26,15 +26,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.icebeth.features.measurements.data.remote.response.Measurement
 import com.example.icebeth.shared.presentation.theme.IceBethTheme
 import com.example.icebeth.shared.presentation.theme.spacing
+import com.example.icebeth.shared.presentation.util.AppRoute
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(
     state: MainState,
-    openDrawer: () -> Unit
+    openDrawer: () -> Unit,
+    navigate: (String) -> Unit
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
 
@@ -51,7 +52,7 @@ fun MainScreen(
             )
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = { /*TODO*/ }) {
+            FloatingActionButton(onClick = { navigate(AppRoute.AddMeasurementScreen.route) }) {
                 Icon(
                     imageVector = Icons.Default.Add,
                     contentDescription = "Добавить измерение"
@@ -104,16 +105,8 @@ fun MainScreen(
 fun MainScreenPreview() {
     IceBethTheme {
         MainScreen(
-            MainState(List(20) {
-                Measurement(
-                    cylinderHeight = (1..100).random(),
-                    groundFrozzed = listOf(true, false).random(),
-                    id = it + 1,
-                    massOfSnow = (0..500).random(),
-                    snowCrust = listOf(true, false).random(),
-                    snowHeight = (10..100).random()
-                )
-            })
+            MainState(),
+            {}
         ) {}
     }
 }

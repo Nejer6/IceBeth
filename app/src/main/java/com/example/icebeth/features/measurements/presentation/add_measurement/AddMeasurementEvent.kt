@@ -7,4 +7,6 @@ sealed class AddMeasurementEvent {
     object ToggleGroundFrozzed : AddMeasurementEvent()
     object ToggleSnowCrust : AddMeasurementEvent()
 
+    object Close : AddMeasurementEvent()
+    object Save : AddMeasurementEvent()
 }

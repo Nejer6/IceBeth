@@ -15,9 +15,9 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -38,14 +38,14 @@ fun AddMeasurementScreen(
             TopAppBar(
                 title = { Text(text = "Новый замер") },
                 navigationIcon = {
-                    IconButton(onClick = { /*TODO*/ }) {
+                    IconButton(onClick = { onEvent(AddMeasurementEvent.Close) }) {
                         Icon(Icons.Default.Close, contentDescription = "Закрыть")
                     }
                 }
             )
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = { /*TODO*/ }) {
+            FloatingActionButton(onClick = { onEvent(AddMeasurementEvent.Save) }) {
                 Icon(imageVector = Icons.Default.Save, contentDescription = "Сохранить")
             }
         }
@@ -55,7 +55,7 @@ fun AddMeasurementScreen(
                 .padding(paddingValues)
                 .padding(MaterialTheme.spacing.medium)
         ) {
-            TextField(
+            OutlinedTextField(
                 value = state.massOfSnow,
                 onValueChange = {
                     onEvent(AddMeasurementEvent.SetMassOfSnow(it))
@@ -68,7 +68,7 @@ fun AddMeasurementScreen(
                     keyboardType = KeyboardType.Number
                 )
             )
-            TextField(
+            OutlinedTextField(
                 value = state.snowHeight,
                 onValueChange = {
                     onEvent(AddMeasurementEvent.SetSnowHeight(it))
@@ -81,7 +81,7 @@ fun AddMeasurementScreen(
                     keyboardType = KeyboardType.Number
                 )
             )
-            TextField(
+            OutlinedTextField(
                 value = state.cylinderHeight,
                 onValueChange = {
                     onEvent(AddMeasurementEvent.SetCylinderHeight(it))

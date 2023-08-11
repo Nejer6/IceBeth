@@ -1,16 +1,13 @@
-package com.example.icebeth.features.measurements.data.remote.response
+package com.example.icebeth.features.measurements.data.remote.request
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Measurement(
+data class MeasurementCreateRequest(
     @SerialName("cylinder_height") val cylinderHeight: Float,
     @SerialName("ground_frozzed") val groundFrozzed: Boolean,
-    val id: Int,
     @SerialName("mass_of_snow") val massOfSnow: Float,
-//    val owner_id: Int,
-//    val result_id: Any,
     @SerialName("snow_crust") val snowCrust: Boolean,
     @SerialName("snow_height") val snowHeight: Float
 )

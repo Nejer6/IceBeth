@@ -19,4 +19,10 @@ class MeasurementRepository @Inject constructor(
 
     suspend fun deleteMeasurement(measurementId: Int) =
         measurementApi.deleteMeasurement(measurementId)
+
+    suspend fun getAllResults() = measurementApi.getAllResults()
+
+    suspend fun deleteResult(resultId: Int) = measurementApi.deleteResult(resultId)
+
+    suspend fun createResult() = measurementApi.createResult()
 }

@@ -3,7 +3,6 @@ package com.example.icebeth.di
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
-import android.util.Log
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -55,7 +54,7 @@ object AppModule {
             }
 
             defaultRequest {
-                host = "192.168.142.245/api/v1"
+                host = "192.168.0.110/api/v1"
                 url {
                     protocol = URLProtocol.HTTP
                 }

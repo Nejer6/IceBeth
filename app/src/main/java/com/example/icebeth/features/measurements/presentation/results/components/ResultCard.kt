@@ -16,10 +16,11 @@ import com.example.icebeth.shared.presentation.util.AppRoute
 fun ResultCard(
     it: Result,
     navigate: (String) -> Unit,
-    onEvent: (ResultsEvent) -> Unit
+    onEvent: (ResultsEvent) -> Unit,
+    number: Int
 ) {
     MyCard(
-        title = "Съемка №${it.id}",
+        title = "Съемка №${number}",
         statsWithTitles = listOf(
             "Высота снега" to listOf(
                 "Средняя" to it.averageSnowHeight,
@@ -30,7 +31,7 @@ fun ResultCard(
     ) {
         IconButton(onClick = {
             navigate(
-                "${AppRoute.MeasurementsScreen.route}/${it.id}"
+                "${AppRoute.MeasurementsScreen.route}/${it.id}/${number}"
             )
         }) {
             Icon(

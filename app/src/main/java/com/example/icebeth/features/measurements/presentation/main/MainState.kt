@@ -4,5 +4,6 @@ import com.example.icebeth.features.measurements.data.remote.response.Measuremen
 
 data class MainState(
     val measurements: List<Measurement> = listOf(),
-    val resultId: Int
+    val resultId: Int,
+    val number: Int
 )

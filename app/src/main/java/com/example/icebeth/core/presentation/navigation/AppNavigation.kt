@@ -57,9 +57,12 @@ fun AppNavigation() {
         }
 
         composable(
-            "${AppRoute.MeasurementsScreen.route}/{resultId}",
+            "${AppRoute.MeasurementsScreen.route}/{resultId}/{number}",
             arguments = listOf(
                 navArgument("resultId") {
+                    type = NavType.IntType
+                },
+                navArgument("number") {
                     type = NavType.IntType
                 }
             )

@@ -41,7 +41,7 @@ fun MainScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(text = "Съемка №${state.resultId}") },
+                title = { Text(text = "Съемка №${state.number}") },
                 navigationIcon = {
                     IconButton(onClick = navigateUp) {
                         Icon(Icons.Default.ArrowBack, contentDescription = "Назад")
@@ -84,7 +84,8 @@ fun MainScreenPreview() {
     IceBethTheme {
         MainScreen(
             MainState(
-                resultId = 1
+                resultId = 1,
+                number = 1
             ),
             {},
             {},

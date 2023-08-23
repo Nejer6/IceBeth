@@ -20,7 +20,10 @@ class MainViewModel @Inject constructor(
     private val deleteMeasurementUseCase: DeleteMeasurementUseCase,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
-    var state by mutableStateOf(MainState(resultId = savedStateHandle["resultId"]!!))
+    var state by mutableStateOf(MainState(
+        number = savedStateHandle["number"]!!,
+        resultId = savedStateHandle["resultId"]!!
+    ))
         private set
 
     init {

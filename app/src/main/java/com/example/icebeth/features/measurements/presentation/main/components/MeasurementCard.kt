@@ -119,7 +119,7 @@ fun MeasurementCard(
                 ) {
                     IconButton(onClick = {
                         navigate(
-                            "${AppRoute.AddMeasurementScreen.route}?measurement=${
+                            "${AppRoute.AddMeasurementScreen.route}/${state.resultId}?measurement=${
                                 Json.encodeToString(
                                     measurement
                                 )

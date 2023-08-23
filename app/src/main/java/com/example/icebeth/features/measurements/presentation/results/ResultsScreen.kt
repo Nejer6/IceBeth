@@ -26,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import com.example.icebeth.features.measurements.presentation.components.MyCard
 import com.example.icebeth.shared.presentation.theme.spacing
+import com.example.icebeth.shared.presentation.util.AppRoute
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -85,7 +86,9 @@ fun ResultsScreen(
 //                                )
 //                            }"
 //                        )
-
+                        navigate(
+                            "${AppRoute.MeasurementsScreen.route}/${it.id}"
+                        )
                     }) {
                         Icon(
                             imageVector = Icons.Default.Edit,

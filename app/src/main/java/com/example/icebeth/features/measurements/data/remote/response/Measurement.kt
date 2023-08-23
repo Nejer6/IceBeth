@@ -9,8 +9,8 @@ data class Measurement(
     @SerialName("ground_frozzed") val groundFrozzed: Boolean,
     val id: Int,
     @SerialName("mass_of_snow") val massOfSnow: Float,
-//    val owner_id: Int,
-//    val result_id: Any,
     @SerialName("snow_crust") val snowCrust: Boolean,
-    @SerialName("snow_height") val snowHeight: Float
+    @SerialName("snow_height") val snowHeight: Float,
+    @SerialName("result_id") val resultId: Int,
+    val time: Long
 )

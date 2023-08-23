@@ -12,7 +12,9 @@ data class AddMeasurementState(
     val snowHeight: String = "",
     val snowHeightError: MeasurementError? = null,
     val type: TypeMeasurement = TypeMeasurement.ADD,
-    val id: Int = 0
+    val id: Int = 0,
+    val resultId: Int,
+    val time: Long = 0
 )
 
 enum class TypeMeasurement {

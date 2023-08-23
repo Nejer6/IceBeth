@@ -24,7 +24,7 @@ class AddMeasurementViewModel @Inject constructor(
     private val updateMeasurementUseCase: UpdateMeasurementUseCase,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
-    var state by mutableStateOf(AddMeasurementState())
+    var state by mutableStateOf(AddMeasurementState(resultId = savedStateHandle["resultId"]!!))
         private set
 
     private val _effectFlow = MutableSharedFlow<UiEffect>()
@@ -41,7 +41,8 @@ class AddMeasurementViewModel @Inject constructor(
                 snowHeight = measurement.snowHeight.removeZero(),
                 snowCrust = measurement.snowCrust,
                 type = TypeMeasurement.EDIT,
-                id = measurement.id
+                id = measurement.id,
+                time = measurement.time
             )
         }
     }
@@ -79,7 +80,8 @@ class AddMeasurementViewModel @Inject constructor(
                         groundFrozzed = state.groundFrozzed,
                         massOfSnow = state.massOfSnow,
                         snowCrust = state.snowCrust,
-                        snowHeight = state.snowHeight
+                        snowHeight = state.snowHeight,
+                        resultId = state.resultId
                     )
                     TypeMeasurement.EDIT -> updateMeasurementUseCase(
                         cylinderHeight = state.cylinderHeight,
@@ -87,7 +89,8 @@ class AddMeasurementViewModel @Inject constructor(
                         massOfSnow = state.massOfSnow,
                         snowCrust = state.snowCrust,
                         snowHeight = state.snowHeight,
-                        id = state.id
+                        id = state.id,
+                        time = state.time
                     )
                 }
 

@@ -27,6 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.icebeth.features.measurements.domain.util.MeasurementError
 import com.example.icebeth.shared.presentation.theme.IceBethTheme
 import com.example.icebeth.shared.presentation.theme.spacing
+import java.util.Date
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -164,6 +165,8 @@ fun AddMeasurementScreen(
 @Composable
 fun AddMeasurementScreenPreview() {
     IceBethTheme {
-        AddMeasurementScreen(state = AddMeasurementState(), onEvent = {})
+        AddMeasurementScreen(state = AddMeasurementState(resultId = 1), onEvent = {
+            Date().time
+        })
     }
 }

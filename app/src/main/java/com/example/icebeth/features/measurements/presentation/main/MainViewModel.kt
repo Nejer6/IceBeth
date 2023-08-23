@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.icebeth.features.measurements.domain.use_case.DeleteMeasurementUseCase
@@ -16,10 +17,10 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val getMeasurementsUseCase: GetMeasurementsUseCase,
-    private val deleteMeasurementUseCase: DeleteMeasurementUseCase
+    private val deleteMeasurementUseCase: DeleteMeasurementUseCase,
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
-
-    var state by mutableStateOf(MainState())
+    var state by mutableStateOf(MainState(resultId = savedStateHandle["resultId"]!!))
         private set
 
     init {
@@ -45,7 +46,7 @@ class MainViewModel @Inject constructor(
 
     fun getMeasurements() {
         viewModelScope.launch {
-            when(val response = getMeasurementsUseCase()) {
+            when(val response = getMeasurementsUseCase(state.resultId)) {
                 is ApiResponse.Success -> {
                     state = state.copy(measurements = response.body)
                 }

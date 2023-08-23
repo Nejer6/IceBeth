@@ -1,7 +1,7 @@
 package com.example.icebeth.features.measurements.domain.use_case
 
 import com.example.icebeth.features.measurements.data.MeasurementRepository
-import com.example.icebeth.features.measurements.data.remote.request.MeasurementCreateRequest
+import com.example.icebeth.features.measurements.data.remote.request.MeasurementUpdateRequest
 import com.example.icebeth.features.measurements.domain.models.MeasurementCreateResult
 import com.example.icebeth.features.measurements.domain.util.MeasurementError
 import javax.inject.Inject
@@ -17,7 +17,8 @@ class UpdateMeasurementUseCase @Inject constructor(
         massOfSnow: String,
         snowCrust: Boolean,
         snowHeight: String,
-        id: Int
+        id: Int,
+        time: Long
     ): MeasurementCreateResult {
         fun validate(string: String): MeasurementError? {
             return string.let {
@@ -43,12 +44,13 @@ class UpdateMeasurementUseCase @Inject constructor(
 
         return MeasurementCreateResult(
             content = measurementRepository.updateMeasurement(
-                MeasurementCreateRequest(
+                MeasurementUpdateRequest(
                     newCylinderHeight.toFloat(),
                     groundFrozzed,
                     newMassOfSnow.toFloat(),
                     snowCrust,
-                    newSnowHeight.toFloat()
+                    newSnowHeight.toFloat(),
+                    time
                 ),
                 id
             )

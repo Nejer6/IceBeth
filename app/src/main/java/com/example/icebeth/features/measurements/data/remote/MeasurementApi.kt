@@ -1,6 +1,7 @@
 package com.example.icebeth.features.measurements.data.remote
 
 import com.example.icebeth.features.measurements.data.remote.request.MeasurementCreateRequest
+import com.example.icebeth.features.measurements.data.remote.request.MeasurementUpdateRequest
 import com.example.icebeth.features.measurements.data.remote.request.ResultRequest
 import com.example.icebeth.features.measurements.data.remote.response.Measurement
 import com.example.icebeth.features.measurements.data.remote.response.Result
@@ -21,9 +22,9 @@ import javax.inject.Singleton
 class MeasurementApi @Inject constructor(
     private val httpClient: HttpClient
 ) {
-    suspend fun getAllMeasurements(): ApiResponse<List<Measurement>> =
+    suspend fun getAllMeasurements(resultId: Int): ApiResponse<List<Measurement>> =
         httpClient.safeRequest {
-            get("misures/")
+            get("/results/${resultId}/misures")
         }
 
     suspend fun createMeasurement(measurementCreateRequest: MeasurementCreateRequest) =
@@ -34,10 +35,10 @@ class MeasurementApi @Inject constructor(
             }
         }
 
-    suspend fun updateMeasurement(measurementCreateRequest: MeasurementCreateRequest, id: Int) =
+    suspend fun updateMeasurement(measurementUpdateRequest: MeasurementUpdateRequest, id: Int) =
         httpClient.safeRequest<Measurement> {
             put("misures/$id") {
-                setBody(measurementCreateRequest)
+                setBody(measurementUpdateRequest)
                 contentType(ContentType.Application.Json)
             }
         }

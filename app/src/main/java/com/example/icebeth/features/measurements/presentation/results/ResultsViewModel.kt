@@ -24,6 +24,9 @@ class ResultsViewModel @Inject constructor(
     var state by mutableStateOf(ResultsState())
         private set
 
+//    private val _effectFlow = MutableSharedFlow<UiEffect>()
+//    val effectFlow = _effectFlow.asSharedFlow()
+
     init {
         getResults()
     }

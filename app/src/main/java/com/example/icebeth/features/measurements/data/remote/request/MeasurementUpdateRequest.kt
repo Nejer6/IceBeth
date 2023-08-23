@@ -4,12 +4,11 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class MeasurementCreateRequest(
+data class MeasurementUpdateRequest(
     @SerialName("cylinder_height") val cylinderHeight: Float,
     @SerialName("ground_frozzed") val groundFrozzed: Boolean,
     @SerialName("mass_of_snow") val massOfSnow: Float,
     @SerialName("snow_crust") val snowCrust: Boolean,
     @SerialName("snow_height") val snowHeight: Float,
-    @SerialName("result_id") val resultId: Int,
     val time: Long
 )

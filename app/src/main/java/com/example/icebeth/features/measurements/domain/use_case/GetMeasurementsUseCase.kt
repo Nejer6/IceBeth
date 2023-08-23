@@ -8,5 +8,5 @@ import javax.inject.Singleton
 class GetMeasurementsUseCase @Inject constructor(
     private val measurementRepository: MeasurementRepository
 ) {
-    suspend operator fun invoke() =  measurementRepository.getAllMeasurements()
+    suspend operator fun invoke(resultId: Int) =  measurementRepository.getAllMeasurements(resultId)
 }

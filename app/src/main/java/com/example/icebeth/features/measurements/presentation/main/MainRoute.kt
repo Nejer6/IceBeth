@@ -7,6 +7,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 @Composable
 fun MainRoute(
     navigate: (String) -> Unit,
+    navigateUp: () -> Unit,
     viewModel: MainViewModel = hiltViewModel()
 ) {
     LaunchedEffect(key1 = true) {
@@ -15,6 +16,7 @@ fun MainRoute(
 
     MainScreen(
         state = viewModel.state,
+        navigateUp = navigateUp,
         navigate = navigate,
         onEvent = viewModel::onEvent
     )

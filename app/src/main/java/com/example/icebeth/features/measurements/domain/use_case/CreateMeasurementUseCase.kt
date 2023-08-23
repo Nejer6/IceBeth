@@ -4,6 +4,7 @@ import com.example.icebeth.features.measurements.data.MeasurementRepository
 import com.example.icebeth.features.measurements.data.remote.request.MeasurementCreateRequest
 import com.example.icebeth.features.measurements.domain.models.MeasurementCreateResult
 import com.example.icebeth.features.measurements.domain.util.MeasurementError
+import java.util.Date
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -16,7 +17,8 @@ class CreateMeasurementUseCase @Inject constructor(
         groundFrozzed: Boolean,
         massOfSnow: String,
         snowCrust: Boolean,
-        snowHeight: String
+        snowHeight: String,
+        resultId: Int
     ): MeasurementCreateResult {
         fun validate(string: String): MeasurementError? {
             return string.let {
@@ -47,7 +49,9 @@ class CreateMeasurementUseCase @Inject constructor(
                     groundFrozzed,
                     newMassOfSnow.toFloat(),
                     snowCrust,
-                    newSnowHeight.toFloat()
+                    newSnowHeight.toFloat(),
+                    resultId,
+                    Date().time
                 )
             )
         )

@@ -45,8 +45,9 @@ fun AppNavigation() {
         }
 
         composable(
-            "${AppRoute.AddMeasurementScreen.route}?measurement={measurement}",
+            "${AppRoute.AddMeasurementScreen.route}/{resultId}?measurement={measurement}",
             arguments = listOf(
+                navArgument("resultId") { type = NavType.IntType},
                 navArgument("measurement") { nullable = true }
             )
         ) {
@@ -63,7 +64,10 @@ fun AppNavigation() {
                 }
             )
         ) {
-            MainRoute(navigate = navController::navigate)
+            MainRoute(
+                navigate = navController::navigate,
+                navigateUp = navController::navigateUp
+            )
         }
     }
 }

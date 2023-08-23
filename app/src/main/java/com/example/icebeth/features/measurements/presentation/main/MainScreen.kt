@@ -9,7 +9,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -32,6 +31,7 @@ import com.example.icebeth.shared.presentation.util.AppRoute
 @Composable
 fun MainScreen(
     state: MainState,
+    navigateUp: () -> Unit,
     navigate: (String) -> Unit,
     onEvent: (MainEvent) -> Unit
 ) {
@@ -40,9 +40,9 @@ fun MainScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(text = "Съемка №$") },
+                title = { Text(text = "Съемка №${state.resultId}") },
                 navigationIcon = {
-                    IconButton(onClick = {}) {
+                    IconButton(onClick = navigateUp) {
                         Icon(Icons.Default.ArrowBack, contentDescription = "Назад")
                     }
                 },
@@ -50,7 +50,7 @@ fun MainScreen(
             )
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = { navigate(AppRoute.AddMeasurementScreen.route) }) {
+            FloatingActionButton(onClick = { navigate("${AppRoute.AddMeasurementScreen.route}/${state.resultId}") }) {
                 Icon(
                     imageVector = Icons.Default.Add,
                     contentDescription = "Добавить измерение"
@@ -84,7 +84,10 @@ fun MainScreen(
 fun MainScreenPreview() {
     IceBethTheme {
         MainScreen(
-            MainState(),
+            MainState(
+                resultId = 1
+            ),
+            {},
             {},
             {}
         )

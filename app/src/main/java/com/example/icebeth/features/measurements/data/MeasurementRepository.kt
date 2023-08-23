@@ -2,6 +2,7 @@ package com.example.icebeth.features.measurements.data
 
 import com.example.icebeth.features.measurements.data.remote.MeasurementApi
 import com.example.icebeth.features.measurements.data.remote.request.MeasurementCreateRequest
+import com.example.icebeth.features.measurements.data.remote.request.MeasurementUpdateRequest
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -9,13 +10,13 @@ import javax.inject.Singleton
 class MeasurementRepository @Inject constructor(
     private val measurementApi: MeasurementApi
 ) {
-    suspend fun getAllMeasurements() = measurementApi.getAllMeasurements()
+    suspend fun getAllMeasurements(resultId: Int) = measurementApi.getAllMeasurements(resultId)
 
     suspend fun createMeasurement(measurementCreateRequest: MeasurementCreateRequest) =
         measurementApi.createMeasurement(measurementCreateRequest)
 
-    suspend fun updateMeasurement(measurementCreateRequest: MeasurementCreateRequest, id: Int) =
-        measurementApi.updateMeasurement(measurementCreateRequest, id)
+    suspend fun updateMeasurement(measurementUpdateRequest: MeasurementUpdateRequest, id: Int) =
+        measurementApi.updateMeasurement(measurementUpdateRequest, id)
 
     suspend fun deleteMeasurement(measurementId: Int) =
         measurementApi.deleteMeasurement(measurementId)

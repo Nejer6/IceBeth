@@ -1,4 +1,4 @@
-package com.example.icebeth.features.measurements.presentation.main.components
+package com.example.icebeth.features.measurements.presentation.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row

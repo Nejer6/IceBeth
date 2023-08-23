@@ -28,14 +28,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
-import com.example.icebeth.features.measurements.presentation.main.components.TextWithNumber
 import com.example.icebeth.shared.presentation.theme.spacing
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 fun MyCard(
     title: String,
-    stats: List<Pair<String, Float>>,
+    stats: List<Pair<String, Float>> = listOf(),
+    statsWithTitles: List<Pair<String, List<Pair<String, Float>>>> = listOf(),
     status: List<String> = listOf(),
     actions: @Composable ColumnScope.() -> Unit
 ) {
@@ -91,7 +91,26 @@ fun MyCard(
                         TextWithNumber(text = it.first, float = it.second)
                     }
 
-                    if (status.isNotEmpty()) Spacer(modifier = Modifier.height(MaterialTheme.spacing.small))
+                    if (statsWithTitles.isNotEmpty() && stats.isNotEmpty())
+                        Spacer(modifier = Modifier.height(MaterialTheme.spacing.small))
+
+                    statsWithTitles.forEach {
+                        Column {
+                            Text(
+                                text = it.first,
+                                style = MaterialTheme.typography.titleLarge,
+                                color = MaterialTheme.colorScheme.onPrimaryContainer
+                            )
+                            Column {
+                                it.second.forEach {
+                                    TextWithNumber(text = it.first, float = it.second)
+                                }
+                            }
+                        }
+                    }
+
+                    if (status.isNotEmpty())
+                        Spacer(modifier = Modifier.height(MaterialTheme.spacing.small))
 
                     status.forEach {
                         Text(text = it)

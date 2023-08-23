@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
@@ -66,10 +67,8 @@ fun MainScreen(
                 .padding(horizontal = MaterialTheme.spacing.small),
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small)
         ) {
-            items(state.measurements.size, key = {
-                state.measurements[it].id
-            }) { measureListId ->
-                MeasurementCard(state, measureListId, navigate) { onEvent(MainEvent.Delete(it)) }
+            itemsIndexed(state.measurements) { index, item ->
+                MeasurementCard(state, index, item, navigate, onEvent)
             }
 
             item {

@@ -8,12 +8,12 @@ plugins {
 
 android {
     namespace = "com.example.icebeth"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.example.icebeth"
         minSdk = 24
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -54,8 +54,8 @@ android {
 
 dependencies {
 
-    implementation("androidx.core:core-ktx:1.10.1")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
+    implementation("androidx.core:core-ktx:1.12.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
     implementation("androidx.activity:activity-compose:1.7.2")
     implementation(platform("androidx.compose:compose-bom:2023.03.00"))
     implementation("androidx.compose.ui:ui")
@@ -71,7 +71,7 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
     //Navigation
-    implementation("androidx.navigation:navigation-compose:2.6.0")
+    implementation("androidx.navigation:navigation-compose:2.7.3")
 
     //hilt
     implementation("com.google.dagger:hilt-android:2.47")
@@ -82,12 +82,12 @@ dependencies {
     implementation("androidx.compose.material:material-icons-extended")
 
     //Ktor
-    implementation("io.ktor:ktor-client-core:2.3.2")
+    implementation("io.ktor:ktor-client-core:2.3.4")
     implementation("io.ktor:ktor-client-android:2.3.2")
     implementation("io.ktor:ktor-client-serialization:2.3.2")
     implementation("io.ktor:ktor-client-logging:2.3.2")
-    implementation("io.ktor:ktor-client-content-negotiation:2.3.2")
-    implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.2")
+    implementation("io.ktor:ktor-client-content-negotiation:2.3.4")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.4")
     implementation("io.ktor:ktor-client-auth:2.3.2")
 }
 

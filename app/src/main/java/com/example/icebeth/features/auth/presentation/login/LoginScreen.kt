@@ -38,6 +38,7 @@ import com.example.icebeth.shared.presentation.theme.spacing
 @Composable
 fun LoginScreen(
     state: LoginContract.State,
+    isForbidden: Boolean,
     onEventSent: (LoginContract.Event) -> Unit
 ) {
     Column(
@@ -55,6 +56,10 @@ fun LoginScreen(
         )
 
         Spacer(modifier = Modifier.height(MaterialTheme.spacing.large))
+
+        if (isForbidden) {
+            Text(text = "Неверный логин или пароль", color = MaterialTheme.colorScheme.error)
+        }
 
         TextField(
             value = state.login,
@@ -141,6 +146,6 @@ fun LoginScreen(
 @Composable
 fun LoginScreenPreview() {
     IceBethTheme(darkTheme = true) {
-        LoginScreen(state = LoginContract.State(), onEventSent = {})
+        LoginScreen(state = LoginContract.State(), isForbidden = false, onEventSent = {})
     }
 }

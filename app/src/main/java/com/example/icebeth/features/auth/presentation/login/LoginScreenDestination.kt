@@ -24,6 +24,7 @@ fun LoginScreenDestination(
 
     LoginScreen(
         state = viewModel.viewState.value,
+        isForbidden = viewModel.isForbidden,
         onEventSent = viewModel::setEvent
     )
 }

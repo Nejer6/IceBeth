@@ -1,4 +1,4 @@
-package com.example.icebeth.shared.presentation.theme
+package com.example.icebeth.common.presentation.theme
 
 import android.app.Activity
 import android.os.Build

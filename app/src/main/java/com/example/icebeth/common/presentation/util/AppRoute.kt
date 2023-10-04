@@ -1,4 +1,4 @@
-package com.example.icebeth.shared.presentation.util
+package com.example.icebeth.common.presentation.util
 
 sealed class AppRoute(val route: String) {
     object SplashScreen : AppRoute("splash")

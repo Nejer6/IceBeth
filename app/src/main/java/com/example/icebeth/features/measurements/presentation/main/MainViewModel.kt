@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.icebeth.features.measurements.domain.use_case.DeleteMeasurementUseCase
 import com.example.icebeth.features.measurements.domain.use_case.GetMeasurementsUseCase
-import com.example.icebeth.shared.util.ApiResponse
+import com.example.icebeth.common.util.ApiResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

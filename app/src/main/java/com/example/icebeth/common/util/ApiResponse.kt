@@ -1,4 +1,4 @@
-package com.example.icebeth.shared.util
+package com.example.icebeth.common.util
 
 import io.ktor.http.HttpStatusCode
 

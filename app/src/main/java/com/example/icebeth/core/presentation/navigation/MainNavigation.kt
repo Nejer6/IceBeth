@@ -29,9 +29,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.icebeth.features.measurements.presentation.results.ResultsRoute
-import com.example.icebeth.shared.presentation.theme.spacing
-import com.example.icebeth.shared.presentation.util.MainRoute
-import com.example.icebeth.shared.presentation.util.UiEffect
+import com.example.icebeth.common.presentation.theme.spacing
+import com.example.icebeth.common.presentation.util.MainRoute
+import com.example.icebeth.common.presentation.util.UiEffect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 

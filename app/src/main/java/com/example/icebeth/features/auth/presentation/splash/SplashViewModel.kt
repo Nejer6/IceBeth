@@ -3,9 +3,9 @@ package com.example.icebeth.features.auth.presentation.splash
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.icebeth.features.auth.domain.use_case.AuthenticateUseCase
-import com.example.icebeth.shared.presentation.util.AppRoute
-import com.example.icebeth.shared.presentation.util.UiEffect
-import com.example.icebeth.shared.util.ApiResponse
+import com.example.icebeth.common.presentation.util.AppRoute
+import com.example.icebeth.common.presentation.util.UiEffect
+import com.example.icebeth.common.util.ApiResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow

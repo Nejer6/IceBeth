@@ -10,7 +10,7 @@ import com.example.icebeth.features.auth.presentation.login.LoginScreenDestinati
 import com.example.icebeth.features.auth.presentation.splash.SplashScreenDestination
 import com.example.icebeth.features.measurements.presentation.add_measurement.AddMeasurementRoute
 import com.example.icebeth.features.measurements.presentation.main.MainRoute
-import com.example.icebeth.shared.presentation.util.AppRoute
+import com.example.icebeth.common.presentation.util.AppRoute
 
 @Composable
 fun AppNavigation() {

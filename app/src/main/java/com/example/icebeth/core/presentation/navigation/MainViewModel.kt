@@ -3,7 +3,7 @@ package com.example.icebeth.core.presentation.navigation
 import android.content.SharedPreferences
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.icebeth.shared.presentation.util.UiEffect
+import com.example.icebeth.common.presentation.util.UiEffect
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow

@@ -10,7 +10,7 @@ import androidx.compose.runtime.Composable
 import com.example.icebeth.features.measurements.data.remote.response.Result
 import com.example.icebeth.features.measurements.presentation.components.MyCard
 import com.example.icebeth.features.measurements.presentation.results.ResultsEvent
-import com.example.icebeth.shared.presentation.util.AppRoute
+import com.example.icebeth.common.presentation.util.AppRoute
 
 @Composable
 fun ResultCard(

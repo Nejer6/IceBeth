@@ -2,8 +2,8 @@ package com.example.icebeth.features.auth.data.remote
 
 import com.example.icebeth.features.auth.data.remote.response.LoginResponse
 import com.example.icebeth.features.auth.data.remote.response.UserResponse
-import com.example.icebeth.shared.util.ApiResponse
-import com.example.icebeth.shared.util.safeRequest
+import com.example.icebeth.common.util.ApiResponse
+import com.example.icebeth.common.util.safeRequest
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.auth.Auth
 import io.ktor.client.plugins.auth.providers.BearerTokens

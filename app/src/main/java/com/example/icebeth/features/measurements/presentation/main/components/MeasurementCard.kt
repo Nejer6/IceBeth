@@ -7,11 +7,11 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import com.example.icebeth.features.measurements.data.remote.response.Measurement
+import com.example.icebeth.core.data.model.Measurement
 import com.example.icebeth.features.measurements.presentation.components.MyCard
 import com.example.icebeth.features.measurements.presentation.main.MainEvent
 import com.example.icebeth.features.measurements.presentation.main.MainState
-import com.example.icebeth.shared.presentation.util.AppRoute
+import com.example.icebeth.common.presentation.util.AppRoute
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 

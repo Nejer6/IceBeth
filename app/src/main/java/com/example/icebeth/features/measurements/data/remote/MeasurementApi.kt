@@ -3,10 +3,10 @@ package com.example.icebeth.features.measurements.data.remote
 import com.example.icebeth.features.measurements.data.remote.request.MeasurementCreateRequest
 import com.example.icebeth.features.measurements.data.remote.request.MeasurementUpdateRequest
 import com.example.icebeth.features.measurements.data.remote.request.ResultRequest
-import com.example.icebeth.features.measurements.data.remote.response.Measurement
+import com.example.icebeth.core.data.model.Measurement
 import com.example.icebeth.features.measurements.data.remote.response.Result
-import com.example.icebeth.shared.util.ApiResponse
-import com.example.icebeth.shared.util.safeRequest
+import com.example.icebeth.common.util.ApiResponse
+import com.example.icebeth.common.util.safeRequest
 import io.ktor.client.HttpClient
 import io.ktor.client.request.delete
 import io.ktor.client.request.get

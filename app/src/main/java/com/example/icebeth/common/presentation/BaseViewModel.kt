@@ -1,4 +1,4 @@
-package com.example.icebeth.shared.presentation
+package com.example.icebeth.common.presentation
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State

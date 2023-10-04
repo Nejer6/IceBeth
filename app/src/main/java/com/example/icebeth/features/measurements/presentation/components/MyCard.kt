@@ -28,7 +28,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
-import com.example.icebeth.shared.presentation.theme.spacing
+import com.example.icebeth.common.presentation.theme.spacing
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)

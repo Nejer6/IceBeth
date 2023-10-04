@@ -24,9 +24,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.icebeth.features.measurements.presentation.main.components.MeasurementCard
-import com.example.icebeth.shared.presentation.theme.IceBethTheme
-import com.example.icebeth.shared.presentation.theme.spacing
-import com.example.icebeth.shared.presentation.util.AppRoute
+import com.example.icebeth.common.presentation.theme.IceBethTheme
+import com.example.icebeth.common.presentation.theme.spacing
+import com.example.icebeth.common.presentation.util.AppRoute
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

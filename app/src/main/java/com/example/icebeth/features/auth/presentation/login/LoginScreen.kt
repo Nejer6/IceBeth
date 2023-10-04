@@ -31,8 +31,8 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.icebeth.features.auth.domain.util.AuthError
-import com.example.icebeth.shared.presentation.theme.IceBethTheme
-import com.example.icebeth.shared.presentation.theme.spacing
+import com.example.icebeth.common.presentation.theme.IceBethTheme
+import com.example.icebeth.common.presentation.theme.spacing
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

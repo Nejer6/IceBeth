@@ -1,8 +1,8 @@
 package com.example.icebeth.features.measurements.domain.use_case
 
 import com.example.icebeth.features.measurements.data.MeasurementRepository
-import com.example.icebeth.features.measurements.data.remote.response.Measurement
-import com.example.icebeth.shared.util.ApiResponse
+import com.example.icebeth.core.data.model.Measurement
+import com.example.icebeth.common.util.ApiResponse
 import javax.inject.Inject
 import javax.inject.Singleton
 

@@ -1,4 +1,4 @@
-package com.example.icebeth.shared.util
+package com.example.icebeth.common.util
 
 fun Float.removeZero(): String {
     val str = this.toString()

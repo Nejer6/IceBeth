@@ -1,0 +1,33 @@
+package com.example.icebeth.core.database.model
+
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import com.example.icebeth.core.model.data.Measurement
+
+@Entity(
+    tableName = "measurements"
+)
+data class MeasurementEntity(
+    @PrimaryKey(autoGenerate = true)
+    val id: Int = 0,
+    val cylinderHeight: Float,
+    val groundFrozzed: Boolean,
+    val massOfSnow: Float,
+    val snowCrust: Boolean,
+    val snowHeight: Float,
+    val resultId: Int,
+    val time: Long,
+    val isUploaded: Boolean = false
+)
+
+fun MeasurementEntity.asExternalModel() = Measurement(
+    id = id,
+    cylinderHeight = cylinderHeight,
+    groundFrozzed = groundFrozzed,
+    massOfSnow = massOfSnow,
+    snowCrust = snowCrust,
+    snowHeight = snowHeight,
+    resultId = resultId,
+    time = time,
+    isUploaded = isUploaded
+)

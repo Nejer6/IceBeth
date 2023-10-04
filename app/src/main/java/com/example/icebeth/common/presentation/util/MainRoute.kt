@@ -1,4 +1,4 @@
-package com.example.icebeth.shared.presentation.util
+package com.example.icebeth.common.presentation.util
 
 sealed class MainRoute(val route: String) {
     object MainScreen : MainRoute("main")

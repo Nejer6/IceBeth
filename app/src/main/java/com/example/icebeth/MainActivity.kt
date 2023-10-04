@@ -8,7 +8,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import com.example.icebeth.core.presentation.navigation.AppNavigation
-import com.example.icebeth.shared.presentation.theme.IceBethTheme
+import com.example.icebeth.common.presentation.theme.IceBethTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

@@ -6,11 +6,11 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.icebeth.features.measurements.data.remote.response.Measurement
+import com.example.icebeth.core.data.model.Measurement
 import com.example.icebeth.features.measurements.domain.use_case.CreateMeasurementUseCase
 import com.example.icebeth.features.measurements.domain.use_case.UpdateMeasurementUseCase
-import com.example.icebeth.shared.presentation.util.UiEffect
-import com.example.icebeth.shared.util.removeZero
+import com.example.icebeth.common.presentation.util.UiEffect
+import com.example.icebeth.common.util.removeZero
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow

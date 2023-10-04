@@ -1,6 +1,6 @@
-package com.example.icebeth.shared.presentation.util
+package com.example.icebeth.common.presentation.util
 
-import com.example.icebeth.shared.presentation.ViewSideEffect
+import com.example.icebeth.common.presentation.ViewSideEffect
 
 sealed class UiEffect : ViewSideEffect {
     data class ShowSnackbar(val text: String) : UiEffect()

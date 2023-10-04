@@ -3,6 +3,8 @@ package com.example.icebeth.core.database.model
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.icebeth.core.model.data.Measurement
+import com.example.icebeth.core.network.model.request.MeasurementCreateRequest
+import com.example.icebeth.core.network.model.request.MeasurementUpdateRequest
 
 @Entity(
     tableName = "measurements"
@@ -17,7 +19,9 @@ data class MeasurementEntity(
     val snowHeight: Float,
     val resultId: Int,
     val time: Long,
-    val isUploaded: Boolean = false
+    val isUploaded: Boolean = false,
+    val isDeleted: Boolean = false,
+    val isUpdated: Boolean = false
 )
 
 fun MeasurementEntity.asExternalModel() = Measurement(
@@ -29,5 +33,26 @@ fun MeasurementEntity.asExternalModel() = Measurement(
     snowHeight = snowHeight,
     resultId = resultId,
     time = time,
-    isUploaded = isUploaded
+    isUploaded = isUploaded,
+    isDeleted = isDeleted,
+    isUpdated = isUpdated
+)
+
+fun MeasurementEntity.asCreateRequest() = MeasurementCreateRequest(
+    cylinderHeight,
+    groundFrozzed,
+    massOfSnow,
+    snowCrust,
+    snowHeight,
+    resultId,
+    time
+)
+
+fun MeasurementEntity.asUpdateRequest() = MeasurementUpdateRequest(
+    cylinderHeight,
+    groundFrozzed,
+    massOfSnow,
+    snowCrust,
+    snowHeight,
+    time
 )

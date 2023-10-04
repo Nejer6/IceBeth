@@ -1,9 +1,9 @@
-package com.example.icebeth.features.measurements.data.remote
+package com.example.icebeth.core.network.model.api
 
-import com.example.icebeth.features.measurements.data.remote.request.MeasurementCreateRequest
-import com.example.icebeth.features.measurements.data.remote.request.MeasurementUpdateRequest
-import com.example.icebeth.features.measurements.data.remote.request.ResultRequest
-import com.example.icebeth.core.data.model.Measurement
+import com.example.icebeth.core.network.model.request.MeasurementCreateRequest
+import com.example.icebeth.core.network.model.request.MeasurementUpdateRequest
+import com.example.icebeth.core.network.model.request.ResultRequest
+import com.example.icebeth.core.network.model.response.MeasurementResponse
 import com.example.icebeth.features.measurements.data.remote.response.Result
 import com.example.icebeth.common.util.ApiResponse
 import com.example.icebeth.common.util.safeRequest
@@ -22,13 +22,13 @@ import javax.inject.Singleton
 class MeasurementApi @Inject constructor(
     private val httpClient: HttpClient
 ) {
-    suspend fun getAllMeasurements(resultId: Int): ApiResponse<List<Measurement>> =
+    suspend fun getAllMeasurements(resultId: Int): ApiResponse<List<MeasurementResponse>> =
         httpClient.safeRequest {
             get("/results/${resultId}/misures")
         }
 
     suspend fun createMeasurement(measurementCreateRequest: MeasurementCreateRequest) =
-        httpClient.safeRequest<Measurement> {
+        httpClient.safeRequest<MeasurementResponse> {
             post("misures/") {
                 setBody(measurementCreateRequest)
                 contentType(ContentType.Application.Json)
@@ -36,7 +36,7 @@ class MeasurementApi @Inject constructor(
         }
 
     suspend fun updateMeasurement(measurementUpdateRequest: MeasurementUpdateRequest, id: Int) =
-        httpClient.safeRequest<Measurement> {
+        httpClient.safeRequest<MeasurementResponse> {
             put("misures/$id") {
                 setBody(measurementUpdateRequest)
                 contentType(ContentType.Application.Json)
@@ -44,7 +44,7 @@ class MeasurementApi @Inject constructor(
         }
 
     suspend fun deleteMeasurement(measurementId: Int) =
-        httpClient.safeRequest<Measurement> {
+        httpClient.safeRequest<MeasurementResponse> {
             delete("misures/$measurementId")
         }
 

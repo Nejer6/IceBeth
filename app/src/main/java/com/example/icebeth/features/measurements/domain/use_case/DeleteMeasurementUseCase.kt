@@ -1,7 +1,7 @@
 package com.example.icebeth.features.measurements.domain.use_case
 
 import com.example.icebeth.features.measurements.data.MeasurementRepository
-import com.example.icebeth.core.data.model.Measurement
+import com.example.icebeth.core.network.model.response.MeasurementResponse
 import com.example.icebeth.common.util.ApiResponse
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -12,7 +12,7 @@ class DeleteMeasurementUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(
         measurementId: Int
-    ): ApiResponse<Measurement> {
+    ): ApiResponse<MeasurementResponse> {
         return measurementRepository.deleteMeasurement(measurementId)
     }
 }

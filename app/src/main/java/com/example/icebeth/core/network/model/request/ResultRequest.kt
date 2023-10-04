@@ -1,4 +1,4 @@
-package com.example.icebeth.features.measurements.data.remote.request
+package com.example.icebeth.core.network.model.request
 
 import kotlinx.serialization.EncodeDefault
 import kotlinx.serialization.ExperimentalSerializationApi

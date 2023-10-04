@@ -1,7 +1,7 @@
 package com.example.icebeth.features.measurements.domain.use_case
 
 import com.example.icebeth.features.measurements.data.MeasurementRepository
-import com.example.icebeth.features.measurements.data.remote.request.MeasurementUpdateRequest
+import com.example.icebeth.core.network.model.request.MeasurementUpdateRequest
 import com.example.icebeth.features.measurements.domain.models.MeasurementCreateResult
 import com.example.icebeth.features.measurements.domain.util.MeasurementError
 import javax.inject.Inject

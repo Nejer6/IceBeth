@@ -6,7 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.icebeth.core.data.model.Measurement
+import com.example.icebeth.core.network.model.response.MeasurementResponse
 import com.example.icebeth.features.measurements.domain.use_case.CreateMeasurementUseCase
 import com.example.icebeth.features.measurements.domain.use_case.UpdateMeasurementUseCase
 import com.example.icebeth.common.presentation.util.UiEffect
@@ -33,16 +33,16 @@ class AddMeasurementViewModel @Inject constructor(
     init {
         val savedState: String? = savedStateHandle["measurement"]
         if (savedState != null) {
-            val measurement = Json.decodeFromString<Measurement>(savedState)
+            val measurementResponse = Json.decodeFromString<MeasurementResponse>(savedState)
             state = state.copy(
-                cylinderHeight = measurement.cylinderHeight.removeZero(),
-                massOfSnow = measurement.massOfSnow.removeZero(),
-                groundFrozzed = measurement.groundFrozzed,
-                snowHeight = measurement.snowHeight.removeZero(),
-                snowCrust = measurement.snowCrust,
+                cylinderHeight = measurementResponse.cylinderHeight.removeZero(),
+                massOfSnow = measurementResponse.massOfSnow.removeZero(),
+                groundFrozzed = measurementResponse.groundFrozzed,
+                snowHeight = measurementResponse.snowHeight.removeZero(),
+                snowCrust = measurementResponse.snowCrust,
                 type = TypeMeasurement.EDIT,
-                id = measurement.id,
-                time = measurement.time
+                id = measurementResponse.id,
+                time = measurementResponse.time
             )
         }
     }

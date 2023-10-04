@@ -22,15 +22,15 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.icebeth.features.measurements.presentation.main.components.MeasurementCard
-import com.example.icebeth.common.presentation.theme.IceBethTheme
 import com.example.icebeth.common.presentation.theme.spacing
 import com.example.icebeth.common.presentation.util.AppRoute
+import com.example.icebeth.core.model.data.Measurement
+import com.example.icebeth.features.measurements.presentation.main.components.MeasurementCard
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(
+    measurements: List<Measurement>,
     state: MainState,
     navigateUp: () -> Unit,
     navigate: (String) -> Unit,
@@ -67,7 +67,7 @@ fun MainScreen(
                 .padding(horizontal = MaterialTheme.spacing.small),
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small)
         ) {
-            itemsIndexed(state.measurements) { index, item ->
+            itemsIndexed(measurements) { index, item ->
                 MeasurementCard(state, index, item, navigate, onEvent)
             }
 
@@ -75,21 +75,5 @@ fun MainScreen(
                 Spacer(modifier = Modifier.height(MaterialTheme.spacing.extraLarge))
             }
         }
-    }
-}
-
-@Preview
-@Composable
-fun MainScreenPreview() {
-    IceBethTheme {
-        MainScreen(
-            MainState(
-                resultId = 1,
-                number = 1
-            ),
-            {},
-            {},
-            {}
-        )
     }
 }

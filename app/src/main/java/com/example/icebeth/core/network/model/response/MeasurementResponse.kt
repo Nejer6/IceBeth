@@ -1,11 +1,11 @@
-package com.example.icebeth.core.data.model
+package com.example.icebeth.core.network.model.response
 
 import com.example.icebeth.core.database.model.MeasurementEntity
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Measurement(
+data class MeasurementResponse(
     @SerialName("cylinder_height") val cylinderHeight: Float,
     @SerialName("ground_frozzed") val groundFrozzed: Boolean,
     val id: Int,
@@ -16,7 +16,7 @@ data class Measurement(
     val time: Long
 )
 
-fun Measurement.asEntity() = MeasurementEntity(
+fun MeasurementResponse.asEntity() = MeasurementEntity(
     id,
     cylinderHeight,
     groundFrozzed,

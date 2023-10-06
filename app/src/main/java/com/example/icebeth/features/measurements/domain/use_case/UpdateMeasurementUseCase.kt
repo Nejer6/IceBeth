@@ -1,7 +1,6 @@
 package com.example.icebeth.features.measurements.domain.use_case
 
-import com.example.icebeth.features.measurements.data.MeasurementRepository
-import com.example.icebeth.core.network.model.request.MeasurementUpdateRequest
+import com.example.icebeth.core.model.data.Measurement
 import com.example.icebeth.features.measurements.domain.models.MeasurementCreateResult
 import com.example.icebeth.features.measurements.domain.util.MeasurementError
 import javax.inject.Inject
@@ -9,7 +8,7 @@ import javax.inject.Singleton
 
 @Singleton
 class UpdateMeasurementUseCase @Inject constructor(
-    private val measurementRepository: MeasurementRepository
+    private val measurementRepository: com.example.icebeth.core.data.repository.MeasurementRepository
 ) {
     suspend operator fun invoke(
         cylinderHeight: String,
@@ -18,7 +17,8 @@ class UpdateMeasurementUseCase @Inject constructor(
         snowCrust: Boolean,
         snowHeight: String,
         id: Int,
-        time: Long
+        time: Long,
+        resultId: Int
     ): MeasurementCreateResult {
         fun validate(string: String): MeasurementError? {
             return string.let {
@@ -38,22 +38,25 @@ class UpdateMeasurementUseCase @Inject constructor(
 
         if (cylinderHeightError != null || massOfSnowError != null || snowHeightError != null) {
             return MeasurementCreateResult(
-                cylinderHeightError, massOfSnowError, snowHeightError
+                cylinderHeightError, massOfSnowError, snowHeightError, false
             )
         }
 
-        return MeasurementCreateResult(
-            content = measurementRepository.updateMeasurement(
-                MeasurementUpdateRequest(
-                    newCylinderHeight.toFloat(),
-                    groundFrozzed,
-                    newMassOfSnow.toFloat(),
-                    snowCrust,
-                    newSnowHeight.toFloat(),
-                    time
-                ),
-                id
+        measurementRepository.insertMeasurement(
+            Measurement(
+                newCylinderHeight.toFloat(),
+                groundFrozzed,
+                id,
+                newMassOfSnow.toFloat(),
+                resultId = resultId,
+                snowCrust = snowCrust,
+                snowHeight = newSnowHeight.toFloat(),
+                time = time
             )
+        )
+
+        return MeasurementCreateResult(
+            isSuccess = true
         )
     }
 }

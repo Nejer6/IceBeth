@@ -1,7 +1,6 @@
 package com.example.icebeth.features.measurements.domain.use_case
 
-import com.example.icebeth.features.measurements.data.MeasurementRepository
-import com.example.icebeth.core.network.model.request.MeasurementCreateRequest
+import com.example.icebeth.core.model.data.Measurement
 import com.example.icebeth.features.measurements.domain.models.MeasurementCreateResult
 import com.example.icebeth.features.measurements.domain.util.MeasurementError
 import java.util.Date
@@ -10,7 +9,7 @@ import javax.inject.Singleton
 
 @Singleton
 class CreateMeasurementUseCase @Inject constructor(
-    private val measurementRepository: MeasurementRepository
+    private val measurementRepository: com.example.icebeth.core.data.repository.MeasurementRepository
 ) {
     suspend operator fun invoke(
         cylinderHeight: String,
@@ -38,22 +37,26 @@ class CreateMeasurementUseCase @Inject constructor(
 
         if (cylinderHeightError != null || massOfSnowError != null || snowHeightError != null) {
             return MeasurementCreateResult(
-                cylinderHeightError, massOfSnowError, snowHeightError
+                cylinderHeightError, massOfSnowError, snowHeightError, false
             )
         }
 
-        return MeasurementCreateResult(
-            content = measurementRepository.createMeasurement(
-                MeasurementCreateRequest(
-                    newCylinderHeight.toFloat(),
-                    groundFrozzed,
-                    newMassOfSnow.toFloat(),
-                    snowCrust,
-                    newSnowHeight.toFloat(),
-                    resultId,
-                    Date().time
-                )
+        measurementRepository.insertMeasurement(
+            Measurement(
+                newCylinderHeight.toFloat(),
+                groundFrozzed,
+                id = 0,
+                newMassOfSnow.toFloat(),
+                snowCrust,
+                newSnowHeight.toFloat(),
+                resultId,
+                Date().time,
+                isUploaded = false,
+                isDeleted = false,
+                isUpdated = false
             )
         )
+
+        return MeasurementCreateResult(isSuccess = true)
     }
 }

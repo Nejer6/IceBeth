@@ -2,7 +2,6 @@ package com.example.icebeth.features.measurements.presentation.main
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
@@ -11,7 +10,8 @@ fun MainRoute(
     navigateUp: () -> Unit,
     viewModel: MainViewModel = hiltViewModel()
 ) {
-    val measurements by viewModel.measurements.collectAsState(initial = emptyList())
+    val measurements =
+        viewModel.measurements.collectAsState(initial = emptyList()).value.sortedBy { it.time }
 
     MainScreen(
         measurements = measurements,

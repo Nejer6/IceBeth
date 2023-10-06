@@ -24,7 +24,7 @@ fun MeasurementCard(
     onEvent: (MainEvent) -> Unit
 ) {
     MyCard(
-        title = "Замер №${state.measurementResponses.size - index}",
+        title = "Замер №${index}",
         stats = listOf(
             "Масса снега" to item.massOfSnow,
             "Высота снега" to item.snowHeight,

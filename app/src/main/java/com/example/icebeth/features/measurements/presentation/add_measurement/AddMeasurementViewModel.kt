@@ -6,11 +6,11 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.icebeth.core.network.model.response.MeasurementResponse
-import com.example.icebeth.features.measurements.domain.use_case.CreateMeasurementUseCase
-import com.example.icebeth.features.measurements.domain.use_case.UpdateMeasurementUseCase
 import com.example.icebeth.common.presentation.util.UiEffect
 import com.example.icebeth.common.util.removeZero
+import com.example.icebeth.core.model.data.Measurement
+import com.example.icebeth.features.measurements.domain.use_case.CreateMeasurementUseCase
+import com.example.icebeth.features.measurements.domain.use_case.UpdateMeasurementUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -33,7 +33,7 @@ class AddMeasurementViewModel @Inject constructor(
     init {
         val savedState: String? = savedStateHandle["measurement"]
         if (savedState != null) {
-            val measurementResponse = Json.decodeFromString<MeasurementResponse>(savedState)
+            val measurementResponse = Json.decodeFromString<Measurement>(savedState)
             state = state.copy(
                 cylinderHeight = measurementResponse.cylinderHeight.removeZero(),
                 massOfSnow = measurementResponse.massOfSnow.removeZero(),
@@ -90,11 +90,12 @@ class AddMeasurementViewModel @Inject constructor(
                         snowCrust = state.snowCrust,
                         snowHeight = state.snowHeight,
                         id = state.id,
-                        time = state.time
+                        time = state.time,
+                        resultId = state.resultId
                     )
                 }
 
-                if (result.content == null) {
+                if (!result.isSuccess) {
                     state = state.copy(
                         cylinderHeightError = result.cylinderHeightError,
                         massOfSnowError = result.massOfSnowError,

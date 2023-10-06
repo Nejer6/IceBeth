@@ -17,11 +17,11 @@ interface MeasurementDao {
     fun getMeasurementsByResultId(resultId: Int) : Flow<List<MeasurementEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertMeasurement(measurement: MeasurementEntity)
+    suspend fun insertMeasurement(measurement: MeasurementEntity)
 
     @Query("DELETE FROM measurements WHERE id = :measurementId")
-    fun deleteMeasurementById(measurementId: Int)
+    suspend fun deleteMeasurementById(measurementId: Int)
 
     @Query("DELETE FROM measurements WHERE resultId = :resultId")
-    fun deleteMeasurementsByResultId(resultId: Int)
+    suspend fun deleteMeasurementsByResultId(resultId: Int)
 }

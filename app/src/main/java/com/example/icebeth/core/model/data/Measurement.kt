@@ -1,7 +1,9 @@
 package com.example.icebeth.core.model.data
 
 import com.example.icebeth.core.database.model.MeasurementEntity
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class Measurement(
     val cylinderHeight: Float,
     val groundFrozzed: Boolean,

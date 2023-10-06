@@ -68,7 +68,7 @@ fun MainScreen(
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small)
         ) {
             itemsIndexed(measurements) { index, item ->
-                MeasurementCard(state, index, item, navigate, onEvent)
+                MeasurementCard(state, index + 1, item, navigate, onEvent)
             }
 
             item {

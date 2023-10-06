@@ -2,6 +2,7 @@ package com.example.icebeth.core.data.repository
 
 import com.example.icebeth.common.util.ApiResponse
 import com.example.icebeth.core.database.dao.MeasurementDao
+import com.example.icebeth.core.database.model.MeasurementEntity
 import com.example.icebeth.core.database.model.asCreateRequest
 import com.example.icebeth.core.database.model.asExternalModel
 import com.example.icebeth.core.database.model.asUpdateRequest
@@ -23,8 +24,53 @@ class MeasurementRepository @Inject constructor(
             list.map { it.asExternalModel() }
         }
 
-    fun insertMeasurement(measurement: Measurement) {
-        measurementDao.insertMeasurement(measurement.asEntity())
+    suspend fun insertMeasurement(measurement: Measurement) {
+        val measurementEntity = measurement.asEntity()
+        measurementDao.insertMeasurement(measurementEntity)
+    }
+
+    private suspend fun syncMeasurement(measurementEntity: MeasurementEntity) {
+        if (!measurementEntity.isUploaded) {
+            when (val response =
+                measurementApi.createMeasurement(measurementEntity.asCreateRequest())) {
+                is ApiResponse.Success -> {
+                    measurementDao.deleteMeasurementById(measurementEntity.id)
+                    measurementDao.insertMeasurement(response.body.asEntity())
+                }
+
+                else -> {}
+            }
+            return
+        }
+
+        if (measurementEntity.isDeleted) {
+            when (measurementApi.deleteMeasurement(measurementEntity.id)) {
+                is ApiResponse.Success -> {
+                    measurementDao.deleteMeasurementById(measurementEntity.id)
+                }
+
+                else -> {}
+            }
+            return
+        }
+
+        if (measurementEntity.isUpdated) {
+            when (measurementApi.updateMeasurement(
+                measurementEntity.asUpdateRequest(),
+                measurementEntity.id
+            )) {
+                is ApiResponse.Success -> {
+                    measurementDao.insertMeasurement(
+                        measurementEntity.copy(
+                            isUpdated = false
+                        )
+                    )
+                }
+
+                else -> {}
+            }
+            return
+        }
     }
 
     suspend fun syncMeasurements() {
@@ -32,47 +78,7 @@ class MeasurementRepository @Inject constructor(
 
         localMeasurements.collect { list ->
             list.forEach { measurementEntity ->
-                if (!measurementEntity.isUploaded) {
-                    when (val response =
-                        measurementApi.createMeasurement(measurementEntity.asCreateRequest())) {
-                        is ApiResponse.Success -> {
-                            measurementDao.deleteMeasurementById(measurementEntity.id)
-                            measurementDao.insertMeasurement(response.body.asEntity())
-                        }
-
-                        else -> {}
-                    }
-                    return@forEach
-                }
-
-                if (measurementEntity.isDeleted) {
-                    when (measurementApi.deleteMeasurement(measurementEntity.id)) {
-                        is ApiResponse.Success -> {
-                            measurementDao.deleteMeasurementById(measurementEntity.id)
-                        }
-
-                        else -> {}
-                    }
-                    return@forEach
-                }
-
-                if (measurementEntity.isUpdated) {
-                    when (measurementApi.updateMeasurement(
-                        measurementEntity.asUpdateRequest(),
-                        measurementEntity.id
-                    )) {
-                        is ApiResponse.Success -> {
-                            measurementDao.insertMeasurement(
-                                measurementEntity.copy(
-                                    isUpdated = false
-                                )
-                            )
-                        }
-
-                        else -> {}
-                    }
-                    return@forEach
-                }
+                syncMeasurement(measurementEntity)
             }
         }
     }

@@ -29,6 +29,10 @@ class MeasurementRepository @Inject constructor(
         measurementDao.insertMeasurement(measurementEntity)
     }
 
+    suspend fun deleteMeasurement(measurementId: Int) {
+        measurementDao.markMeasurementAsDeleted(measurementId)
+    }
+
     private suspend fun syncMeasurement(measurementEntity: MeasurementEntity) {
         if (!measurementEntity.isUploaded) {
             when (val response =

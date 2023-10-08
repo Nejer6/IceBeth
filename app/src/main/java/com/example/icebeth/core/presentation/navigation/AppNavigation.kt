@@ -6,10 +6,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.icebeth.features.auth.presentation.login.LoginScreenDestination
-import com.example.icebeth.features.auth.presentation.splash.SplashScreenDestination
+import com.example.icebeth.feature.login.LoginScreenDestination
+import com.example.icebeth.feature.splash.SplashScreenDestination
 import com.example.icebeth.features.measurements.presentation.add_measurement.AddMeasurementRoute
-import com.example.icebeth.features.measurements.presentation.main.MainRoute
+import com.example.icebeth.feature.measurements.MainRoute
 import com.example.icebeth.common.presentation.util.AppRoute
 
 @Composable

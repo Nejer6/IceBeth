@@ -9,8 +9,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.icebeth.common.presentation.util.UiEffect
 import com.example.icebeth.common.util.removeZero
 import com.example.icebeth.core.model.data.Measurement
-import com.example.icebeth.features.measurements.domain.use_case.CreateMeasurementUseCase
-import com.example.icebeth.features.measurements.domain.use_case.UpdateMeasurementUseCase
+import com.example.icebeth.core.domain.CreateMeasurementUseCase
+import com.example.icebeth.core.domain.UpdateMeasurementUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow

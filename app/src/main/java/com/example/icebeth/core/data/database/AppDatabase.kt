@@ -1,9 +1,9 @@
-package com.example.icebeth.core.database
+package com.example.icebeth.core.data.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.example.icebeth.core.database.dao.MeasurementDao
-import com.example.icebeth.core.database.model.MeasurementEntity
+import com.example.icebeth.core.data.database.dao.MeasurementDao
+import com.example.icebeth.core.data.database.model.MeasurementEntity
 
 @Database(
     version = 1,

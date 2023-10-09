@@ -1,4 +1,4 @@
-package com.example.icebeth.core.database
+package com.example.icebeth.core.data.database
 
 import android.content.Context
 import androidx.room.Room

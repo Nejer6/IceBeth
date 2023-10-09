@@ -8,7 +8,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import com.example.icebeth.common.presentation.util.AppRoute
-import com.example.icebeth.core.model.data.Measurement
+import com.example.icebeth.core.model.Measurement
 import com.example.icebeth.features.measurements.presentation.components.MyCard
 import com.example.icebeth.feature.measurements.MeasurementsEvent
 import com.example.icebeth.feature.measurements.MeasurementsState

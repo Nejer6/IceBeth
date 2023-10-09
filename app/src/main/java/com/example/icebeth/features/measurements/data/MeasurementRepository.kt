@@ -1,8 +1,8 @@
 package com.example.icebeth.features.measurements.data
 
-import com.example.icebeth.core.network.model.api.MeasurementApi
-import com.example.icebeth.core.network.model.request.MeasurementCreateRequest
-import com.example.icebeth.core.network.model.request.MeasurementUpdateRequest
+import com.example.icebeth.core.data.network.api.MeasurementApi
+import com.example.icebeth.core.data.network.model.request.MeasurementCreateRequest
+import com.example.icebeth.core.data.network.model.request.MeasurementUpdateRequest
 import javax.inject.Inject
 import javax.inject.Singleton
 

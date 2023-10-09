@@ -1,10 +1,10 @@
-package com.example.icebeth.core.database.model
+package com.example.icebeth.core.data.database.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.icebeth.core.model.data.Measurement
-import com.example.icebeth.core.network.model.request.MeasurementCreateRequest
-import com.example.icebeth.core.network.model.request.MeasurementUpdateRequest
+import com.example.icebeth.core.model.Measurement
+import com.example.icebeth.core.data.network.model.request.MeasurementCreateRequest
+import com.example.icebeth.core.data.network.model.request.MeasurementUpdateRequest
 
 @Entity(
     tableName = "measurements"

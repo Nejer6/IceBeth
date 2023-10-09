@@ -1,6 +1,6 @@
 package com.example.icebeth.core.domain
 
-import com.example.icebeth.core.model.data.Measurement
+import com.example.icebeth.core.model.Measurement
 import com.example.icebeth.features.measurements.domain.models.MeasurementCreateResult
 import com.example.icebeth.features.measurements.domain.util.MeasurementError
 import java.util.Date

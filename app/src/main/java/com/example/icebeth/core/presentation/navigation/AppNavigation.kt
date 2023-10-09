@@ -6,24 +6,46 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.icebeth.feature.login.LoginScreenDestination
-import com.example.icebeth.feature.splash.SplashScreenDestination
-import com.example.icebeth.features.measurements.presentation.add_measurement.AddMeasurementRoute
-import com.example.icebeth.feature.measurements.MainRoute
+import androidx.navigation.navOptions
 import com.example.icebeth.common.presentation.util.AppRoute
+import com.example.icebeth.feature.login.LoginScreenDestination
+import com.example.icebeth.feature.login.navigation.loginRoute
+import com.example.icebeth.feature.login.navigation.navigateToLogin
+import com.example.icebeth.feature.measurements.MainRoute
+import com.example.icebeth.feature.splash.navigation.splashRoute
+import com.example.icebeth.feature.splash.navigation.splashScreen
+import com.example.icebeth.features.measurements.presentation.add_measurement.AddMeasurementRoute
 
 @Composable
 fun AppNavigation() {
 
     val navController = rememberNavController()
 
-    NavHost(navController = navController, startDestination = AppRoute.SplashScreen.route) {
-        composable(AppRoute.SplashScreen.route) {
-            SplashScreenDestination(onNavigate = {
+    NavHost(navController = navController, startDestination = splashRoute) {
+        splashScreen(
+            onAuthorized = {
+                navController.navigateToMainGraph(navOptions {
+                    popUpTo(splashRoute) {
+                        inclusive = true
+                    }
+                })
+            },
+            onUnauthorized = {
+                navController.navigateToLogin(navOptions {
+                    popUpTo(splashRoute) {
+                        inclusive = true
+                    }
+                })
+            }
+        )
+
+        mainGraph(
+            navigate = navController::navigate,
+            logout = {
                 navController.popBackStack()
-                navController.navigate(it)
-            })
-        }
+                navController.navigate(AppRoute.LoginScreen.route)
+            }
+        )
 
         composable(AppRoute.MainRoute.route) {
             MainNavigation(
@@ -35,7 +57,7 @@ fun AppNavigation() {
             )
         }
 
-        composable(AppRoute.LoginScreen.route) {
+        composable(loginRoute) {
             LoginScreenDestination(
                 onLogin = {
                     navController.popBackStack()
@@ -47,7 +69,7 @@ fun AppNavigation() {
         composable(
             "${AppRoute.AddMeasurementScreen.route}/{resultId}?measurement={measurement}",
             arguments = listOf(
-                navArgument("resultId") { type = NavType.IntType},
+                navArgument("resultId") { type = NavType.IntType },
                 navArgument("measurement") { nullable = true }
             )
         ) {

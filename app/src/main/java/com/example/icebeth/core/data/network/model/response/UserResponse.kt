@@ -1,4 +1,4 @@
-package com.example.icebeth.core.network.model.response
+package com.example.icebeth.core.data.network.model.response
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

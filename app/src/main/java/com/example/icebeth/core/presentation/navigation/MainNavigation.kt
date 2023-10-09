@@ -25,6 +25,9 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavOptions
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -32,8 +35,28 @@ import com.example.icebeth.features.measurements.presentation.results.ResultsRou
 import com.example.icebeth.common.presentation.theme.spacing
 import com.example.icebeth.common.presentation.util.MainRoute
 import com.example.icebeth.common.presentation.util.UiEffect
+import com.example.icebeth.feature.main.navigation.mainRoute
+import com.example.icebeth.feature.main.navigation.mainScreen
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+
+const val mainGraph = "main_graph"
+
+fun NavController.navigateToMainGraph(navOptions: NavOptions? = null) {
+    navigate(mainGraph, navOptions)
+}
+
+fun NavGraphBuilder.mainGraph(
+    navigate: (String) -> Unit,
+    logout: () -> Unit,
+) {
+    composable(mainGraph) {
+        MainNavigation(
+            navigate = navigate,
+            logout = logout
+        )
+    }
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -77,7 +100,7 @@ fun MainNavigation(
                     Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
 
                     NavigationDrawerItem(
-                        label = { Text(text = "Съемки") },
+                        label = { Text(text = "Главная") },
                         selected = true,
                         onClick = {
                             navController.navigate(MainRoute.MainScreen.route) {
@@ -124,7 +147,13 @@ fun MainNavigation(
         },
         drawerState = drawerState
     ) {
-        NavHost(navController = navController, startDestination = MainRoute.MainScreen.route) {
+        NavHost(navController = navController, startDestination = mainRoute) {
+            mainScreen(
+                openDrawer = {
+                    scope.launch { drawerState.open() }
+                }
+            )
+
             composable(MainRoute.MainScreen.route) {
                 ResultsRoute(
                     openDrawer = {

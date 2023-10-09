@@ -1,4 +1,4 @@
-package com.example.icebeth.core.network.model.request
+package com.example.icebeth.core.data.network.model.request
 
 import kotlinx.serialization.EncodeDefault
 import kotlinx.serialization.ExperimentalSerializationApi

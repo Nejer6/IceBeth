@@ -1,9 +1,9 @@
-package com.example.icebeth.core.network.model.api
+package com.example.icebeth.core.data.network.api
 
-import com.example.icebeth.core.network.model.request.MeasurementCreateRequest
-import com.example.icebeth.core.network.model.request.MeasurementUpdateRequest
-import com.example.icebeth.core.network.model.request.ResultRequest
-import com.example.icebeth.core.network.model.response.MeasurementResponse
+import com.example.icebeth.core.data.network.model.request.MeasurementCreateRequest
+import com.example.icebeth.core.data.network.model.request.MeasurementUpdateRequest
+import com.example.icebeth.core.data.network.model.request.ResultRequest
+import com.example.icebeth.core.data.network.model.response.MeasurementResponse
 import com.example.icebeth.features.measurements.data.remote.response.Result
 import com.example.icebeth.common.util.ApiResponse
 import com.example.icebeth.common.util.safeRequest

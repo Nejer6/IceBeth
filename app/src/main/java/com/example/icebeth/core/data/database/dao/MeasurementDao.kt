@@ -1,10 +1,10 @@
-package com.example.icebeth.core.database.dao
+package com.example.icebeth.core.data.database.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.icebeth.core.database.model.MeasurementEntity
+import com.example.icebeth.core.data.database.model.MeasurementEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao

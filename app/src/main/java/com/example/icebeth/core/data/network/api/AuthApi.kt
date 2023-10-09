@@ -1,7 +1,7 @@
-package com.example.icebeth.core.network.model.api
+package com.example.icebeth.core.data.network.api
 
-import com.example.icebeth.core.network.model.response.LoginResponse
-import com.example.icebeth.core.network.model.response.UserResponse
+import com.example.icebeth.core.data.network.model.response.LoginResponse
+import com.example.icebeth.core.data.network.model.response.UserResponse
 import com.example.icebeth.common.util.ApiResponse
 import com.example.icebeth.common.util.safeRequest
 import io.ktor.client.HttpClient

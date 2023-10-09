@@ -2,11 +2,11 @@ package com.example.icebeth.feature.splash
 
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.icebeth.common.presentation.util.AppRoute
 
 @Composable
 fun SplashScreenDestination(
-    onNavigate: (String) -> Unit,
+    onAuthorized: () -> Unit,
+    onUnauthorized: () -> Unit,
     viewModel: SplashViewModel = hiltViewModel()
 ) {
 //    LaunchedEffect(key1 = true) {
@@ -22,9 +22,9 @@ fun SplashScreenDestination(
 //        }
 //    }
     if (viewModel.isAuthorized) {
-        onNavigate(AppRoute.MainRoute.route)
+        onAuthorized()
     } else {
-        onNavigate(AppRoute.LoginScreen.route)
+        onUnauthorized()
     }
 
     SplashScreen()

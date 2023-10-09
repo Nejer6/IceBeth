@@ -1,8 +1,8 @@
 package com.example.icebeth.core.data.repository
 
 import android.content.SharedPreferences
-import com.example.icebeth.core.network.model.api.AuthApi
-import com.example.icebeth.core.network.model.response.LoginResponse
+import com.example.icebeth.core.data.network.api.AuthApi
+import com.example.icebeth.core.data.network.model.response.LoginResponse
 import com.example.icebeth.common.util.ApiResponse
 import javax.inject.Inject
 import javax.inject.Singleton

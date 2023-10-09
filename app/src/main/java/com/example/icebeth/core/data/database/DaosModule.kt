@@ -1,6 +1,6 @@
-package com.example.icebeth.core.database
+package com.example.icebeth.core.data.database
 
-import com.example.icebeth.core.database.dao.MeasurementDao
+import com.example.icebeth.core.data.database.dao.MeasurementDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

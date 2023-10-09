@@ -1,6 +1,7 @@
 package com.example.icebeth.core.data.database
 
 import com.example.icebeth.core.data.database.dao.MeasurementDao
+import com.example.icebeth.core.data.database.dao.ResultDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,4 +15,9 @@ object DaosModule {
     fun providesMeasurementDao(
         database: AppDatabase
     ): MeasurementDao = database.measurementDao()
+
+    @Provides
+    fun providesResultDao(
+        database: AppDatabase
+    ): ResultDao = database.resultDao()
 }

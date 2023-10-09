@@ -6,7 +6,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Start
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -17,21 +19,25 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.icebeth.common.presentation.theme.spacing
 
 @Composable
 fun MainRoute(
-    openDrawer: () -> Unit
+    openDrawer: () -> Unit,
+    viewModel: MainViewModel = hiltViewModel()
 ) {
     MainScreen(
-        openDrawer = openDrawer
+        openDrawer = openDrawer,
+        onStartMeasuring = viewModel::startMeasuring
     )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(
-    openDrawer: () -> Unit
+    openDrawer: () -> Unit,
+    onStartMeasuring: () -> Unit
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
 
@@ -55,7 +61,14 @@ fun MainScreen(
 //                )
 //            }
 //        },
-        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+        floatingActionButton = {
+            ExtendedFloatingActionButton(
+                text = { Text(text = "Начать съемку") },
+                icon = { Icon(imageVector = Icons.Default.Start, contentDescription = null)  },
+                onClick = onStartMeasuring
+            )
+        }
     ) { paddingValues ->
         LazyColumn(
             modifier = Modifier

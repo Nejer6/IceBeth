@@ -20,4 +20,7 @@ interface ResultDao {
 
     @Delete
     suspend fun deleteResult(resultEntity: ResultEntity)
+
+    @Query("UPDATE results SET is_active = 0 WHERE id = :resultId")
+    suspend fun markResultAsInactive(resultId: Int)
 }

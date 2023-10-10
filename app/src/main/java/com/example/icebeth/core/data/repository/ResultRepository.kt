@@ -19,4 +19,6 @@ class ResultRepository @Inject constructor(
     }
 
     suspend fun deleteResult(result: Result) = resultDao.deleteResult(result.asEntity())
+
+    suspend fun saveResult(resultId: Int) = resultDao.markResultAsInactive(resultId)
 }

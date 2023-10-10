@@ -12,6 +12,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Save
 import androidx.compose.material.icons.filled.Start
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Divider
@@ -53,7 +54,8 @@ fun MainRoute(
         resultWithMeasurements = resultWithMeasurements,
         deleteResult = viewModel::deleteResult,
         navigateToAddMeasurement = navigateToAddMeasurement,
-        onDeleteMeasurement = viewModel::deleteMeasurement
+        onDeleteMeasurement = viewModel::deleteMeasurement,
+        onSaveResult = viewModel::saveResult
     )
 }
 
@@ -65,7 +67,8 @@ fun MainScreen(
     resultWithMeasurements: ResultWithMeasurements?,
     deleteResult: () -> Unit,
     navigateToAddMeasurement: (Int, Measurement?) -> Unit,
-    onDeleteMeasurement: (Int) -> Unit
+    onDeleteMeasurement: (Int) -> Unit,
+    onSaveResult: () -> Unit
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
 
@@ -97,6 +100,21 @@ fun MainScreen(
                     icon = { Icon(imageVector = Icons.Default.Start, contentDescription = null) },
                     onClick = onStartMeasuring
                 )
+            } else {
+                ExtendedFloatingActionButton(
+                    text = { Text(text = "Добавить замер") },
+                    icon = {
+                        Icon(
+                            imageVector = Icons.Default.Add,
+                            contentDescription = "Добавить измерение"
+                        )
+                    },
+                    onClick = {
+                        navigateToAddMeasurement(
+                            resultWithMeasurements.result.id,
+                            null
+                        )
+                    })
             }
         },
         bottomBar = {
@@ -111,16 +129,8 @@ fun MainScreen(
                         }
                     },
                     floatingActionButton = {
-                        FloatingActionButton(onClick = {
-                            navigateToAddMeasurement(
-                                resultWithMeasurements.result.id,
-                                null
-                            )
-                        }) {
-                            Icon(
-                                imageVector = Icons.Default.Add,
-                                contentDescription = "Добавить измерение"
-                            )
+                        FloatingActionButton(onClick = onSaveResult) {
+                            Icon(imageVector = Icons.Default.Save, contentDescription = "Сохранить")
                         }
                     }
                 )
@@ -182,7 +192,10 @@ fun MainScreen(
                 }
 
                 item {
-                    Spacer(modifier = Modifier.height(MaterialTheme.spacing.extraLarge))
+                    Spacer(modifier = Modifier.height(
+                        MaterialTheme.spacing.extraLarge +
+                        MaterialTheme.spacing.medium
+                    ))
                 }
             }
         }

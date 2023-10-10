@@ -55,4 +55,12 @@ class MainViewModel @Inject constructor(
             measurementRepository.deleteMeasurement(measurementId)
         }
     }
+
+    fun saveResult() {
+        viewModelScope.launch {
+            result?.let {
+                resultRepository.saveResult(it.id)
+            }
+        }
+    }
 }

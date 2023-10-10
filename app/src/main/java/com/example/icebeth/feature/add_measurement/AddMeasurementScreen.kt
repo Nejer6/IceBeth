@@ -24,9 +24,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.icebeth.features.measurements.domain.util.MeasurementError
 import com.example.icebeth.common.presentation.theme.IceBethTheme
 import com.example.icebeth.common.presentation.theme.spacing
+import com.example.icebeth.common.util.formatTimeFromTimestamp
+import com.example.icebeth.features.measurements.domain.util.MeasurementError
 import java.util.Date
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -41,8 +42,8 @@ fun AddMeasurementScreen(
                 title = {
                     Text(
                         text = when (state.type) {
-                            TypeMeasurement.ADD -> "Новый замер"
-                            TypeMeasurement.EDIT -> "Изменение замера №${state.id}"
+                            TypeMeasurement.ADD -> "Новый замер (${formatTimeFromTimestamp(state.time)})"
+                            TypeMeasurement.EDIT -> "Редактирование замера (${formatTimeFromTimestamp(state.time)})"
                         }
                     )
                 },

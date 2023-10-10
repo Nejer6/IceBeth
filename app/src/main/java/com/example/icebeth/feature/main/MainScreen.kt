@@ -1,6 +1,7 @@
 package com.example.icebeth.feature.main
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -13,6 +14,7 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Start
 import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.FloatingActionButton
@@ -30,10 +32,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.icebeth.common.presentation.theme.spacing
-import com.example.icebeth.common.util.formatDateFromTimestamp
+import com.example.icebeth.common.util.average
+import com.example.icebeth.common.util.formatDateWithTimeFromTimestamp
 import com.example.icebeth.core.model.Measurement
 import com.example.icebeth.core.model.ResultWithMeasurements
 import com.example.icebeth.feature.main.components.MeasurementCard
+import com.example.icebeth.features.measurements.presentation.components.TextWithNumber
 
 @Composable
 fun MainRoute(
@@ -73,7 +77,7 @@ fun MainScreen(
                         text = if (resultWithMeasurements == null) {
                             "Снегосъемка"
                         } else {
-                            "Съемка (${formatDateFromTimestamp(resultWithMeasurements.result.time)})"
+                            "Съемка (${formatDateWithTimeFromTimestamp(resultWithMeasurements.result.time)})"
                         }
                     )
                 },
@@ -132,7 +136,38 @@ fun MainScreen(
         ) {
             if (resultWithMeasurements != null) {
                 item {
-                    Text(text = resultWithMeasurements.measurements.size.toString())
+                    if (resultWithMeasurements.measurements.isNotEmpty()) {
+                        Column(
+                            modifier = Modifier.padding(horizontal = MaterialTheme.spacing.medium)
+                        ) {
+                            Text(
+                                text = "Высота снега",
+                                style = MaterialTheme.typography.titleLarge,
+                                color = MaterialTheme.colorScheme.onPrimaryContainer
+                            )
+
+                            Column {
+                                TextWithNumber(
+                                    text = "Средняя",
+                                    float = resultWithMeasurements.measurements.average {
+                                        it.snowHeight
+                                    }
+                                )
+                                TextWithNumber(
+                                    text = "Максимальная",
+                                    float = resultWithMeasurements.measurements.maxOf { it.snowHeight }
+                                )
+                                TextWithNumber(
+                                    text = "Минимальная",
+                                    float = resultWithMeasurements.measurements.minOf { it.snowHeight }
+                                )
+                            }
+
+
+                        }
+                        Spacer(modifier = Modifier.height(MaterialTheme.spacing.small))
+                        Divider()
+                    }
                 }
 
                 itemsIndexed(resultWithMeasurements.measurements, key = { _, measurement ->

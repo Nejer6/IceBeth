@@ -4,7 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
-import com.example.icebeth.common.presentation.util.AppRoute
 import com.example.icebeth.feature.add_measurement.navigation.addMeasurementScreen
 import com.example.icebeth.feature.add_measurement.navigation.navigateToAddMeasurement
 import com.example.icebeth.feature.login.navigation.loginScreen
@@ -38,7 +37,11 @@ fun AppNavigation() {
         mainGraph(
             logout = {
                 navController.popBackStack()
-                navController.navigate(AppRoute.LoginScreen.route)
+                navController.navigateToLogin(navOptions {
+                    popUpTo(splashRoute) {
+                        inclusive = true
+                    }
+                })
             },
             navigateToAddMeasurement = navController::navigateToAddMeasurement
         )
@@ -46,7 +49,11 @@ fun AppNavigation() {
         loginScreen(
             onLogin = {
                 navController.popBackStack()
-                navController.navigate(AppRoute.MainRoute.route)
+                navController.navigateToMainGraph(navOptions {
+                    popUpTo(splashRoute) {
+                        inclusive = true
+                    }
+                })
             }
         )
 

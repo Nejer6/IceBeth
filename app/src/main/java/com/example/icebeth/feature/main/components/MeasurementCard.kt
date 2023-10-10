@@ -7,6 +7,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import com.example.icebeth.common.util.formatTimeFromTimestamp
 import com.example.icebeth.core.model.Measurement
 import com.example.icebeth.features.measurements.presentation.components.MyCard
 
@@ -18,7 +19,7 @@ fun MeasurementCard(
     onDelete: (Int) -> Unit
 ) {
     MyCard(
-        title = "Замер №${index}",
+        title = "Замер №${index} (${formatTimeFromTimestamp(item.time)})",
         stats = listOf(
             "Масса снега" to item.massOfSnow,
             "Высота снега" to item.snowHeight,

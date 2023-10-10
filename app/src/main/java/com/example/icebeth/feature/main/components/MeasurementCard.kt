@@ -1,4 +1,4 @@
-package com.example.icebeth.feature.measurements.components
+package com.example.icebeth.feature.main.components
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
@@ -7,21 +7,15 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import com.example.icebeth.common.presentation.util.AppRoute
 import com.example.icebeth.core.model.Measurement
 import com.example.icebeth.features.measurements.presentation.components.MyCard
-import com.example.icebeth.feature.measurements.MeasurementsEvent
-import com.example.icebeth.feature.measurements.MeasurementsState
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 
 @Composable
 fun MeasurementCard(
-    state: MeasurementsState,
     index: Int,
     item: Measurement,
-    navigate: (String) -> Unit,
-    onEvent: (MeasurementsEvent) -> Unit
+    navigate: (Int, Measurement) -> Unit,
+    onDelete: (Int) -> Unit
 ) {
     MyCard(
         title = "Замер №${index}",
@@ -36,11 +30,7 @@ fun MeasurementCard(
         }
     ) {
         IconButton(onClick = {
-            navigate(
-                "${AppRoute.AddMeasurementScreen.route}/${state.resultId}?measurement=${
-                    Json.encodeToString(item)
-                }"
-            )
+            navigate(item.resultId, item)
         }) {
             Icon(
                 imageVector = Icons.Default.Edit,
@@ -48,7 +38,7 @@ fun MeasurementCard(
             )
         }
 
-        IconButton(onClick = { onEvent(MeasurementsEvent.Delete(item.id)) }) {
+        IconButton(onClick = { onDelete(item.id) }) {
             Icon(
                 imageVector = Icons.Default.Delete,
                 contentDescription = "Удалить",

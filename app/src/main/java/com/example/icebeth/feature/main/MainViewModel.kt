@@ -4,12 +4,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.icebeth.core.data.repository.MeasurementRepository
 import com.example.icebeth.core.data.repository.ResultRepository
-import com.example.icebeth.core.model.Measurement
 import com.example.icebeth.core.model.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
@@ -18,16 +17,20 @@ class MainViewModel @Inject constructor(
     private val measurementRepository: MeasurementRepository
 ) : ViewModel() {
 
-    val resultWithMeasurements = resultRepository.getActiveResultWithMeasurements()
+    val resultWithMeasurements = resultRepository.getActiveResultWithMeasurements().map {
+        it?.copy(
+            result = it.result,
+            measurements = it.measurements
+                .filter { measurement -> !measurement.isDeleted }
+                .sortedBy { measurement ->  measurement.time }
+        )
+    }
     var result: Result? = null
-        private set
-    var resultId: Int? = null
         private set
 
     init {
         viewModelScope.launch {
             resultWithMeasurements.collectLatest {
-                resultId = it?.result?.id
                 result = it?.result
             }
         }
@@ -39,30 +42,17 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun addMeasurement() {
+    fun deleteResult() {
         viewModelScope.launch {
-            if (resultId != null) {
-                measurementRepository.insertMeasurement(
-                    Measurement(
-                        cylinderHeight = 0f,
-                        groundFrozzed = false,
-                        id = 0,
-                        massOfSnow = 0f,
-                        resultId = resultId!!,
-                        snowCrust = false,
-                        snowHeight = 0f,
-                        time = Date().time
-                    )
-                )
+            result?.let {
+                resultRepository.deleteResult(it)
             }
         }
     }
 
-    fun deleteResult() {
+    fun deleteMeasurement(measurementId: Int) {
         viewModelScope.launch {
-            if (result != null) {
-                resultRepository.deleteResult(result!!)
-            }
+            measurementRepository.deleteMeasurement(measurementId)
         }
     }
 }

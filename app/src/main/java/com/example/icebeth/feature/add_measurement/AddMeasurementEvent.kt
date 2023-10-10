@@ -1,4 +1,4 @@
-package com.example.icebeth.features.measurements.presentation.add_measurement
+package com.example.icebeth.feature.add_measurement
 
 sealed class AddMeasurementEvent {
     data class SetCylinderHeight(val value: String) : AddMeasurementEvent()

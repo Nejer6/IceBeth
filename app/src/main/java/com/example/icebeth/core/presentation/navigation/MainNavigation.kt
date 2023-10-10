@@ -31,7 +31,6 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.icebeth.features.measurements.presentation.results.ResultsRoute
 import com.example.icebeth.common.presentation.theme.spacing
 import com.example.icebeth.common.presentation.util.MainRoute
 import com.example.icebeth.common.presentation.util.UiEffect
@@ -48,13 +47,11 @@ fun NavController.navigateToMainGraph(navOptions: NavOptions? = null) {
 }
 
 fun NavGraphBuilder.mainGraph(
-    navigate: (String) -> Unit,
     logout: () -> Unit,
     navigateToAddMeasurement: (Int, Measurement?) -> Unit
 ) {
     composable(mainGraph) {
         MainNavigation(
-            navigate = navigate,
             logout = logout,
             navigateToAddMeasurement = navigateToAddMeasurement
         )
@@ -64,7 +61,6 @@ fun NavGraphBuilder.mainGraph(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainNavigation(
-    navigate: (String) -> Unit,
     logout: () -> Unit,
     navigateToAddMeasurement: (Int, Measurement?) -> Unit,
     viewModel: MainViewModel = hiltViewModel()
@@ -158,15 +154,6 @@ fun MainNavigation(
                 },
                 navigateToAddMeasurement = navigateToAddMeasurement
             )
-
-            composable(MainRoute.MainScreen.route) {
-                ResultsRoute(
-                    openDrawer = {
-                        scope.launch { drawerState.open() }
-                    },
-                    navigate = navigate
-                )
-            }
 
             composable(MainRoute.InfoScreen.route) {
                 Text(text = "info")

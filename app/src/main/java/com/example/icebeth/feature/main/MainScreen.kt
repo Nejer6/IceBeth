@@ -1,16 +1,18 @@
 package com.example.icebeth.feature.main
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Start
 import androidx.compose.material3.BottomAppBar
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.FloatingActionButton
@@ -30,6 +32,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.icebeth.common.presentation.theme.spacing
 import com.example.icebeth.core.model.Measurement
 import com.example.icebeth.core.model.ResultWithMeasurements
+import com.example.icebeth.feature.main.components.MeasurementCard
 
 @Composable
 fun MainRoute(
@@ -43,9 +46,9 @@ fun MainRoute(
         openDrawer = openDrawer,
         onStartMeasuring = viewModel::startMeasuring,
         resultWithMeasurements = resultWithMeasurements,
-        addMeasurement = viewModel::addMeasurement,
         deleteResult = viewModel::deleteResult,
-        navigateToAddMeasurement = navigateToAddMeasurement
+        navigateToAddMeasurement = navigateToAddMeasurement,
+        onDeleteMeasurement = viewModel::deleteMeasurement
     )
 }
 
@@ -55,9 +58,9 @@ fun MainScreen(
     openDrawer: () -> Unit,
     onStartMeasuring: () -> Unit,
     resultWithMeasurements: ResultWithMeasurements?,
-    addMeasurement: () -> Unit,
     deleteResult: () -> Unit,
-    navigateToAddMeasurement: (Int, Measurement?) -> Unit
+    navigateToAddMeasurement: (Int, Measurement?) -> Unit,
+    onDeleteMeasurement: (Int) -> Unit
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
 
@@ -118,25 +121,26 @@ fun MainScreen(
                 .padding(horizontal = MaterialTheme.spacing.small),
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small)
         ) {
-            item {
-                if (resultWithMeasurements != null) {
+            if (resultWithMeasurements != null) {
+                item {
                     Text(text = resultWithMeasurements.measurements.size.toString())
                 }
 
-                Button(onClick = addMeasurement) {
-                    Text(text = "Add measurement")
+                itemsIndexed(resultWithMeasurements.measurements, key = { _, measurement ->
+                    measurement.id
+                }) { index, measurement ->
+                    MeasurementCard(
+                        index = index + 1,
+                        item = measurement,
+                        navigate = navigateToAddMeasurement,
+                        onDelete = onDeleteMeasurement
+                    )
+                }
+
+                item {
+                    Spacer(modifier = Modifier.height(MaterialTheme.spacing.extraLarge))
                 }
             }
-
-//            itemsIndexed(state.results, key = { _, result ->
-//                result.id
-//            }) { index, result ->
-//                ResultCard(result, navigate, onEvent, state.results.size - index)
-//            }
-//
-//            item {
-//                Spacer(modifier = Modifier.height(MaterialTheme.spacing.extraLarge))
-//            }
         }
     }
 }

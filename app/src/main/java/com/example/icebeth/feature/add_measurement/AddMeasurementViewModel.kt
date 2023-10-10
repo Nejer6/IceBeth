@@ -1,4 +1,4 @@
-package com.example.icebeth.features.measurements.presentation.add_measurement
+package com.example.icebeth.feature.add_measurement
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -10,7 +10,7 @@ import com.example.icebeth.common.presentation.util.UiEffect
 import com.example.icebeth.common.util.removeZero
 import com.example.icebeth.core.domain.CreateMeasurementUseCase
 import com.example.icebeth.core.domain.UpdateMeasurementUseCase
-import com.example.icebeth.features.measurements.presentation.add_measurement.navigation.AddMeasurementArgs
+import com.example.icebeth.feature.add_measurement.navigation.AddMeasurementArgs
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow

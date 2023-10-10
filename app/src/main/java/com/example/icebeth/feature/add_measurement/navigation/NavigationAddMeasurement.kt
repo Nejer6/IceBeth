@@ -1,4 +1,4 @@
-package com.example.icebeth.features.measurements.presentation.add_measurement.navigation
+package com.example.icebeth.feature.add_measurement.navigation
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.NavController
@@ -7,7 +7,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.icebeth.core.model.Measurement
-import com.example.icebeth.features.measurements.presentation.add_measurement.AddMeasurementRoute
+import com.example.icebeth.feature.add_measurement.AddMeasurementRoute
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 

@@ -8,13 +8,15 @@ import com.example.icebeth.core.data.database.model.MeasurementEntity
 import com.example.icebeth.core.data.database.model.ResultEntity
 
 @Database(
-    version = 2,
+    version = 3,
     exportSchema = true,
     entities = [
         MeasurementEntity::class,
         ResultEntity::class
     ],
+    autoMigrations = [
 
+    ]
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun measurementDao(): MeasurementDao

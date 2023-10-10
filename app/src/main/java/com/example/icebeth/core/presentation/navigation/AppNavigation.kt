@@ -14,7 +14,8 @@ import com.example.icebeth.feature.login.navigation.navigateToLogin
 import com.example.icebeth.feature.measurements.MainRoute
 import com.example.icebeth.feature.splash.navigation.splashRoute
 import com.example.icebeth.feature.splash.navigation.splashScreen
-import com.example.icebeth.features.measurements.presentation.add_measurement.AddMeasurementRoute
+import com.example.icebeth.features.measurements.presentation.add_measurement.navigation.addMeasurementScreen
+import com.example.icebeth.features.measurements.presentation.add_measurement.navigation.navigateToAddMeasurement
 
 @Composable
 fun AppNavigation() {
@@ -44,18 +45,9 @@ fun AppNavigation() {
             logout = {
                 navController.popBackStack()
                 navController.navigate(AppRoute.LoginScreen.route)
-            }
+            },
+            navigateToAddMeasurement = navController::navigateToAddMeasurement
         )
-
-        composable(AppRoute.MainRoute.route) {
-            MainNavigation(
-                navigate = navController::navigate,
-                logout = {
-                    navController.popBackStack()
-                    navController.navigate(AppRoute.LoginScreen.route)
-                }
-            )
-        }
 
         composable(loginRoute) {
             LoginScreenDestination(
@@ -66,17 +58,9 @@ fun AppNavigation() {
             )
         }
 
-        composable(
-            "${AppRoute.AddMeasurementScreen.route}/{resultId}?measurement={measurement}",
-            arguments = listOf(
-                navArgument("resultId") { type = NavType.IntType },
-                navArgument("measurement") { nullable = true }
-            )
-        ) {
-            AddMeasurementRoute(
-                navigateUp = navController::navigateUp
-            )
-        }
+        addMeasurementScreen(
+            navController::navigateUp
+        )
 
         composable(
             "${AppRoute.MeasurementsScreen.route}/{resultId}/{number}",

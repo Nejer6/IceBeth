@@ -19,6 +19,8 @@ class MainViewModel @Inject constructor(
 ) : ViewModel() {
 
     val resultWithMeasurements = resultRepository.getActiveResultWithMeasurements()
+    var result: Result? = null
+        private set
     var resultId: Int? = null
         private set
 
@@ -26,6 +28,7 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             resultWithMeasurements.collectLatest {
                 resultId = it?.result?.id
+                result = it?.result
             }
         }
     }
@@ -51,6 +54,14 @@ class MainViewModel @Inject constructor(
                         time = Date().time
                     )
                 )
+            }
+        }
+    }
+
+    fun deleteResult() {
+        viewModelScope.launch {
+            if (result != null) {
+                resultRepository.deleteResult(result!!)
             }
         }
     }

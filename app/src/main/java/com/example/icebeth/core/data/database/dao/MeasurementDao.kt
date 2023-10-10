@@ -25,6 +25,6 @@ interface MeasurementDao {
     @Query("DELETE FROM measurements WHERE resultId = :resultId")
     suspend fun deleteMeasurementsByResultId(resultId: Int)
 
-    @Query("UPDATE measurements SET isDeleted = 1 WHERE id = :measurementId")
+    @Query("UPDATE measurements SET is_deleted = 1 WHERE id = :measurementId")
     suspend fun markMeasurementAsDeleted(measurementId: Int)
 }

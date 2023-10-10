@@ -8,14 +8,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.icebeth.common.presentation.util.UiEffect
 import com.example.icebeth.common.util.removeZero
-import com.example.icebeth.core.model.Measurement
 import com.example.icebeth.core.domain.CreateMeasurementUseCase
 import com.example.icebeth.core.domain.UpdateMeasurementUseCase
+import com.example.icebeth.features.measurements.presentation.add_measurement.navigation.AddMeasurementArgs
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
-import kotlinx.serialization.json.Json
 import javax.inject.Inject
 
 @HiltViewModel
@@ -24,16 +23,17 @@ class AddMeasurementViewModel @Inject constructor(
     private val updateMeasurementUseCase: UpdateMeasurementUseCase,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
-    var state by mutableStateOf(AddMeasurementState(resultId = savedStateHandle["resultId"]!!))
+    private val addMeasurementArgs = AddMeasurementArgs(savedStateHandle)
+
+    var state by mutableStateOf(AddMeasurementState(resultId = addMeasurementArgs.resultId))
         private set
 
     private val _effectFlow = MutableSharedFlow<UiEffect>()
     val effectFlow = _effectFlow.asSharedFlow()
 
     init {
-        val savedState: String? = savedStateHandle["measurement"]
-        if (savedState != null) {
-            val measurementResponse = Json.decodeFromString<Measurement>(savedState)
+        if (addMeasurementArgs.measurement != null) {
+            val measurementResponse = addMeasurementArgs.measurement
             state = state.copy(
                 cylinderHeight = measurementResponse.cylinderHeight.removeZero(),
                 massOfSnow = measurementResponse.massOfSnow.removeZero(),

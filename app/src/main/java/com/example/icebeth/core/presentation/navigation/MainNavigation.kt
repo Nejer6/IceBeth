@@ -35,6 +35,7 @@ import com.example.icebeth.features.measurements.presentation.results.ResultsRou
 import com.example.icebeth.common.presentation.theme.spacing
 import com.example.icebeth.common.presentation.util.MainRoute
 import com.example.icebeth.common.presentation.util.UiEffect
+import com.example.icebeth.core.model.Measurement
 import com.example.icebeth.feature.main.navigation.mainRoute
 import com.example.icebeth.feature.main.navigation.mainScreen
 import kotlinx.coroutines.flow.collectLatest
@@ -49,11 +50,13 @@ fun NavController.navigateToMainGraph(navOptions: NavOptions? = null) {
 fun NavGraphBuilder.mainGraph(
     navigate: (String) -> Unit,
     logout: () -> Unit,
+    navigateToAddMeasurement: (Int, Measurement?) -> Unit
 ) {
     composable(mainGraph) {
         MainNavigation(
             navigate = navigate,
-            logout = logout
+            logout = logout,
+            navigateToAddMeasurement = navigateToAddMeasurement
         )
     }
 }
@@ -63,6 +66,7 @@ fun NavGraphBuilder.mainGraph(
 fun MainNavigation(
     navigate: (String) -> Unit,
     logout: () -> Unit,
+    navigateToAddMeasurement: (Int, Measurement?) -> Unit,
     viewModel: MainViewModel = hiltViewModel()
 ) {
     val navController = rememberNavController()
@@ -151,7 +155,8 @@ fun MainNavigation(
             mainScreen(
                 openDrawer = {
                     scope.launch { drawerState.open() }
-                }
+                },
+                navigateToAddMeasurement = navigateToAddMeasurement
             )
 
             composable(MainRoute.MainScreen.route) {

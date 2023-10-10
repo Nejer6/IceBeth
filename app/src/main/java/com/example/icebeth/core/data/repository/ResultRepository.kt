@@ -17,4 +17,6 @@ class ResultRepository @Inject constructor(
     fun getActiveResultWithMeasurements() = resultDao.getActiveResultWithMeasurements().map {
         it?.asExternalModel()
     }
+
+    suspend fun deleteResult(result: Result) = resultDao.deleteResult(result.asEntity())
 }

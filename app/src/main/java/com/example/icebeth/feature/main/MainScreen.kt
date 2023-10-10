@@ -30,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.icebeth.common.presentation.theme.spacing
+import com.example.icebeth.common.util.formatDateFromTimestamp
 import com.example.icebeth.core.model.Measurement
 import com.example.icebeth.core.model.ResultWithMeasurements
 import com.example.icebeth.feature.main.components.MeasurementCard
@@ -67,7 +68,15 @@ fun MainScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(text = "Снегосъемка") },
+                title = {
+                    Text(
+                        text = if (resultWithMeasurements == null) {
+                            "Снегосъемка"
+                        } else {
+                            "Съемка (${formatDateFromTimestamp(resultWithMeasurements.result.time)})"
+                        }
+                    )
+                },
                 navigationIcon = {
                     IconButton(onClick = openDrawer) {
                         Icon(Icons.Default.Menu, contentDescription = "Меню")

@@ -129,8 +129,25 @@ fun MainScreen(
                         }
                     },
                     floatingActionButton = {
-                        FloatingActionButton(onClick = onSaveResult) {
-                            Icon(imageVector = Icons.Default.Save, contentDescription = "Сохранить")
+                        if (resultWithMeasurements.measurements.isNotEmpty()) {
+                            FloatingActionButton(
+                                onClick = onSaveResult
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Save,
+                                    contentDescription = "Сохранить"
+                                )
+                            }
+                        } else {
+                            FloatingActionButton(
+                                onClick = {},
+                                containerColor = MaterialTheme.colorScheme.onSurface
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Save,
+                                    contentDescription = "Сохранить"
+                                )
+                            }
                         }
                     }
                 )
@@ -192,10 +209,12 @@ fun MainScreen(
                 }
 
                 item {
-                    Spacer(modifier = Modifier.height(
-                        MaterialTheme.spacing.extraLarge +
-                        MaterialTheme.spacing.medium
-                    ))
+                    Spacer(
+                        modifier = Modifier.height(
+                            MaterialTheme.spacing.extraLarge +
+                                    MaterialTheme.spacing.medium
+                        )
+                    )
                 }
             }
         }

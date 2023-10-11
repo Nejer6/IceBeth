@@ -15,6 +15,9 @@ interface ResultDao {
     @Query("SELECT * FROM results WHERE is_active = 1")
     fun getActiveResultWithMeasurements(): Flow<ResultWithMeasurements?>
 
+    @Query("SELECT * FROM results WHERE remote_id IS NULL")
+    suspend fun getAllUnloadedResultsWithMeasurements(): List<ResultWithMeasurements>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertResult(resultEntity: ResultEntity)
 

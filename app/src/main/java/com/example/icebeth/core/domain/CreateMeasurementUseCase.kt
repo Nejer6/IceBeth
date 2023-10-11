@@ -51,7 +51,6 @@ class CreateMeasurementUseCase @Inject constructor(
                 newSnowHeight.toFloat(),
                 resultId,
                 Date().time,
-                isUploaded = false,
                 isDeleted = false,
                 isUpdated = false
             )

@@ -13,9 +13,10 @@ data class Measurement(
     val snowHeight: Float,
     val resultId: Int,
     val time: Long,
-    val isUploaded: Boolean = false,
     val isDeleted: Boolean = false,
-    val isUpdated: Boolean = false
+    val isUpdated: Boolean = false,
+    val remoteId: Int? = null,
+    val remoteResultId: Int? = null
 )
 
 fun Measurement.asEntity() = MeasurementEntity(
@@ -27,7 +28,8 @@ fun Measurement.asEntity() = MeasurementEntity(
     snowHeight,
     resultId,
     time,
-    isUploaded,
     isDeleted,
-    isUpdated
+    isUpdated,
+    remoteId,
+    remoteResultId
 )

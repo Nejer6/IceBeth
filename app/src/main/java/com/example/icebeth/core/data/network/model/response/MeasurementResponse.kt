@@ -1,6 +1,5 @@
 package com.example.icebeth.core.data.network.model.response
 
-import com.example.icebeth.core.data.database.model.MeasurementEntity
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -14,16 +13,4 @@ data class MeasurementResponse(
     @SerialName("snow_height") val snowHeight: Float,
     @SerialName("result_id") val resultId: Int,
     val time: Long
-)
-
-fun MeasurementResponse.asEntity() = MeasurementEntity(
-    id,
-    cylinderHeight,
-    groundFrozzed,
-    massOfSnow,
-    snowCrust,
-    snowHeight,
-    resultId,
-    time,
-    isUploaded = true
 )

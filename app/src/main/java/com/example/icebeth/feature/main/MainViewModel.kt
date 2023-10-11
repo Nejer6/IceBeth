@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.icebeth.core.data.repository.MeasurementRepository
 import com.example.icebeth.core.data.repository.ResultRepository
+import com.example.icebeth.core.data.util.ConnectivityObserver
 import com.example.icebeth.core.data.util.NetworkConnectivityObserver
 import com.example.icebeth.core.model.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -30,12 +31,20 @@ class MainViewModel @Inject constructor(
     var result: Result? = null
         private set
 
-    val networkStatusFlow = networkConnectivityObserver.observe()
+    private val networkStatusFlow = networkConnectivityObserver.observe()
 
     init {
         viewModelScope.launch {
             resultWithMeasurements.collectLatest {
                 result = it?.result
+            }
+        }
+
+        viewModelScope.launch {
+            networkStatusFlow.collect {
+                if (it == ConnectivityObserver.Status.Available) {
+                    uploadResults()
+                }
             }
         }
     }
@@ -65,6 +74,12 @@ class MainViewModel @Inject constructor(
             result?.let {
                 resultRepository.saveResult(it.id)
             }
+        }
+    }
+
+    private fun uploadResults() {
+        viewModelScope.launch {
+            resultRepository.uploadResults()
         }
     }
 }

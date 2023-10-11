@@ -1,8 +1,8 @@
 package com.example.icebeth.core.data.network.api
 
 import com.example.icebeth.common.util.safeRequest
-import com.example.icebeth.core.data.network.model.request.MeasurementCreateRequest
-import com.example.icebeth.core.data.network.model.response.MeasurementResponse
+import com.example.icebeth.core.data.network.model.request.ResultCreateRequest
+import com.example.icebeth.core.data.network.model.response.ResultResponse
 import io.ktor.client.HttpClient
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
@@ -12,16 +12,15 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class MeasurementApi @Inject constructor(
+class ResultApi @Inject constructor(
     private val httpClient: HttpClient
 ) {
 
-    suspend fun createMeasurement(measurementCreateRequest: MeasurementCreateRequest) =
-        httpClient.safeRequest<MeasurementResponse> {
-            post("misures/") {
-                setBody(measurementCreateRequest)
+    suspend fun createResult(resultCreateRequest: ResultCreateRequest) =
+        httpClient.safeRequest<ResultResponse> {
+            post("results/") {
+                setBody(resultCreateRequest)
                 contentType(ContentType.Application.Json)
             }
         }
-
 }

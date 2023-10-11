@@ -11,11 +11,14 @@ data class ResultEntity(
     val id: Int,
     val time: Long,
     @ColumnInfo(name = "is_active")
-    val isActive: Boolean
+    val isActive: Boolean,
+    @ColumnInfo(name = "remote_id")
+    val remoteId: Int?
 )
 
 fun ResultEntity.asExternalModel() = Result(
     id = id,
     time = time,
-    isActive = isActive
+    isActive = isActive,
+    remoteId = remoteId
 )

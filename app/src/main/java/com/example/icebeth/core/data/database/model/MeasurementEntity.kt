@@ -4,9 +4,8 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import com.example.icebeth.core.model.Measurement
 import com.example.icebeth.core.data.network.model.request.MeasurementCreateRequest
-import com.example.icebeth.core.data.network.model.request.MeasurementUpdateRequest
+import com.example.icebeth.core.model.Measurement
 
 @Entity(
     tableName = "measurements",
@@ -32,12 +31,14 @@ data class MeasurementEntity(
     val snowHeight: Float,
     val resultId: Int,
     val time: Long,
-    @ColumnInfo(name = "is_uploaded")
-    val isUploaded: Boolean = false,
     @ColumnInfo(name = "is_deleted")
     val isDeleted: Boolean = false,
     @ColumnInfo(name = "is_updated")
-    val isUpdated: Boolean = false
+    val isUpdated: Boolean = false,
+    @ColumnInfo(name = "remote_id")
+    val remoteId: Int? = null,
+    @ColumnInfo(name = "remote_result_id")
+    val remoteResultId: Int? = null
 )
 
 fun MeasurementEntity.asExternalModel() = Measurement(
@@ -49,26 +50,18 @@ fun MeasurementEntity.asExternalModel() = Measurement(
     snowHeight = snowHeight,
     resultId = resultId,
     time = time,
-    isUploaded = isUploaded,
     isDeleted = isDeleted,
-    isUpdated = isUpdated
+    isUpdated = isUpdated,
+    remoteId = remoteId,
+    remoteResultId = remoteResultId
 )
 
-fun MeasurementEntity.asCreateRequest() = MeasurementCreateRequest(
+fun MeasurementEntity.asCreateRequest(remoteResultId: Int) = MeasurementCreateRequest(
     cylinderHeight,
     groundFrozzed,
     massOfSnow,
     snowCrust,
     snowHeight,
-    resultId,
-    time
-)
-
-fun MeasurementEntity.asUpdateRequest() = MeasurementUpdateRequest(
-    cylinderHeight,
-    groundFrozzed,
-    massOfSnow,
-    snowCrust,
-    snowHeight,
+    remoteResultId,
     time
 )

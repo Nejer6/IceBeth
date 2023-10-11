@@ -35,7 +35,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.icebeth.common.presentation.theme.spacing
 import com.example.icebeth.common.util.average
 import com.example.icebeth.common.util.formatDateWithTimeFromTimestamp
-import com.example.icebeth.core.data.util.ConnectivityObserver
 import com.example.icebeth.core.model.Measurement
 import com.example.icebeth.core.model.ResultWithMeasurements
 import com.example.icebeth.feature.main.components.MeasurementCard
@@ -48,7 +47,6 @@ fun MainRoute(
     viewModel: MainViewModel = hiltViewModel()
 ) {
     val resultWithMeasurements by viewModel.resultWithMeasurements.collectAsState(initial = null)
-    val networkStatus by viewModel.networkStatusFlow.collectAsState(initial = ConnectivityObserver.Status.Unavailable)
 
     MainScreen(
         openDrawer = openDrawer,
@@ -57,8 +55,7 @@ fun MainRoute(
         deleteResult = viewModel::deleteResult,
         navigateToAddMeasurement = navigateToAddMeasurement,
         onDeleteMeasurement = viewModel::deleteMeasurement,
-        onSaveResult = viewModel::saveResult,
-        networkStatus = networkStatus
+        onSaveResult = viewModel::saveResult
     )
 }
 
@@ -71,8 +68,7 @@ fun MainScreen(
     deleteResult: () -> Unit,
     navigateToAddMeasurement: (Int, Measurement?) -> Unit,
     onDeleteMeasurement: (Int) -> Unit,
-    onSaveResult: () -> Unit,
-    networkStatus: ConnectivityObserver.Status
+    onSaveResult: () -> Unit
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
 

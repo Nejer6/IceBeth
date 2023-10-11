@@ -6,11 +6,13 @@ import java.util.Date
 data class Result(
     val id: Int = 0,
     val time: Long = Date().time,
-    val isActive: Boolean = true
+    val isActive: Boolean = true,
+    val remoteId: Int? = null
 )
 
 fun Result.asEntity() = ResultEntity(
     id = id,
     time = time,
-    isActive = isActive
+    isActive = isActive,
+    remoteId = remoteId
 )

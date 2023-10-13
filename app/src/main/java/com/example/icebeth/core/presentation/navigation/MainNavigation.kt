@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Archive
 import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material.icons.filled.Straighten
 import androidx.compose.material3.Divider
@@ -22,8 +23,13 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -31,10 +37,12 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navOptions
 import com.example.icebeth.common.presentation.theme.spacing
-import com.example.icebeth.common.presentation.util.MainRoute
 import com.example.icebeth.common.presentation.util.UiEffect
 import com.example.icebeth.core.model.Measurement
+import com.example.icebeth.feature.arhive.navigation.archiveScreen
+import com.example.icebeth.feature.arhive.navigation.navigateToArchive
 import com.example.icebeth.feature.main.navigation.mainRoute
 import com.example.icebeth.feature.main.navigation.mainScreen
 import kotlinx.coroutines.flow.collectLatest
@@ -69,6 +77,44 @@ fun MainNavigation(
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 
+    val navigationDrawerItems = listOf(
+        NavigationDrawerData(
+            "Снегосъемка",
+            onClick = {
+                navController.navigate(mainRoute) {
+                    launchSingleTop = true
+                    popUpTo(mainRoute) {
+                        inclusive = true
+                    }
+                }
+            },
+            Icons.Default.Straighten
+        ),
+        NavigationDrawerData(
+            "Архив",
+            onClick = {
+                navController.navigateToArchive(navOptions {
+                    launchSingleTop = true
+                    popUpTo(mainRoute) {
+                        inclusive = true
+                    }
+                })
+            },
+            Icons.Default.Archive
+        ),
+        NavigationDrawerData(
+            "Выйти",
+            onClick = {
+                viewModel.onEvent(MainEvent.Logout)
+            },
+            Icons.Default.Logout
+        ),
+    )
+
+    var selectedItem by remember {
+        mutableStateOf(navigationDrawerItems[0])
+    }
+
     LaunchedEffect(key1 = true) {
         viewModel.effectFlow.collectLatest {
             when (it) {
@@ -99,49 +145,22 @@ fun MainNavigation(
 
                     Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
 
-                    NavigationDrawerItem(
-                        label = { Text(text = "Главная") },
-                        selected = true,
-                        onClick = {
-                            navController.navigate(MainRoute.MainScreen.route) {
-                                launchSingleTop = true
+                    navigationDrawerItems.forEach { item ->
+                        NavigationDrawerItem(
+                            label = { Text(text = item.label) },
+                            selected = item == selectedItem,
+                            onClick = {
+                                scope.launch {
+                                    drawerState.close()
+                                }
+                                item.onClick()
+                                selectedItem = item
+                            },
+                            icon = {
+                                Icon(imageVector = item.icon, contentDescription = null)
                             }
-                            scope.launch {
-                                drawerState.close()
-                            }
-                        },
-                        icon = {
-                            Icon(imageVector = Icons.Default.Straighten, contentDescription = null)
-                        }
-                    )
-//                    NavigationDrawerItem(
-//                        label = { Text(text = "Информация") },
-//                        selected = false,
-//                        onClick = {
-//                            navController.navigate(MainRoute.InfoScreen.route) {
-//                                launchSingleTop = true
-//                            }
-//                            scope.launch {
-//                                drawerState.close()
-//                            }
-//                        },
-//                        icon = {
-//                            Icon(imageVector = Icons.Default.Info, contentDescription = null)
-//                        }
-//                    )
-
-                    NavigationDrawerItem(
-                        label = { Text(text = "Выйти") },
-                        selected = false,
-                        onClick = {
-                            viewModel.onEvent(MainEvent.Logout)
-                            scope.launch { drawerState.close() }
-                        },
-                        icon = {
-                            Icon(imageVector = Icons.Default.Logout, contentDescription = null)
-                        }
-                    )
-
+                        )
+                    }
                 }
             }
         },
@@ -155,9 +174,17 @@ fun MainNavigation(
                 navigateToAddMeasurement = navigateToAddMeasurement
             )
 
-            composable(MainRoute.InfoScreen.route) {
-                Text(text = "info")
-            }
+            archiveScreen(
+                openDrawer = {
+                    scope.launch { drawerState.open() }
+                }
+            )
         }
     }
 }
+
+data class NavigationDrawerData(
+    val label: String,
+    val onClick: () -> Unit,
+    val icon: ImageVector
+)

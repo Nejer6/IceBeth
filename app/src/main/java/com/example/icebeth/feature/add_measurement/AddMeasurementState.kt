@@ -1,6 +1,7 @@
 package com.example.icebeth.feature.add_measurement
 
 import com.example.icebeth.features.measurements.domain.util.MeasurementError
+import java.util.Date
 
 data class AddMeasurementState(
     val cylinderHeight: String = "",
@@ -14,7 +15,7 @@ data class AddMeasurementState(
     val type: TypeMeasurement = TypeMeasurement.ADD,
     val id: Int = 0,
     val resultId: Int,
-    val time: Long = 0
+    val time: Long = Date().time
 )
 
 enum class TypeMeasurement {

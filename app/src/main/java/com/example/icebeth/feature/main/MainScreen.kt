@@ -138,16 +138,6 @@ fun MainScreen(
                                     contentDescription = "Сохранить"
                                 )
                             }
-                        } else {
-                            FloatingActionButton(
-                                onClick = {},
-                                containerColor = MaterialTheme.colorScheme.onSurface
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Default.Save,
-                                    contentDescription = "Сохранить"
-                                )
-                            }
                         }
                     }
                 )

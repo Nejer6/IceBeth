@@ -44,6 +44,7 @@ fun LoginScreenDestination(
         isForbidden = viewModel.isForbidden,
         onEventSent = viewModel::setEvent,
         connectState = connectState,
-        snackbarHostState = snackbarHostState
+        snackbarHostState = snackbarHostState,
+        loading = viewModel.loading
     )
 }

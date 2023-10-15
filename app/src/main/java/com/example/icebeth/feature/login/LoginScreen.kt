@@ -9,11 +9,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -35,6 +37,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.example.icebeth.core.domain.util.AuthError
 import com.example.icebeth.common.presentation.theme.IceBethTheme
 import com.example.icebeth.common.presentation.theme.spacing
@@ -47,7 +50,8 @@ fun LoginScreen(
     isForbidden: Boolean,
     onEventSent: (LoginContract.Event) -> Unit,
     connectState: ConnectivityObserver.Status,
-    snackbarHostState: SnackbarHostState
+    snackbarHostState: SnackbarHostState,
+    loading: Boolean
 ) {
 
     Scaffold(
@@ -55,9 +59,11 @@ fun LoginScreen(
             SnackbarHost(hostState = snackbarHostState)
         }
     ) {
-        Box(modifier = Modifier
-            .fillMaxSize()
-            .padding(it)) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(it)
+        ) {
             if (connectState != ConnectivityObserver.Status.Available) {
                 Box(
                     modifier = Modifier
@@ -89,7 +95,10 @@ fun LoginScreen(
                 Spacer(modifier = Modifier.height(MaterialTheme.spacing.large))
 
                 if (isForbidden) {
-                    Text(text = "Неверный логин или пароль", color = MaterialTheme.colorScheme.error)
+                    Text(
+                        text = "Неверный логин или пароль",
+                        color = MaterialTheme.colorScheme.error
+                    )
                 }
 
                 TextField(
@@ -166,9 +175,23 @@ fun LoginScreen(
 
                 Button(
                     onClick = { onEventSent(LoginContract.Event.Submit) },
-                    enabled = connectState == ConnectivityObserver.Status.Available
+                    enabled = (connectState == ConnectivityObserver.Status.Available) && !loading
                 ) {
-                    Text(text = "ВХОД")
+                    if (loading) {
+                        Box(
+                            modifier = Modifier
+                                .width(38.dp)
+                                .height(19.dp)
+                        ) {
+                            CircularProgressIndicator(
+                                modifier = Modifier
+                                    .width(19.dp)
+                                    .align(Alignment.Center)
+                            )
+                        }
+                    } else {
+                        Text(text = "ВХОД")
+                    }
                 }
             }
         }
@@ -184,8 +207,9 @@ fun LoginScreenPreview() {
             state = LoginContract.State(),
             isForbidden = false,
             onEventSent = {},
-            ConnectivityObserver.Status.Unavailable,
-            SnackbarHostState()
+            ConnectivityObserver.Status.Available,
+            SnackbarHostState(),
+            true
         )
     }
 }

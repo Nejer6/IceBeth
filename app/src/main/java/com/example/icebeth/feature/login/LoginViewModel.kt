@@ -26,6 +26,9 @@ class LoginViewModel @Inject constructor(
 
     val connectStateFlow = connectivityObserver.observe()
 
+    var loading by mutableStateOf(false)
+        private set
+
     override fun setInitialState() = LoginContract.State()
 
     override fun handleEvents(event: LoginContract.Event) {
@@ -56,7 +59,9 @@ class LoginViewModel @Inject constructor(
 
     private fun submitData() {
         viewModelScope.launch {
+            loading = true
             val loginResult = loginUseCase(viewState.value.login, viewState.value.password)
+            loading = false
 
             setState {
                 copy(

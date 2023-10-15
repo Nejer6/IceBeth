@@ -8,6 +8,7 @@ import com.example.icebeth.core.domain.LoginUseCase
 import com.example.icebeth.common.presentation.BaseViewModel
 import com.example.icebeth.common.presentation.util.UiEffect
 import com.example.icebeth.common.util.ApiResponse
+import com.example.icebeth.core.data.util.ConnectivityObserver
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.ktor.http.HttpStatusCode
 import kotlinx.coroutines.launch
@@ -15,12 +16,15 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val loginUseCase: LoginUseCase
+    private val loginUseCase: LoginUseCase,
+    connectivityObserver: ConnectivityObserver
 ) :
     BaseViewModel<LoginContract.Event, LoginContract.State, UiEffect>() {
 
     var isForbidden by mutableStateOf(false)
         private set
+
+    val connectStateFlow = connectivityObserver.observe()
 
     override fun setInitialState() = LoginContract.State()
 
@@ -71,7 +75,11 @@ class LoginViewModel @Inject constructor(
                            }
                         }
                     }
-                    ApiResponse.Error.Network -> TODO()
+                    ApiResponse.Error.Network -> setEffect {
+                        UiEffect.ShowSnackbar(
+                            "Не удается подключиться к серверу. Повторите попытку позже."
+                        )
+                    }
                     is ApiResponse.Success -> setEffect {
                         UiEffect.OnLogin
                     }

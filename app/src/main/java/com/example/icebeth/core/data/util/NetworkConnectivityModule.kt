@@ -14,7 +14,7 @@ object NetworkConnectivityModule {
 
     @Provides
     @Singleton
-    fun providesNetworkConnectivityObserver(
+    fun providesConnectivityObserver(
         @ApplicationContext context: Context
-    ): NetworkConnectivityObserver = NetworkConnectivityObserver(context)
+    ): ConnectivityObserver = NetworkConnectivityObserver(context)
 }

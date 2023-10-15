@@ -1,6 +1,8 @@
 package com.example.icebeth.feature.login
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,6 +18,9 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -33,119 +38,154 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.icebeth.core.domain.util.AuthError
 import com.example.icebeth.common.presentation.theme.IceBethTheme
 import com.example.icebeth.common.presentation.theme.spacing
+import com.example.icebeth.core.data.util.ConnectivityObserver
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(
     state: LoginContract.State,
     isForbidden: Boolean,
-    onEventSent: (LoginContract.Event) -> Unit
+    onEventSent: (LoginContract.Event) -> Unit,
+    connectState: ConnectivityObserver.Status,
+    snackbarHostState: SnackbarHostState
 ) {
-    Column(
-        modifier = Modifier
-            .padding(MaterialTheme.spacing.large)
-            .fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+
+    Scaffold(
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState)
+        }
     ) {
-        Text(
-            text = "Добро пожаловать!",
-            style = MaterialTheme.typography.displayMedium,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(modifier = Modifier.height(MaterialTheme.spacing.large))
-
-        if (isForbidden) {
-            Text(text = "Неверный логин или пароль", color = MaterialTheme.colorScheme.error)
-        }
-
-        TextField(
-            value = state.login,
-            onValueChange = { onEventSent(LoginContract.Event.SetLogin(it)) },
-            modifier = Modifier.fillMaxWidth(),
-            label = {
-                Text(text = "Логин")
-            },
-            isError = state.loginError != null,
-            supportingText = {
-                if (state.loginError != null) {
+        Box(modifier = Modifier
+            .fillMaxSize()
+            .padding(it)) {
+            if (connectState != ConnectivityObserver.Status.Available) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(MaterialTheme.colorScheme.error)
+                        .padding(MaterialTheme.spacing.medium)
+                ) {
                     Text(
-                        text = when (state.loginError) {
-                            AuthError.FieldEmpty -> "Введите логин"
-                        },
-                        color = MaterialTheme.colorScheme.error
+                        text = "Отсутствует подключение к интернету.",
+                        color = MaterialTheme.colorScheme.onError
                     )
                 }
             }
-//            trailingIcon = {
-//                Icon(imageVector = Icons.Default.AccountCircle, contentDescription = null)
-//            }
-        )
 
-        Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
+            Column(
+                modifier = Modifier
+                    .padding(MaterialTheme.spacing.large)
+                    .fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = "Добро пожаловать!",
+                    style = MaterialTheme.typography.displayMedium,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth()
+                )
 
-        var isPasswordShow by remember {
-            mutableStateOf(false)
-        }
-        TextField(
-            value = state.password,
-            onValueChange = { onEventSent(LoginContract.Event.SetPassword(it)) },
-            modifier = Modifier.fillMaxWidth(),
-            label = {
-                Text(text = "Пароль")
-            },
-            trailingIcon = {
-                if (isPasswordShow) {
-                    IconButton(onClick = { isPasswordShow = false }) {
-                        Icon(
-                            imageVector = Icons.Default.VisibilityOff,
-                            contentDescription = "Скрыть пароль"
-                        )
-                    }
-                } else {
-                    IconButton(onClick = { isPasswordShow = true }) {
-                        Icon(
-                            imageVector = Icons.Default.Visibility,
-                            contentDescription = "Показать пароль"
-                        )
-                    }
+                Spacer(modifier = Modifier.height(MaterialTheme.spacing.large))
+
+                if (isForbidden) {
+                    Text(text = "Неверный логин или пароль", color = MaterialTheme.colorScheme.error)
                 }
-            },
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Password
-            ),
-            visualTransformation = if (isPasswordShow) {
-                VisualTransformation.None
-            } else {
-                PasswordVisualTransformation()
-            },
-            isError = state.passwordError != null,
-            supportingText = {
-                if (state.passwordError != null) {
-                    Text(
-                        text = when (state.passwordError) {
-                            AuthError.FieldEmpty -> "Введите пароль"
-                        },
-                        color = MaterialTheme.colorScheme.error
-                    )
+
+                TextField(
+                    value = state.login,
+                    onValueChange = { onEventSent(LoginContract.Event.SetLogin(it)) },
+                    modifier = Modifier.fillMaxWidth(),
+                    label = {
+                        Text(text = "Логин")
+                    },
+                    isError = state.loginError != null,
+                    supportingText = {
+                        if (state.loginError != null) {
+                            Text(
+                                text = when (state.loginError) {
+                                    AuthError.FieldEmpty -> "Введите логин"
+                                },
+                                color = MaterialTheme.colorScheme.error
+                            )
+                        }
+                    }
+                )
+
+                Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
+
+                var isPasswordShow by remember {
+                    mutableStateOf(false)
+                }
+                TextField(
+                    value = state.password,
+                    onValueChange = { onEventSent(LoginContract.Event.SetPassword(it)) },
+                    modifier = Modifier.fillMaxWidth(),
+                    label = {
+                        Text(text = "Пароль")
+                    },
+                    trailingIcon = {
+                        if (isPasswordShow) {
+                            IconButton(onClick = { isPasswordShow = false }) {
+                                Icon(
+                                    imageVector = Icons.Default.VisibilityOff,
+                                    contentDescription = "Скрыть пароль"
+                                )
+                            }
+                        } else {
+                            IconButton(onClick = { isPasswordShow = true }) {
+                                Icon(
+                                    imageVector = Icons.Default.Visibility,
+                                    contentDescription = "Показать пароль"
+                                )
+                            }
+                        }
+                    },
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Password
+                    ),
+                    visualTransformation = if (isPasswordShow) {
+                        VisualTransformation.None
+                    } else {
+                        PasswordVisualTransformation()
+                    },
+                    isError = state.passwordError != null,
+                    supportingText = {
+                        if (state.passwordError != null) {
+                            Text(
+                                text = when (state.passwordError) {
+                                    AuthError.FieldEmpty -> "Введите пароль"
+                                },
+                                color = MaterialTheme.colorScheme.error
+                            )
+                        }
+                    }
+                )
+
+                Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
+
+                Button(
+                    onClick = { onEventSent(LoginContract.Event.Submit) },
+                    enabled = connectState == ConnectivityObserver.Status.Available
+                ) {
+                    Text(text = "ВХОД")
                 }
             }
-        )
-
-        Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
-
-        Button(onClick = { onEventSent(LoginContract.Event.Submit) }) {
-            Text(text = "ВХОД")
         }
     }
+
 }
 
 @Preview
 @Composable
 fun LoginScreenPreview() {
     IceBethTheme(darkTheme = true) {
-        LoginScreen(state = LoginContract.State(), isForbidden = false, onEventSent = {})
+        LoginScreen(
+            state = LoginContract.State(),
+            isForbidden = false,
+            onEventSent = {},
+            ConnectivityObserver.Status.Unavailable,
+            SnackbarHostState()
+        )
     }
 }

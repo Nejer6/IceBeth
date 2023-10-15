@@ -4,6 +4,7 @@ import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.network.sockets.ConnectTimeoutException
 import io.ktor.client.statement.HttpResponse
+import java.net.ConnectException
 
 suspend inline fun <reified T> HttpClient.safeRequest(
     block: HttpClient.() -> HttpResponse
@@ -14,5 +15,7 @@ suspend inline fun <reified T> HttpClient.safeRequest(
         else -> ApiResponse.Error.Http(response.status)
     }
 } catch (e: ConnectTimeoutException) {
+    ApiResponse.Error.Network
+} catch (e: ConnectException) {
     ApiResponse.Error.Network
 }

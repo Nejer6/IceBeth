@@ -58,11 +58,11 @@ fun LoginScreen(
         snackbarHost = {
             SnackbarHost(hostState = snackbarHostState)
         }
-    ) {
+    ) { paddingValues ->
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(it)
+                .padding(paddingValues)
         ) {
             if (connectState != ConnectivityObserver.Status.Available) {
                 Box(

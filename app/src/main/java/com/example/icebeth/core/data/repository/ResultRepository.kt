@@ -64,12 +64,18 @@ class ResultRepository @Inject constructor(
                                     )
                                 )
                             }
-                            else -> return
+                            else -> {
+                                Log.d("Nejer", measurementResponse.toString())
+                            }
                         }
                     }
                 }
-                else -> return
+                else -> {
+                    Log.d("Nejer", resultResponse.toString())
+                }
             }
         }
     }
+
+    fun getCountOfResultsWithNullRemoteId() = resultDao.getCountOfResultsWithNullRemoteId()
 }

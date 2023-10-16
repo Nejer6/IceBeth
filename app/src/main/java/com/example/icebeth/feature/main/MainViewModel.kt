@@ -1,5 +1,6 @@
 package com.example.icebeth.feature.main
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.icebeth.core.data.repository.MeasurementRepository
@@ -7,6 +8,7 @@ import com.example.icebeth.core.data.repository.ResultRepository
 import com.example.icebeth.core.data.util.ConnectivityObserver
 import com.example.icebeth.core.model.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -32,6 +34,8 @@ class MainViewModel @Inject constructor(
 
     private val networkStatusFlow = connectivityObserver.observe()
 
+    val countOfResultsWithNullRemoteIdFlow = resultRepository.getCountOfResultsWithNullRemoteId()
+
     init {
         viewModelScope.launch {
             resultWithMeasurements.collectLatest {
@@ -41,7 +45,9 @@ class MainViewModel @Inject constructor(
 
         viewModelScope.launch {
             networkStatusFlow.collect {
+                Log.d("Nejer", it.name)
                 if (it == ConnectivityObserver.Status.Available) {
+                    delay(5000)
                     uploadResults()
                 }
             }

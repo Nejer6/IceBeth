@@ -26,4 +26,7 @@ interface ResultDao {
 
     @Query("UPDATE results SET is_active = 0 WHERE id = :resultId")
     suspend fun markResultAsInactive(resultId: Int)
+
+    @Query("SELECT COUNT(*) FROM results WHERE remote_id IS NULL")
+    fun getCountOfResultsWithNullRemoteId(): Flow<Int>
 }

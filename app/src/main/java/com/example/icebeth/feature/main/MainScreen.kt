@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -47,6 +48,8 @@ fun MainRoute(
     viewModel: MainViewModel = hiltViewModel()
 ) {
     val resultWithMeasurements by viewModel.resultWithMeasurements.collectAsState(initial = null)
+    val countOfResultsWithNullRemoteId by viewModel.countOfResultsWithNullRemoteIdFlow
+        .collectAsState(initial = 0)
 
     MainScreen(
         openDrawer = openDrawer,
@@ -55,7 +58,8 @@ fun MainRoute(
         deleteResult = viewModel::deleteResult,
         navigateToAddMeasurement = navigateToAddMeasurement,
         onDeleteMeasurement = viewModel::deleteMeasurement,
-        onSaveResult = viewModel::saveResult
+        onSaveResult = viewModel::saveResult,
+        countOfResultsWithNullRemoteId = countOfResultsWithNullRemoteId
     )
 }
 
@@ -68,7 +72,8 @@ fun MainScreen(
     deleteResult: () -> Unit,
     navigateToAddMeasurement: (Int, Measurement?) -> Unit,
     onDeleteMeasurement: (Int) -> Unit,
-    onSaveResult: () -> Unit
+    onSaveResult: () -> Unit,
+    countOfResultsWithNullRemoteId: Int
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
 
@@ -152,61 +157,81 @@ fun MainScreen(
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small)
         ) {
             if (resultWithMeasurements != null) {
-                item {
-                    if (resultWithMeasurements.measurements.isNotEmpty()) {
-                        Column(
-                            modifier = Modifier.padding(horizontal = MaterialTheme.spacing.medium)
-                        ) {
-                            Text(
-                                text = "Высота снега",
-                                style = MaterialTheme.typography.titleLarge,
-                                color = MaterialTheme.colorScheme.onPrimaryContainer
-                            )
-
-                            Column {
-                                TextWithNumber(
-                                    text = "Средняя",
-                                    float = resultWithMeasurements.measurements.average {
-                                        it.snowHeight
-                                    }
-                                )
-                                TextWithNumber(
-                                    text = "Максимальная",
-                                    float = resultWithMeasurements.measurements.maxOf { it.snowHeight }
-                                )
-                                TextWithNumber(
-                                    text = "Минимальная",
-                                    float = resultWithMeasurements.measurements.minOf { it.snowHeight }
-                                )
-                            }
-
-
-                        }
-                        Spacer(modifier = Modifier.height(MaterialTheme.spacing.small))
-                        Divider()
-                    }
-                }
-
-                itemsIndexed(resultWithMeasurements.measurements, key = { _, measurement ->
-                    measurement.id
-                }) { index, measurement ->
-                    MeasurementCard(
-                        index = index + 1,
-                        item = measurement,
-                        navigate = navigateToAddMeasurement,
-                        onDelete = onDeleteMeasurement
-                    )
-                }
-
-                item {
-                    Spacer(
-                        modifier = Modifier.height(
-                            MaterialTheme.spacing.extraLarge +
-                                    MaterialTheme.spacing.medium
-                        )
-                    )
-                }
+                resultContent(resultWithMeasurements, navigateToAddMeasurement, onDeleteMeasurement)
+            } else {
+                mainContent(countOfResultsWithNullRemoteId)
             }
         }
+    }
+}
+
+private fun LazyListScope.mainContent(countOfResultsWithNullRemoteId: Int) {
+    item {
+        if (countOfResultsWithNullRemoteId > 0) {
+            Text(text = "Не загружено на сервер $countOfResultsWithNullRemoteId съемок.")
+        } else {
+            Text(text = "Все съемки отправлены.")
+        }
+    }
+}
+
+private fun LazyListScope.resultContent(
+    resultWithMeasurements: ResultWithMeasurements,
+    navigateToAddMeasurement: (Int, Measurement?) -> Unit,
+    onDeleteMeasurement: (Int) -> Unit
+) {
+    item {
+        if (resultWithMeasurements.measurements.isNotEmpty()) {
+            Column(
+                modifier = Modifier.padding(horizontal = MaterialTheme.spacing.medium)
+            ) {
+                Text(
+                    text = "Высота снега",
+                    style = MaterialTheme.typography.titleLarge,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer
+                )
+
+                Column {
+                    TextWithNumber(
+                        text = "Средняя",
+                        float = resultWithMeasurements.measurements.average {
+                            it.snowHeight
+                        }
+                    )
+                    TextWithNumber(
+                        text = "Максимальная",
+                        float = resultWithMeasurements.measurements.maxOf { it.snowHeight }
+                    )
+                    TextWithNumber(
+                        text = "Минимальная",
+                        float = resultWithMeasurements.measurements.minOf { it.snowHeight }
+                    )
+                }
+
+
+            }
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.small))
+            Divider()
+        }
+    }
+
+    itemsIndexed(resultWithMeasurements.measurements, key = { _, measurement ->
+        measurement.id
+    }) { index, measurement ->
+        MeasurementCard(
+            index = index + 1,
+            item = measurement,
+            navigate = navigateToAddMeasurement,
+            onDelete = onDeleteMeasurement
+        )
+    }
+
+    item {
+        Spacer(
+            modifier = Modifier.height(
+                MaterialTheme.spacing.extraLarge +
+                        MaterialTheme.spacing.medium
+            )
+        )
     }
 }

@@ -135,7 +135,7 @@ fun MainNavigation(
                     Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
 
                     Text(
-                        text = "Снегосъемка",
+                        text = "Главная",
                         style = MaterialTheme.typography.displaySmall
                     )
 

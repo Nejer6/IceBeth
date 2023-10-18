@@ -4,6 +4,7 @@ import androidx.room.Embedded
 import androidx.room.Relation
 import com.example.icebeth.common.util.average
 import com.example.icebeth.core.data.network.model.request.ResultCreateRequest
+import com.example.icebeth.core.model.InactiveResult
 
 data class ResultWithMeasurements(
     @Embedded
@@ -25,4 +26,12 @@ fun ResultWithMeasurements.asResultCreateRequest() = ResultCreateRequest(
     averageSnowHeight = measurements.average { it.snowHeight },
     minSnowHeight = measurements.minOf { it.snowHeight },
     maxSnowHeight = measurements.maxOf { it.snowHeight }
+)
+
+fun ResultWithMeasurements.asInactiveResult() = InactiveResult(
+    time = result.time,
+    averageSnowHeight = measurements.average { it.snowHeight },
+    minSnowHeight = measurements.minOf { it.snowHeight },
+    maxSnowHeight = measurements.maxOf { it.snowHeight },
+    id = result.id
 )

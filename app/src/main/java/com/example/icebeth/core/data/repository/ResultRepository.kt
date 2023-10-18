@@ -6,6 +6,7 @@ import com.example.icebeth.core.data.database.dao.MeasurementDao
 import com.example.icebeth.core.data.database.dao.ResultDao
 import com.example.icebeth.core.data.database.model.asCreateRequest
 import com.example.icebeth.core.data.database.model.asExternalModel
+import com.example.icebeth.core.data.database.model.asInactiveResult
 import com.example.icebeth.core.data.database.model.asResultCreateRequest
 import com.example.icebeth.core.data.network.api.MeasurementApi
 import com.example.icebeth.core.data.network.api.ResultApi
@@ -78,4 +79,10 @@ class ResultRepository @Inject constructor(
     }
 
     fun getCountOfResultsWithNullRemoteId() = resultDao.getCountOfResultsWithNullRemoteId()
+
+    fun getAllInactiveResults() = resultDao.getAllInactiveResultsWithMeasurements().map { resultWithMeasurementsList ->
+        resultWithMeasurementsList.map {
+            it.asInactiveResult()
+        }
+    }
 }

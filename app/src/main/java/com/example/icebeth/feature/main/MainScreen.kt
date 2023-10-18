@@ -39,7 +39,7 @@ import com.example.icebeth.common.util.formatDateWithTimeFromTimestamp
 import com.example.icebeth.core.model.Measurement
 import com.example.icebeth.core.model.ResultWithMeasurements
 import com.example.icebeth.feature.main.components.MeasurementCard
-import com.example.icebeth.features.measurements.presentation.components.TextWithNumber
+import com.example.icebeth.common.presentation.components.TextWithNumber
 
 @Composable
 fun MainRoute(

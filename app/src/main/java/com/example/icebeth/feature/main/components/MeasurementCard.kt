@@ -9,7 +9,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import com.example.icebeth.common.util.formatTimeFromTimestamp
 import com.example.icebeth.core.model.Measurement
-import com.example.icebeth.features.measurements.presentation.components.MyCard
+import com.example.icebeth.common.presentation.components.MyCard
 
 @Composable
 fun MeasurementCard(

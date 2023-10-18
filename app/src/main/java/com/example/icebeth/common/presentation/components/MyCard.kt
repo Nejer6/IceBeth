@@ -1,4 +1,4 @@
-package com.example.icebeth.features.measurements.presentation.components
+package com.example.icebeth.common.presentation.components
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateFloatAsState
@@ -37,7 +37,7 @@ fun MyCard(
     stats: List<Pair<String, Float>> = listOf(),
     statsWithTitles: List<Pair<String, List<Pair<String, Float>>>> = listOf(),
     status: List<String> = listOf(),
-    actions: @Composable ColumnScope.() -> Unit
+    actions: @Composable ColumnScope.() -> Unit = {}
 ) {
     var isCardOpen by remember {
         mutableStateOf(false)

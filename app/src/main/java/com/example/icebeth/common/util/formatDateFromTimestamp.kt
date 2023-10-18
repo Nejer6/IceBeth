@@ -15,3 +15,6 @@ fun formatDateWithTimeFromTimestamp(timestamp: Long) =
 
 fun formatTimeFromTimestamp(timestamp: Long) =
     formatDateFromTimestamp(timestamp, "HH:mm")
+
+fun formatDateFromTimestamp(timestamp: Long) =
+    formatDateFromTimestamp(timestamp, "dd.MM.yyyy")

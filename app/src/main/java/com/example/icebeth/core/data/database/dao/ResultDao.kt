@@ -29,4 +29,7 @@ interface ResultDao {
 
     @Query("SELECT COUNT(*) FROM results WHERE remote_id IS NULL")
     fun getCountOfResultsWithNullRemoteId(): Flow<Int>
+
+    @Query("SELECT * FROM results WHERE is_active = 0")
+    fun getAllInactiveResultsWithMeasurements(): Flow<List<ResultWithMeasurements>>
 }

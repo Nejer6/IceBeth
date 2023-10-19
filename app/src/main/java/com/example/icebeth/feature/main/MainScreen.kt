@@ -1,8 +1,10 @@
 package com.example.icebeth.feature.main
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -30,6 +32,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -40,6 +43,7 @@ import com.example.icebeth.core.model.Measurement
 import com.example.icebeth.core.model.ResultWithMeasurements
 import com.example.icebeth.feature.main.components.MeasurementCard
 import com.example.icebeth.common.presentation.components.TextWithNumber
+import com.example.icebeth.common.util.getCorrectEnding
 
 @Composable
 fun MainRoute(
@@ -149,29 +153,40 @@ fun MainScreen(
             }
         }
     ) { paddingValues ->
-        LazyColumn(
-            modifier = Modifier
-                .padding(paddingValues)
-                .fillMaxWidth()
-                .padding(horizontal = MaterialTheme.spacing.small),
-            verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small)
-        ) {
-            if (resultWithMeasurements != null) {
+        if (resultWithMeasurements != null) {
+            LazyColumn(
+                modifier = Modifier
+                    .padding(paddingValues)
+                    .fillMaxWidth()
+                    .padding(horizontal = MaterialTheme.spacing.small),
+                verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small)
+            ) {
                 resultContent(resultWithMeasurements, navigateToAddMeasurement, onDeleteMeasurement)
-            } else {
-                mainContent(countOfResultsWithNullRemoteId)
+            }
+        } else {
+            Box(modifier = Modifier.fillMaxSize()) {
+                if (countOfResultsWithNullRemoteId > 0) {
+                    Text(
+                        text = "Не загружено на сервер: $countOfResultsWithNullRemoteId ${
+                            getCorrectEnding(
+                                "cъем",
+                                countOfResultsWithNullRemoteId,
+                                "ка",
+                                "ки",
+                                "ок"
+                            )
+                        }.",
+                        modifier = Modifier.align(Alignment.Center)
+                    )
+                } else {
+                    Text(
+                        text = "Все съемки отправлены.",
+                        modifier = Modifier.align(Alignment.Center)
+                    )
+                }
             }
         }
-    }
-}
 
-private fun LazyListScope.mainContent(countOfResultsWithNullRemoteId: Int) {
-    item {
-        if (countOfResultsWithNullRemoteId > 0) {
-            Text(text = "Не загружено на сервер $countOfResultsWithNullRemoteId съемок.")
-        } else {
-            Text(text = "Все съемки отправлены.")
-        }
     }
 }
 

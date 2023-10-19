@@ -19,7 +19,7 @@ fun LoginScreenDestination(
     viewModel: LoginViewModel = hiltViewModel()
 ) {
     val connectState by viewModel.connectStateFlow
-        .collectAsState(ConnectivityObserver.Status.Available)
+        .collectAsState(ConnectivityObserver.Status.Unavailable)
 
     val snackbarHostState = remember { SnackbarHostState() }
 

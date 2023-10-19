@@ -7,6 +7,13 @@ import io.ktor.client.statement.HttpResponse
 import java.net.ConnectException
 import java.net.SocketTimeoutException
 
+/**
+ * Performs a safe HTTP request using the HttpClient and handles potential network exceptions.
+ *
+ * @param block A lambda that defines the HTTP request using HttpClient.
+ *
+ * @return An ApiResponse representing the result of the HTTP request.
+ */
 suspend inline fun <reified T> HttpClient.safeRequest(
     block: HttpClient.() -> HttpResponse
 ): ApiResponse<T> = try {

@@ -87,7 +87,8 @@ fun AddMeasurementScreen(
                             color = MaterialTheme.colorScheme.error
                         )
                     }
-                }
+                },
+                isError = state.massOfSnowError != null
             )
             OutlinedTextField(
                 value = state.snowHeight,
@@ -111,7 +112,8 @@ fun AddMeasurementScreen(
                             color = MaterialTheme.colorScheme.error
                         )
                     }
-                }
+                },
+                isError = state.snowHeightError != null
             )
             OutlinedTextField(
                 value = state.cylinderHeight,
@@ -135,7 +137,8 @@ fun AddMeasurementScreen(
                             color = MaterialTheme.colorScheme.error
                         )
                     }
-                }
+                },
+                isError = state.cylinderHeightError != null
             )
 
             Row(

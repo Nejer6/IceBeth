@@ -153,18 +153,32 @@ fun MainScreen(
             }
         }
     ) { paddingValues ->
-        if (resultWithMeasurements != null) {
-            LazyColumn(
-                modifier = Modifier
-                    .padding(paddingValues)
-                    .fillMaxWidth()
-                    .padding(horizontal = MaterialTheme.spacing.small),
-                verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small)
-            ) {
-                resultContent(resultWithMeasurements, navigateToAddMeasurement, onDeleteMeasurement)
-            }
-        } else {
-            Box(modifier = Modifier.fillMaxSize()) {
+        Box(
+            modifier = Modifier
+                .padding(paddingValues)
+                .fillMaxSize()
+        ) {
+            if (resultWithMeasurements != null) {
+                if (resultWithMeasurements.measurements.isEmpty()) {
+                    Text(
+                        text = "Добавьте замеры.",
+                        modifier = Modifier.align(Alignment.Center)
+                    )
+                } else {
+                    LazyColumn(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = MaterialTheme.spacing.small),
+                        verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small)
+                    ) {
+                        resultContent(
+                            resultWithMeasurements,
+                            navigateToAddMeasurement,
+                            onDeleteMeasurement
+                        )
+                    }
+                }
+            } else {
                 if (countOfResultsWithNullRemoteId > 0) {
                     Text(
                         text = "Не загружено на сервер: $countOfResultsWithNullRemoteId ${
@@ -186,7 +200,6 @@ fun MainScreen(
                 }
             }
         }
-
     }
 }
 

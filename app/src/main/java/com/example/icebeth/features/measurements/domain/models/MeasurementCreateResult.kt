@@ -1,6 +1,6 @@
 package com.example.icebeth.features.measurements.domain.models
 
-import com.example.icebeth.features.measurements.domain.util.MeasurementError
+import com.example.icebeth.core.domain.util.MeasurementError
 
 data class MeasurementCreateResult(
     val cylinderHeightError: MeasurementError? = null,

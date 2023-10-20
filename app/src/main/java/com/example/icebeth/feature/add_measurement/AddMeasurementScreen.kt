@@ -27,7 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.icebeth.common.presentation.theme.IceBethTheme
 import com.example.icebeth.common.presentation.theme.spacing
 import com.example.icebeth.common.util.formatTimeFromTimestamp
-import com.example.icebeth.features.measurements.domain.util.MeasurementError
+import com.example.icebeth.core.domain.util.MeasurementError
 import java.util.Date
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -83,6 +83,7 @@ fun AddMeasurementScreen(
                             text = when (state.massOfSnowError) {
                                 MeasurementError.Empty -> "Введите массу снега"
                                 MeasurementError.NotNumber -> "Введите число"
+                                MeasurementError.NegativeNumber -> "Введите не отрицательное число"
                             },
                             color = MaterialTheme.colorScheme.error
                         )
@@ -108,6 +109,7 @@ fun AddMeasurementScreen(
                             text = when (state.snowHeightError) {
                                 MeasurementError.Empty -> "Введите высоту снега"
                                 MeasurementError.NotNumber -> "Введите число"
+                                MeasurementError.NegativeNumber -> "Введите не отрицательное число"
                             },
                             color = MaterialTheme.colorScheme.error
                         )
@@ -133,6 +135,7 @@ fun AddMeasurementScreen(
                             text = when (state.cylinderHeightError) {
                                 MeasurementError.Empty -> "Введите высоту цилиндра"
                                 MeasurementError.NotNumber -> "Введите число"
+                                MeasurementError.NegativeNumber -> "Введите не отрицательное число"
                             },
                             color = MaterialTheme.colorScheme.error
                         )

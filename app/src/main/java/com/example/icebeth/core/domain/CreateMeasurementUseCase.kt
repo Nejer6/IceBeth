@@ -2,7 +2,7 @@ package com.example.icebeth.core.domain
 
 import com.example.icebeth.core.model.Measurement
 import com.example.icebeth.features.measurements.domain.models.MeasurementCreateResult
-import com.example.icebeth.features.measurements.domain.util.MeasurementError
+import com.example.icebeth.core.domain.util.MeasurementError
 import java.util.Date
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -23,6 +23,7 @@ class CreateMeasurementUseCase @Inject constructor(
             return string.let {
                 if (it.isBlank()) return@let MeasurementError.Empty
                 if (it.toFloatOrNull() == null) return@let MeasurementError.NotNumber
+                if (it.toFloat() < 0f) return@let MeasurementError.NegativeNumber
                 return@let null
             }
         }

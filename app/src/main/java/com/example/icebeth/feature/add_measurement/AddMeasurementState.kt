@@ -1,6 +1,6 @@
 package com.example.icebeth.feature.add_measurement
 
-import com.example.icebeth.features.measurements.domain.util.MeasurementError
+import com.example.icebeth.core.domain.util.MeasurementError
 import java.util.Date
 
 data class AddMeasurementState(

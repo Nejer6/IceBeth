@@ -82,7 +82,7 @@ fun ArchiveScreen(
             } else {
                 items(inactiveResults) {
                     MyCard(
-                        title = "Измерение (${formatDateFromTimestamp(it.time)})",
+                        title = "Измерение (${it.time.formatDateFromTimestamp()})",
                         statsWithTitles = listOf(
                             "Высота снега" to listOf(
                                 "Средняя" to it.averageSnowHeight,

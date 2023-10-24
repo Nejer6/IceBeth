@@ -1,4 +1,4 @@
-package com.example.icebeth
+package com.example.icebeth.common.util
 
 import android.Manifest
 import android.content.Context

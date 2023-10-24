@@ -42,8 +42,8 @@ fun AddMeasurementScreen(
                 title = {
                     Text(
                         text = when (state.type) {
-                            TypeMeasurement.ADD -> "Новый замер (${formatTimeFromTimestamp(state.time)})"
-                            TypeMeasurement.EDIT -> "Редактирование замера (${formatTimeFromTimestamp(state.time)})"
+                            TypeMeasurement.ADD -> "Новый замер (${state.time.formatTimeFromTimestamp()})"
+                            TypeMeasurement.EDIT -> "Редактирование замера (${state.time.formatTimeFromTimestamp()})"
                         }
                     )
                 },

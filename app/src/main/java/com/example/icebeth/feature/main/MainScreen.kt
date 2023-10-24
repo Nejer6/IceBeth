@@ -89,7 +89,10 @@ fun MainScreen(
                         text = if (resultWithMeasurements == null) {
                             "Снегосъемка"
                         } else {
-                            "Съемка (${formatDateWithTimeFromTimestamp(resultWithMeasurements.result.time)})"
+                            "Съемка (${
+                                resultWithMeasurements.result.time
+                                    .formatDateWithTimeFromTimestamp()
+                            })"
                         }
                     )
                 },
@@ -182,8 +185,7 @@ fun MainScreen(
                 if (countOfResultsWithNullRemoteId > 0) {
                     Text(
                         text = "Не загружено на сервер: $countOfResultsWithNullRemoteId ${
-                            getCorrectEnding(
-                                "cъем",
+                            "cъем".getCorrectEnding(
                                 countOfResultsWithNullRemoteId,
                                 "ка",
                                 "ки",

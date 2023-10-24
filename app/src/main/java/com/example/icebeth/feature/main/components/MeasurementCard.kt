@@ -19,7 +19,7 @@ fun MeasurementCard(
     onDelete: (Int) -> Unit
 ) {
     MyCard(
-        title = "Замер №${index} (${formatTimeFromTimestamp(item.time)})",
+        title = "Замер №${index} (${item.time.formatTimeFromTimestamp()})",
         stats = listOf(
             "Масса снега" to item.massOfSnow,
             "Высота снега" to item.snowHeight,

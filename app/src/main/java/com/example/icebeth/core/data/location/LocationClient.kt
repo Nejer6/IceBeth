@@ -20,6 +20,23 @@ class LocationClient(
 ) {
     private val client = LocationServices.getFusedLocationProviderClient(context)
 
+    fun isLocationAvailable(): Boolean {
+        if (!context.hasLocationPermission()) {
+            return false
+        }
+
+        val locationManager =
+            context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        val isGpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+        val isNetworkEnabled =
+            locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
+        if (!isGpsEnabled && !isNetworkEnabled) {
+            return false
+        }
+
+        return true
+    }
+
     @SuppressLint("MissingPermission")
     fun getLocationUpdates(interval: Long): Flow<LatLong> {
         return callbackFlow {

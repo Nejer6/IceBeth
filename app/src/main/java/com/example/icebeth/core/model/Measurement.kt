@@ -16,7 +16,9 @@ data class Measurement(
     val isDeleted: Boolean = false,
     val isUpdated: Boolean = false,
     val remoteId: Int? = null,
-    val remoteResultId: Int? = null
+    val remoteResultId: Int? = null,
+    val latitude: Double,
+    val longitude: Double
 )
 
 fun Measurement.asEntity() = MeasurementEntity(
@@ -31,5 +33,7 @@ fun Measurement.asEntity() = MeasurementEntity(
     isDeleted,
     isUpdated,
     remoteId,
-    remoteResultId
+    remoteResultId,
+    latitude = latitude,
+    longitude = longitude
 )

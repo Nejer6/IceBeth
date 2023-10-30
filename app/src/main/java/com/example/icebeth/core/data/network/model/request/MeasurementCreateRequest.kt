@@ -11,5 +11,7 @@ data class MeasurementCreateRequest(
     @SerialName("snow_crust") val snowCrust: Boolean,
     @SerialName("snow_height") val snowHeight: Float,
     @SerialName("result_id") val resultId: Int,
-    val time: Long
+    val time: Long,
+    val latitude: Double,
+    val longitude: Double
 )

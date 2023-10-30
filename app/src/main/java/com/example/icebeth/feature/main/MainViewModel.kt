@@ -3,14 +3,18 @@ package com.example.icebeth.feature.main
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.icebeth.common.presentation.util.UiEffect
+import com.example.icebeth.core.data.location.LocationClient
 import com.example.icebeth.core.data.repository.MeasurementRepository
 import com.example.icebeth.core.data.repository.ResultRepository
 import com.example.icebeth.core.data.util.ConnectivityObserver
 import com.example.icebeth.core.model.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -18,7 +22,8 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val resultRepository: ResultRepository,
     private val measurementRepository: MeasurementRepository,
-    connectivityObserver: ConnectivityObserver
+    connectivityObserver: ConnectivityObserver,
+    private val locationClient: LocationClient
 ) : ViewModel() {
 
     val resultWithMeasurements = resultRepository.getActiveResultWithMeasurements().map {
@@ -26,7 +31,7 @@ class MainViewModel @Inject constructor(
             result = it.result,
             measurements = it.measurements
                 .filter { measurement -> !measurement.isDeleted }
-                .sortedBy { measurement ->  measurement.time }
+                .sortedBy { measurement -> measurement.time }
         )
     }
     var result: Result? = null
@@ -35,6 +40,9 @@ class MainViewModel @Inject constructor(
     private val networkStatusFlow = connectivityObserver.observe()
 
     val countOfResultsWithNullRemoteIdFlow = resultRepository.getCountOfResultsWithNullRemoteId()
+
+    private val _effect = Channel<UiEffect>()
+    val effect = _effect.receiveAsFlow()
 
     init {
         viewModelScope.launch {
@@ -50,6 +58,16 @@ class MainViewModel @Inject constructor(
                     delay(5000)
                     uploadResults()
                 }
+            }
+        }
+    }
+
+    fun addMeasurement() {
+        viewModelScope.launch {
+            if (!locationClient.isLocationAvailable()) {
+                _effect.send(UiEffect.ShowSnackbar("Включите определение местоположения."))
+            } else {
+                _effect.send(UiEffect.NavigateToAddMeasurement)
             }
         }
     }

@@ -60,7 +60,7 @@ class MainActivity : ComponentActivity() {
                     )
                 }
 
-                OnLifecycleEvent { owner, event ->
+                OnLifecycleEvent { _, event ->
                     when (event) {
                         Lifecycle.Event.ON_RESUME -> {
                             isFineLocationPermissionGranted = this.hasLocationPermission()

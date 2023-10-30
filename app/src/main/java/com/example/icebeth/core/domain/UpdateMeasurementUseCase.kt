@@ -18,7 +18,9 @@ class UpdateMeasurementUseCase @Inject constructor(
         snowHeight: String,
         id: Int,
         time: Long,
-        resultId: Int
+        resultId: Int,
+        latitude: Double,
+        longitude: Double
     ): MeasurementCreateResult {
         fun validate(string: String): MeasurementError? {
             return string.let {
@@ -52,7 +54,9 @@ class UpdateMeasurementUseCase @Inject constructor(
                 resultId = resultId,
                 snowCrust = snowCrust,
                 snowHeight = newSnowHeight.toFloat(),
-                time = time
+                time = time,
+                latitude = latitude,
+                longitude = longitude
             )
         )
 

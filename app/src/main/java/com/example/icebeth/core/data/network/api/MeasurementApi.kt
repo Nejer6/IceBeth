@@ -1,5 +1,6 @@
 package com.example.icebeth.core.data.network.api
 
+import com.example.icebeth.common.util.ApiResponse
 import com.example.icebeth.common.util.safeRequest
 import com.example.icebeth.core.data.network.model.request.MeasurementCreateRequest
 import com.example.icebeth.core.data.network.model.response.MeasurementResponse
@@ -16,12 +17,14 @@ class MeasurementApi @Inject constructor(
     private val httpClient: HttpClient
 ) {
 
-    suspend fun createMeasurement(measurementCreateRequest: MeasurementCreateRequest) =
-        httpClient.safeRequest<MeasurementResponse> {
+    suspend fun createMeasurement(measurementCreateRequest: MeasurementCreateRequest): ApiResponse<MeasurementResponse> {
+        return httpClient.safeRequest {
             post("misures/") {
                 setBody(measurementCreateRequest)
                 contentType(ContentType.Application.Json)
             }
         }
+    }
+
 
 }

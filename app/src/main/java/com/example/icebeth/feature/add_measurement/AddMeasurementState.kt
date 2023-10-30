@@ -15,7 +15,9 @@ data class AddMeasurementState(
     val type: TypeMeasurement = TypeMeasurement.ADD,
     val id: Int = 0,
     val resultId: Int,
-    val time: Long = Date().time
+    val time: Long = Date().time,
+    val latitude: Double? = null,
+    val longitude: Double? = null
 )
 
 enum class TypeMeasurement {

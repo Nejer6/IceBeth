@@ -38,7 +38,11 @@ data class MeasurementEntity(
     @ColumnInfo(name = "remote_id")
     val remoteId: Int? = null,
     @ColumnInfo(name = "remote_result_id")
-    val remoteResultId: Int? = null
+    val remoteResultId: Int? = null,
+    @ColumnInfo(defaultValue = "0.0")
+    val latitude: Double = 0.0,
+    @ColumnInfo(defaultValue = "0.0")
+    val longitude: Double = 0.0
 )
 
 fun MeasurementEntity.asExternalModel() = Measurement(
@@ -53,7 +57,9 @@ fun MeasurementEntity.asExternalModel() = Measurement(
     isDeleted = isDeleted,
     isUpdated = isUpdated,
     remoteId = remoteId,
-    remoteResultId = remoteResultId
+    remoteResultId = remoteResultId,
+    latitude = latitude,
+    longitude = longitude
 )
 
 fun MeasurementEntity.asCreateRequest(remoteResultId: Int) = MeasurementCreateRequest(
@@ -63,5 +69,7 @@ fun MeasurementEntity.asCreateRequest(remoteResultId: Int) = MeasurementCreateRe
     snowCrust,
     snowHeight,
     remoteResultId,
-    time
+    time,
+    latitude = latitude,
+    longitude = longitude
 )

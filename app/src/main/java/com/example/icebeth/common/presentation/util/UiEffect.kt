@@ -8,4 +8,6 @@ sealed class UiEffect : ViewSideEffect {
     object NavigateUp : UiEffect()
     object OnLogin : UiEffect()
     object Logout : UiEffect()
+
+    object NavigateToAddMeasurement : UiEffect()
 }

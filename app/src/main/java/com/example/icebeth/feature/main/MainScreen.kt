@@ -26,24 +26,29 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.icebeth.common.presentation.components.TextWithNumber
 import com.example.icebeth.common.presentation.theme.spacing
+import com.example.icebeth.common.presentation.util.UiEffect
 import com.example.icebeth.common.util.average
 import com.example.icebeth.common.util.formatDateWithTimeFromTimestamp
+import com.example.icebeth.common.util.getCorrectEnding
 import com.example.icebeth.core.model.Measurement
 import com.example.icebeth.core.model.ResultWithMeasurements
 import com.example.icebeth.feature.main.components.MeasurementCard
-import com.example.icebeth.common.presentation.components.TextWithNumber
-import com.example.icebeth.common.util.getCorrectEnding
 
 @Composable
 fun MainRoute(
@@ -55,6 +60,25 @@ fun MainRoute(
     val countOfResultsWithNullRemoteId by viewModel.countOfResultsWithNullRemoteIdFlow
         .collectAsState(initial = 0)
 
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    LaunchedEffect(key1 = true) {
+        viewModel.effect.collect {
+            when (it) {
+                UiEffect.NavigateToAddMeasurement -> {
+                    navigateToAddMeasurement(
+                        resultWithMeasurements!!.result.id,
+                        null
+                    )
+                }
+                is UiEffect.ShowSnackbar -> {
+                    snackbarHostState.showSnackbar(it.text)
+                }
+                else -> {}
+            }
+        }
+    }
+
     MainScreen(
         openDrawer = openDrawer,
         onStartMeasuring = viewModel::startMeasuring,
@@ -63,7 +87,9 @@ fun MainRoute(
         navigateToAddMeasurement = navigateToAddMeasurement,
         onDeleteMeasurement = viewModel::deleteMeasurement,
         onSaveResult = viewModel::saveResult,
-        countOfResultsWithNullRemoteId = countOfResultsWithNullRemoteId
+        countOfResultsWithNullRemoteId = countOfResultsWithNullRemoteId,
+        snackbarHostState = snackbarHostState,
+        addMeasurement = viewModel::addMeasurement
     )
 }
 
@@ -77,7 +103,9 @@ fun MainScreen(
     navigateToAddMeasurement: (Int, Measurement?) -> Unit,
     onDeleteMeasurement: (Int) -> Unit,
     onSaveResult: () -> Unit,
-    countOfResultsWithNullRemoteId: Int
+    countOfResultsWithNullRemoteId: Int,
+    snackbarHostState: SnackbarHostState,
+    addMeasurement: () -> Unit
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
 
@@ -121,12 +149,7 @@ fun MainScreen(
                             contentDescription = "Добавить измерение"
                         )
                     },
-                    onClick = {
-                        navigateToAddMeasurement(
-                            resultWithMeasurements.result.id,
-                            null
-                        )
-                    })
+                    onClick = addMeasurement)
             }
         },
         bottomBar = {
@@ -154,6 +177,9 @@ fun MainScreen(
                     }
                 )
             }
+        },
+        snackbarHost = {
+            SnackbarHost(snackbarHostState)
         }
     ) { paddingValues ->
         Box(

@@ -8,12 +8,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.icebeth.common.presentation.util.UiEffect
 import com.example.icebeth.common.util.removeZero
+import com.example.icebeth.core.data.location.LocationClient
 import com.example.icebeth.core.domain.CreateMeasurementUseCase
 import com.example.icebeth.core.domain.UpdateMeasurementUseCase
 import com.example.icebeth.feature.add_measurement.navigation.AddMeasurementArgs
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,7 +23,8 @@ import javax.inject.Inject
 class AddMeasurementViewModel @Inject constructor(
     private val createMeasurementUseCase: CreateMeasurementUseCase,
     private val updateMeasurementUseCase: UpdateMeasurementUseCase,
-    savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle,
+    private val locationClient: LocationClient
 ) : ViewModel() {
     private val addMeasurementArgs = AddMeasurementArgs(savedStateHandle)
 
@@ -30,6 +33,9 @@ class AddMeasurementViewModel @Inject constructor(
 
     private val _effectFlow = MutableSharedFlow<UiEffect>()
     val effectFlow = _effectFlow.asSharedFlow()
+
+    private var latitude: Double? = null
+    private var longitude: Double? = null
 
     init {
         if (addMeasurementArgs.measurement != null) {
@@ -42,8 +48,17 @@ class AddMeasurementViewModel @Inject constructor(
                 snowCrust = measurementResponse.snowCrust,
                 type = TypeMeasurement.EDIT,
                 id = measurementResponse.id,
-                time = measurementResponse.time
+                time = measurementResponse.time,
+                latitude = measurementResponse.latitude,
+                longitude = measurementResponse.longitude
             )
+        }
+
+        viewModelScope.launch {
+            locationClient.getLocationUpdates(1000).collectLatest {
+                latitude = it.latitude
+                longitude = it.longitude
+            }
         }
     }
 
@@ -75,14 +90,22 @@ class AddMeasurementViewModel @Inject constructor(
 
             AddMeasurementEvent.Save -> viewModelScope.launch {
                 val result = when (state.type) {
-                    TypeMeasurement.ADD -> createMeasurementUseCase(
-                        cylinderHeight = state.cylinderHeight,
-                        groundFrozzed = state.groundFrozzed,
-                        massOfSnow = state.massOfSnow,
-                        snowCrust = state.snowCrust,
-                        snowHeight = state.snowHeight,
-                        resultId = state.resultId
-                    )
+                    TypeMeasurement.ADD -> {
+                        if (latitude == null || longitude == null) {
+                            return@launch
+                        }
+
+                        createMeasurementUseCase(
+                            cylinderHeight = state.cylinderHeight,
+                            groundFrozzed = state.groundFrozzed,
+                            massOfSnow = state.massOfSnow,
+                            snowCrust = state.snowCrust,
+                            snowHeight = state.snowHeight,
+                            resultId = state.resultId,
+                            latitude = latitude!!,
+                            longitude = longitude!!
+                        )
+                    }
                     TypeMeasurement.EDIT -> updateMeasurementUseCase(
                         cylinderHeight = state.cylinderHeight,
                         groundFrozzed = state.groundFrozzed,
@@ -91,7 +114,9 @@ class AddMeasurementViewModel @Inject constructor(
                         snowHeight = state.snowHeight,
                         id = state.id,
                         time = state.time,
-                        resultId = state.resultId
+                        resultId = state.resultId,
+                        latitude = state.latitude!!,
+                        longitude = state.longitude!!
                     )
                 }
 

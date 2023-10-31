@@ -46,14 +46,14 @@ import com.example.icebeth.common.presentation.util.UiEffect
 import com.example.icebeth.common.util.average
 import com.example.icebeth.common.util.formatDateWithTimeFromTimestamp
 import com.example.icebeth.common.util.getCorrectEnding
-import com.example.icebeth.core.model.Measurement
-import com.example.icebeth.core.model.ResultWithMeasurements
+import com.example.icebeth.core.data.database.model.MeasurementEntity
+import com.example.icebeth.core.data.database.model.ResultWithMeasurements
 import com.example.icebeth.feature.main.components.MeasurementCard
 
 @Composable
 fun MainRoute(
     openDrawer: () -> Unit,
-    navigateToAddMeasurement: (Int, Measurement?) -> Unit,
+    navigateToAddMeasurement: (Int, MeasurementEntity?) -> Unit,
     viewModel: MainViewModel = hiltViewModel()
 ) {
     val resultWithMeasurements by viewModel.resultWithMeasurements.collectAsState(initial = null)
@@ -100,7 +100,7 @@ fun MainScreen(
     onStartMeasuring: () -> Unit,
     resultWithMeasurements: ResultWithMeasurements?,
     deleteResult: () -> Unit,
-    navigateToAddMeasurement: (Int, Measurement?) -> Unit,
+    navigateToAddMeasurement: (Int, MeasurementEntity?) -> Unit,
     onDeleteMeasurement: (Int) -> Unit,
     onSaveResult: () -> Unit,
     countOfResultsWithNullRemoteId: Int,
@@ -233,7 +233,7 @@ fun MainScreen(
 
 private fun LazyListScope.resultContent(
     resultWithMeasurements: ResultWithMeasurements,
-    navigateToAddMeasurement: (Int, Measurement?) -> Unit,
+    navigateToAddMeasurement: (Int, MeasurementEntity?) -> Unit,
     onDeleteMeasurement: (Int) -> Unit
 ) {
     item {

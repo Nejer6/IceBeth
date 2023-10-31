@@ -3,6 +3,7 @@ package com.example.icebeth.core.data.database
 import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import com.example.icebeth.core.data.database.dao.MeasurementDao
 import com.example.icebeth.core.data.database.dao.ResultDao
 import com.example.icebeth.core.data.database.model.MeasurementEntity
@@ -20,6 +21,7 @@ import com.example.icebeth.core.data.database.model.ResultEntity
         AutoMigration(from = 4, to = 5)
     ]
 )
+@TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun measurementDao(): MeasurementDao
     abstract fun resultDao(): ResultDao

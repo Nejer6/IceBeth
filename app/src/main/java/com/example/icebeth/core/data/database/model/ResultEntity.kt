@@ -9,8 +9,6 @@ data class ResultEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
     val time: Long,
-    @ColumnInfo(name = "is_active")
-    val isActive: Boolean,
     @ColumnInfo(name = "remote_id")
     val remoteId: Int?,
 

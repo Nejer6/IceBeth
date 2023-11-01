@@ -13,7 +13,7 @@ interface MeasurementDao {
     @Query("SELECT * FROM measurements")
     fun getAllMeasurements(): Flow<List<MeasurementEntity>>
 
-    @Query("SELECT * FROM measurements WHERE resultId = :resultId")
+    @Query("SELECT * FROM measurements WHERE result_id = :resultId")
     fun getMeasurementsByResultId(resultId: Int) : Flow<List<MeasurementEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -22,7 +22,7 @@ interface MeasurementDao {
     @Query("DELETE FROM measurements WHERE id = :measurementId")
     suspend fun deleteMeasurementById(measurementId: Int)
 
-    @Query("DELETE FROM measurements WHERE resultId = :resultId")
+    @Query("DELETE FROM measurements WHERE result_id = :resultId")
     suspend fun deleteMeasurementsByResultId(resultId: Int)
 
     @Query("UPDATE measurements SET is_deleted = 1 WHERE id = :measurementId")

@@ -35,12 +35,12 @@ data class MeasurementEntity(
     val longitude: Double,
 
     @ColumnInfo(name = "snow_height")
-    val snowHeight: Float,
+    val snowHeight: Int,
 
     @ColumnInfo(name = "cylinder_height")
-    val cylinderHeight: Float?,
+    val cylinderHeight: Int?,
     @ColumnInfo(name = "mass_of_snow")
-    val massOfSnow: Float?,
+    val massOfSnow: Double?,
 
     @ColumnInfo(name = "soil_surface_condition")
     val soilSurfaceCondition: SoilSurfaceCondition?,
@@ -48,11 +48,11 @@ data class MeasurementEntity(
     val snowCrust: Boolean?,
 
     @ColumnInfo(name = "ice_crust_thickness")
-    val iceCrustThickness: Float?,
+    val iceCrustThickness: Int?,
     @ColumnInfo(name = "snow_layer_water_saturation")
-    val snowLayerWaterSaturation: Float?,
+    val snowLayerWaterSaturation: Int?,
     @ColumnInfo(name = "thawed_water_layer_thickness")
-    val thawedWaterLayerThickness: Float?
+    val thawedWaterLayerThickness: Int?
 )
 
 enum class SoilSurfaceCondition(val description: String) {
@@ -72,7 +72,7 @@ fun MeasurementEntity.asCreateRequest(remoteResultId: Int) = MeasurementCreateRe
     snowHeight = snowHeight,
     cylinderHeight = cylinderHeight,
     massOfSnow = massOfSnow,
-    soilSurfaceCondition = soilSurfaceCondition?.name,
+    soilSurfaceCondition = soilSurfaceCondition?.ordinal,
     snowCrust = snowCrust,
     iceCrustThickness = iceCrustThickness,
     snowLayerWaterSaturation = snowLayerWaterSaturation,

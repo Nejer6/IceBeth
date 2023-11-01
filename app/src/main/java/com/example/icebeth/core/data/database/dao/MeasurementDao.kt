@@ -27,4 +27,7 @@ interface MeasurementDao {
 
     @Query("UPDATE measurements SET is_deleted = 1 WHERE id = :measurementId")
     suspend fun markMeasurementAsDeleted(measurementId: Int)
+
+    @Query("SELECT * FROM measurements WHERE remote_id IS NULL")
+    fun getAllUnloadedMeasurements(): List<MeasurementEntity>
 }

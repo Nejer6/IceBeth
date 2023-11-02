@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.Flow
 interface ResultDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertResult(resultEntity: ResultEntity)
+    suspend fun insertResult(resultEntity: ResultEntity): Long
 
     @Delete
     suspend fun deleteResult(resultEntity: ResultEntity)

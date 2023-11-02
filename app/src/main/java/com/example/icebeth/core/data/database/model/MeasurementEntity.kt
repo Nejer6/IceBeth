@@ -18,7 +18,7 @@ import com.example.icebeth.core.data.network.model.request.MeasurementCreateRequ
 data class MeasurementEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
-    @ColumnInfo(name = "result_id")
+    @ColumnInfo(name = "result_id", defaultValue = "1")
     val resultId: Int,
     @ColumnInfo(name = "remote_id")
     val remoteId: Int? = null,

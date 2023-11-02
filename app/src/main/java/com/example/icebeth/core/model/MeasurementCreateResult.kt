@@ -1,4 +1,4 @@
-package com.example.icebeth.features.measurements.domain.models
+package com.example.icebeth.core.model
 
 import com.example.icebeth.core.domain.util.MeasurementError
 

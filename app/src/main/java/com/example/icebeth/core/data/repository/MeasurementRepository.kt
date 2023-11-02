@@ -17,4 +17,13 @@ class MeasurementRepository @Inject constructor(
     suspend fun deleteMeasurement(measurementId: Int) {
         measurementDao.markMeasurementAsDeleted(measurementId)
     }
+
+    suspend fun getCountOfMeasurementsByResultId(resultId: Int) =
+        measurementDao.getCountOfMeasurementsByResultId(resultId)
+
+    fun getMeasurementsByResultId(resultId: Int) =
+        measurementDao.getMeasurementsByResultId(resultId)
+
+    fun getCountOfMeasurementsByResultIdFlow(resultId: Int) =
+        measurementDao.getCountOfMeasurementsByResultIdFlow(resultId)
 }

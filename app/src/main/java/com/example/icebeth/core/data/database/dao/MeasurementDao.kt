@@ -30,4 +30,10 @@ interface MeasurementDao {
 
     @Query("SELECT * FROM measurements WHERE remote_id IS NULL")
     fun getAllUnloadedMeasurements(): List<MeasurementEntity>
+
+    @Query("SELECT COUNT(*) FROM measurements WHERE result_id = :resultId")
+    suspend fun getCountOfMeasurementsByResultId(resultId: Int): Int
+
+    @Query("SELECT COUNT(*) FROM measurements WHERE result_id = :resultId")
+    fun getCountOfMeasurementsByResultIdFlow(resultId: Int): Flow<Int>
 }

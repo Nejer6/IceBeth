@@ -2,13 +2,14 @@ package com.example.icebeth.feature.active_result.navigation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.example.icebeth.feature.active_result.ActiveResultRoute
 
 const val activeResultRoute = "active_result"
 
-fun NavController.navigateToActiveResult() {
-    navigate(activeResultRoute)
+fun NavController.navigateToActiveResult(navOptions: NavOptions? = null) {
+    navigate(activeResultRoute, navOptions)
 }
 
 fun NavGraphBuilder.activeResultScreen(

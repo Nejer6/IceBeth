@@ -29,7 +29,11 @@ fun AppNavigation(
                         }
                     })
                 } else {
-                    navController.navigateToActiveResult()
+                    navController.navigateToActiveResult(navOptions {
+                        popUpTo(splashRoute) {
+                            inclusive = true
+                        }
+                    })
                 }
             },
             onUnauthorized = {

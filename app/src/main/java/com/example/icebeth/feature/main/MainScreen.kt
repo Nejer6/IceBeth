@@ -78,9 +78,10 @@ fun MainScreen(
         }
     ) { paddingValues ->
         Box(
-            modifier = Modifier
+            modifier =
+            Modifier
                 .padding(paddingValues)
-                .fillMaxSize()
+                .fillMaxSize(),
         ) {
             if (countOfResultsWithNullRemoteId > 0) {
                 Text(
@@ -89,18 +90,17 @@ fun MainScreen(
                             countOfResultsWithNullRemoteId,
                             "ка",
                             "ки",
-                            "ок"
+                            "ок",
                         )
                     }.",
-                    modifier = Modifier.align(Alignment.Center)
+                    modifier = Modifier.align(Alignment.Center),
                 )
             } else {
                 Text(
                     text = "Все съемки отправлены.",
-                    modifier = Modifier.align(Alignment.Center)
+                    modifier = Modifier.align(Alignment.Center),
                 )
             }
-
         }
     }
 }

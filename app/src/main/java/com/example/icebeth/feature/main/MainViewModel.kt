@@ -7,8 +7,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    resultRepository: ResultRepository
+    resultRepository: ResultRepository,
 ) : ViewModel() {
-
     val countOfResultsWithNullRemoteIdFlow = resultRepository.getCountOfResultsWithNullRemoteId()
 }

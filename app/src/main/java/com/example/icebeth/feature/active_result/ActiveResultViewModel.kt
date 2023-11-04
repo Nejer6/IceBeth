@@ -31,7 +31,7 @@ class ActiveResultViewModel @Inject constructor(
         newResultId
     }
 
-    val measurementsCountFlow = measurementRepository.getCountOfMeasurementsByResultIdFlow(resultId)
+    private val measurementsCountFlow = measurementRepository.getCountOfMeasurementsByResultIdFlow(resultId)
 
     var currentMeasurementNumber by mutableIntStateOf(runBlocking {
         measurementsCountFlow.first() + 1
@@ -133,7 +133,7 @@ class ActiveResultViewModel @Inject constructor(
     var iceCrustThicknessError by mutableStateOf<MeasurementError?>(null)
         private set
 
-    var snowLayerWaterSaturation by mutableStateOf<String>("")
+    var snowLayerWaterSaturation by mutableStateOf("")
         private set
 
     fun changeSnowLayerWaterSaturation(snowLayerWaterSaturation: String) {

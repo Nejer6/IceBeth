@@ -26,24 +26,6 @@ class CreateMeasurementUseCase @Inject constructor(
         thawedWaterLayerThickness: String?,
         isExpanded: Boolean
     ): MeasurementCreateResult {
-        fun validateDouble(string: String): MeasurementError? {
-            return string.let {
-                if (it.isBlank()) return@let MeasurementError.Empty
-                if (it.toDoubleOrNull() == null) return@let MeasurementError.NotDouble
-                if (it.toDouble() < 0f) return@let MeasurementError.NegativeNumber
-                return@let null
-            }
-        }
-
-        fun validateInteger(string: String): MeasurementError? {
-            return string.let {
-                if (it.isBlank()) return@let MeasurementError.Empty
-                if (it.toIntOrNull() == null) return@let MeasurementError.NotInt
-                if (it.toInt() < 0) return@let MeasurementError.NegativeNumber
-                return@let null
-            }
-        }
-
         val snowHeightError = validateInteger(snowHeight)
 
         if (!isExpanded) {
@@ -125,5 +107,23 @@ class CreateMeasurementUseCase @Inject constructor(
         )
 
         return MeasurementCreateResult(isSuccess = true)
+    }
+
+    private fun validateDouble(string: String): MeasurementError? {
+        return string.let {
+            if (it.isBlank()) return@let MeasurementError.Empty
+            if (it.toDoubleOrNull() == null) return@let MeasurementError.NotDouble
+            if (it.toDouble() < 0f) return@let MeasurementError.NegativeNumber
+            return@let null
+        }
+    }
+
+    private fun validateInteger(string: String): MeasurementError? {
+        return string.let {
+            if (it.isBlank()) return@let MeasurementError.Empty
+            if (it.toIntOrNull() == null) return@let MeasurementError.NotInt
+            if (it.toInt() < 0) return@let MeasurementError.NegativeNumber
+            return@let null
+        }
     }
 }

@@ -14,12 +14,12 @@ fun NavController.navigateToMain(navOptions: NavOptions? = null) {
 
 fun NavGraphBuilder.mainScreen(
     openDrawer: () -> Unit,
-    navigateToActiveResult: () -> Unit
+    navigateToActiveResult: () -> Unit,
 ) {
     composable(mainRoute) {
         MainRoute(
             openDrawer,
-            navigateToActiveResult
+            navigateToActiveResult,
         )
     }
 }

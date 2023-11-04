@@ -30,7 +30,7 @@ fun SoilSurfaceConditionDropDownMenu(
 
     ExposedDropdownMenuBox(
         expanded = expanded,
-        onExpandedChange = { expanded = it },
+        onExpandedChange = { expanded = !expanded },
         modifier = modifier
     ) {
         TextField(

@@ -2,7 +2,7 @@ package com.example.icebeth.core.data.database
 
 import androidx.room.TypeConverter
 import com.example.icebeth.core.data.database.model.SnowCoverCharacter
-import com.example.icebeth.core.data.database.model.SnowStructure
+import com.example.icebeth.core.data.database.model.SnowConditionDescription
 import com.example.icebeth.core.data.database.model.SoilSurfaceCondition
 
 class Converters {
@@ -12,9 +12,9 @@ class Converters {
     fun fromSnowCoverCharacter(value: SnowCoverCharacter) = value.name
 
     @TypeConverter
-    fun toSnowStructure(value: String) = enumValueOf<SnowStructure>(value)
+    fun toSnowStructure(value: String) = enumValueOf<SnowConditionDescription>(value)
     @TypeConverter
-    fun fromSnowStructure(value: SnowStructure) = value.name
+    fun fromSnowStructure(value: SnowConditionDescription) = value.name
 
     @TypeConverter
     fun toSoilSurfaceCondition(value: String) = enumValueOf<SoilSurfaceCondition>(value)

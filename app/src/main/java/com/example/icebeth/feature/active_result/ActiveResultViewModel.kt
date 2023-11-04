@@ -7,12 +7,16 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.icebeth.common.presentation.util.UiEffect
+import com.example.icebeth.core.data.database.model.SnowConditionDescription
+import com.example.icebeth.core.data.database.model.SnowCoverCharacter
 import com.example.icebeth.core.data.database.model.SoilSurfaceCondition
 import com.example.icebeth.core.data.preferences.AppPreferences
 import com.example.icebeth.core.data.repository.MeasurementRepository
 import com.example.icebeth.core.data.repository.ResultRepository
 import com.example.icebeth.core.domain.CreateMeasurementUseCase
+import com.example.icebeth.core.domain.UpdateResultUseCase
 import com.example.icebeth.core.domain.util.MeasurementError
+import com.example.icebeth.core.domain.util.ResultError
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.first
@@ -27,7 +31,8 @@ class ActiveResultViewModel @Inject constructor(
     private val appPreferences: AppPreferences,
     private val resultRepository: ResultRepository,
     measurementRepository: MeasurementRepository,
-    private val createMeasurementUseCase: CreateMeasurementUseCase
+    private val createMeasurementUseCase: CreateMeasurementUseCase,
+    private val updateResultUseCase: UpdateResultUseCase
 ) : ViewModel() {
     private val resultId = appPreferences.getActiveResultId() ?: runBlocking {
         val newResultId = resultRepository.createNewResult().toInt()
@@ -112,6 +117,24 @@ class ActiveResultViewModel @Inject constructor(
     var iceCrustThickness by mutableStateOf("")
         private set
 
+    var degreeOfCoverage by mutableStateOf("")
+        private set
+
+    var snowCoverCharacter by mutableStateOf<SnowCoverCharacter?>(null)
+        private set
+
+    var snowConditionDescription by mutableStateOf<SnowConditionDescription?>(null)
+        private set
+
+    var degreeOfCoverageError by mutableStateOf<ResultError?>(null)
+        private set
+
+    var snowCoverCharacterError by mutableStateOf<ResultError?>(null)
+        private set
+
+    var snowConditionDescriptionError by mutableStateOf<ResultError?>(null)
+        private set
+
     fun forciblyFinish() {
         viewModelScope.launch {
             resultRepository.deleteResultById(resultId)
@@ -163,8 +186,23 @@ class ActiveResultViewModel @Inject constructor(
         thawedWaterLayerThicknessError = null
     }
 
+    fun changeDegreeOfCoverage(degreeOfCoverage: String) {
+        this.degreeOfCoverage = degreeOfCoverage
+        degreeOfCoverageError = null
+    }
+
+    fun changeSnowCoverCharacter(snowCoverCharacter: SnowCoverCharacter) {
+        this.snowCoverCharacter = snowCoverCharacter
+        snowCoverCharacterError = null
+    }
+
+    fun changeSnowConditionDescription(snowConditionDescription: SnowConditionDescription) {
+        this.snowConditionDescription = snowConditionDescription
+        snowConditionDescriptionError = null
+    }
+
     //todo add latitude and longitude
-    fun saveMeasurement() {
+    private fun saveMeasurement() {
         viewModelScope.launch {
             val measurementCreateResult = createMeasurementUseCase(
                 resultId = resultId,
@@ -203,6 +241,33 @@ class ActiveResultViewModel @Inject constructor(
                 thawedWaterLayerThicknessError =
                     measurementCreateResult.thawedWaterLayerThicknessError
             }
+        }
+    }
+
+    private fun saveResult() {
+        viewModelScope.launch {
+            val updateResult = updateResultUseCase(
+                resultId = resultId,
+                degreeOfCoverage = degreeOfCoverage,
+                snowCoverCharacter = snowCoverCharacter,
+                snowConditionDescription = snowConditionDescription
+            )
+
+            if (updateResult.isSuccess) {
+
+            } else {
+                degreeOfCoverageError = updateResult.degreeOfCoverageError
+                snowConditionDescriptionError = updateResult.snowConditionDescriptionError
+                snowCoverCharacterError = updateResult.snowCoverCharacterError
+            }
+        }
+    }
+
+    fun save() {
+        if (currentMeasurementNumber > 100) {
+            saveResult()
+        } else {
+            saveMeasurement()
         }
     }
 

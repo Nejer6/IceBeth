@@ -4,6 +4,8 @@ import com.example.icebeth.common.util.ApiResponse
 import com.example.icebeth.core.data.database.dao.MeasurementDao
 import com.example.icebeth.core.data.database.dao.ResultDao
 import com.example.icebeth.core.data.database.model.ResultEntity
+import com.example.icebeth.core.data.database.model.SnowConditionDescription
+import com.example.icebeth.core.data.database.model.SnowCoverCharacter
 import com.example.icebeth.core.data.database.model.asCreateRequest
 import com.example.icebeth.core.data.database.model.asResultCreateRequest
 import com.example.icebeth.core.data.network.api.MeasurementApi
@@ -81,5 +83,17 @@ class ResultRepository @Inject constructor(
             snowCoverCharacter = null,
             snowConditionDescription = null
         )
+    )
+
+    suspend fun updateResult(
+        resultId: Int,
+        degreeOfCoverage: Int,
+        snowCoverCharacter: SnowCoverCharacter,
+        snowConditionDescription: SnowConditionDescription
+    ) = resultDao.updateResult(
+        resultId = resultId,
+        degreeOfCoverage = degreeOfCoverage,
+        snowCoverCharacter = snowCoverCharacter,
+        snowConditionDescription = snowConditionDescription,
     )
 }

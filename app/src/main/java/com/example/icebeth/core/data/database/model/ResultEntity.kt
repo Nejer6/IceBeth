@@ -17,7 +17,7 @@ data class ResultEntity(
     @ColumnInfo(name = "snow_cover_character")
     val snowCoverCharacter: SnowCoverCharacter?,
     @ColumnInfo(name = "snow_condition_description")
-    val snowConditionDescription: SnowStructure?
+    val snowConditionDescription: SnowConditionDescription?
 )
 
 enum class SnowCoverCharacter(val description: String) {
@@ -31,7 +31,7 @@ enum class SnowCoverCharacter(val description: String) {
     VERY_UNEVEN_THAWED_SOIL("Очень неравномерный, почва оттаявшая")
 }
 
-enum class SnowStructure(val description: String) {
+enum class SnowConditionDescription(val description: String) {
     FRESH_POWDERY("Свежий пылевидный"),
     FRESH_FLUFFY("Свежий пушистый"),
     FRESH_STICKY("Свежий липкий"),

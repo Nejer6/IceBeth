@@ -30,10 +30,14 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.icebeth.common.presentation.theme.spacing
 import com.example.icebeth.common.presentation.util.UiEffect
+import com.example.icebeth.core.data.database.model.SnowConditionDescription
+import com.example.icebeth.core.data.database.model.SnowCoverCharacter
 import com.example.icebeth.core.data.database.model.SoilSurfaceCondition
 import com.example.icebeth.core.domain.util.MeasurementError
+import com.example.icebeth.core.domain.util.ResultError
 import com.example.icebeth.feature.active_result.components.ActiveResultMoreButton
 import com.example.icebeth.feature.active_result.components.MeasurementEditor
+import com.example.icebeth.feature.active_result.components.ResultEditor
 
 @Composable
 fun ActiveResultRoute(
@@ -52,9 +56,9 @@ fun ActiveResultRoute(
     }
 
     ActiveResultScreen(
-        onSaveMeasurement = remember {
+        onSave = remember {
             {
-                viewModel.saveMeasurement()
+                viewModel.save()
             }
         },
         currentMeasurementNumber = viewModel.currentMeasurementNumber,
@@ -128,6 +132,28 @@ fun ActiveResultRoute(
         },
 
         expandedNumber = viewModel.expandedNumber,
+
+        degreeOfCoverage = viewModel.degreeOfCoverage,
+        snowCoverCharacter = viewModel.snowCoverCharacter,
+        snowConditionDescription = viewModel.snowConditionDescription,
+        onDegreeOfCoverageChange = remember {
+            {
+                viewModel.changeDegreeOfCoverage(it)
+            }
+        },
+        onSnowConditionDescriptionChange = remember {
+            {
+                viewModel.changeSnowConditionDescription(it)
+            }
+        },
+        onSnowCoverCharacterChange = remember {
+            {
+                viewModel.changeSnowCoverCharacter(it)
+            }
+        },
+        degreeOfCoverageError = viewModel.degreeOfCoverageError,
+        snowConditionDescriptionError = viewModel.snowConditionDescriptionError,
+        snowCoverCharacterError = viewModel.snowCoverCharacterError,
     )
 }
 
@@ -135,7 +161,7 @@ fun ActiveResultRoute(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ActiveResultScreen(
-    onSaveMeasurement: () -> Unit,
+    onSave: () -> Unit,
     currentMeasurementNumber: Int,
     snowHeight: String,
     onChangeSnowHeight: (String) -> Unit,
@@ -167,6 +193,18 @@ fun ActiveResultScreen(
     forciblyFinish: () -> Unit,
 
     expandedNumber: Int?,
+
+    degreeOfCoverage: String,
+    snowCoverCharacter: SnowCoverCharacter?,
+    snowConditionDescription: SnowConditionDescription?,
+
+    onDegreeOfCoverageChange: (String) -> Unit,
+    onSnowCoverCharacterChange: (SnowCoverCharacter) -> Unit,
+    onSnowConditionDescriptionChange: (SnowConditionDescription) -> Unit,
+
+    degreeOfCoverageError: ResultError?,
+    snowCoverCharacterError: ResultError?,
+    snowConditionDescriptionError: ResultError?,
 ) {
     Scaffold(
         topBar = {
@@ -201,12 +239,15 @@ fun ActiveResultScreen(
                     modifier = Modifier.fillMaxWidth()
                 )
 
+                Spacer(modifier = Modifier.height(MaterialTheme.spacing.small))
+
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(horizontal = MaterialTheme.spacing.medium)
                         .verticalScroll(rememberScrollState())
                 ) {
+
                     if (currentMeasurementNumber <= 100) {
                         MeasurementEditor(
                             snowHeight = snowHeight,
@@ -240,6 +281,20 @@ fun ActiveResultScreen(
 
                             modifier = Modifier.fillMaxWidth(),
                         )
+                    } else {
+                        ResultEditor(
+                            degreeOfCoverage = degreeOfCoverage,
+                            snowCoverCharacter = snowCoverCharacter,
+                            snowConditionDescription = snowConditionDescription,
+                            onDegreeOfCoverageChange = onDegreeOfCoverageChange,
+                            onSnowCoverCharacterChange = onSnowCoverCharacterChange,
+                            onSnowConditionDescriptionChange = onSnowConditionDescriptionChange,
+                            degreeOfCoverageError = degreeOfCoverageError,
+                            snowCoverCharacterError = snowCoverCharacterError,
+                            snowConditionDescriptionError = snowConditionDescriptionError,
+
+                            modifier = Modifier.fillMaxWidth()
+                        )
                     }
 
                     Spacer(modifier = Modifier.height(MaterialTheme.spacing.extraLarge))
@@ -253,15 +308,19 @@ fun ActiveResultScreen(
                     .padding(MaterialTheme.spacing.medium),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                FloatingActionButton(onClick = { /*TODO*/ }) {
-                    Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Назад")
+                if (currentMeasurementNumber == 1) {
+                    Spacer(modifier = Modifier)
+                } else {
+                    FloatingActionButton(onClick = { /*TODO*/ }) {
+                        Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Назад")
+                    }
                 }
 
 //                FloatingActionButton(onClick = { /*TODO*/ }) {
 //                    Icon(imageVector = Icons.Default.ArrowForward, contentDescription = "Дальше")
 //                }
 
-                FloatingActionButton(onClick = onSaveMeasurement) {
+                FloatingActionButton(onClick = onSave) {
                     Icon(imageVector = Icons.Default.Save, contentDescription = "Сохранить")
                 }
             }

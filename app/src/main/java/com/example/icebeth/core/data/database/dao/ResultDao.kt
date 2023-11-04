@@ -7,6 +7,8 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.icebeth.core.data.database.model.ResultEntity
 import com.example.icebeth.core.data.database.model.ResultWithMeasurements
+import com.example.icebeth.core.data.database.model.SnowConditionDescription
+import com.example.icebeth.core.data.database.model.SnowCoverCharacter
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -26,4 +28,16 @@ interface ResultDao {
 
     @Query("DELETE FROM results WHERE id = :resultId")
     suspend fun deleteResultById(resultId: Int)
+
+    @Query("UPDATE results SET " +
+            "degree_of_coverage = :degreeOfCoverage, " +
+            "snow_cover_character = :snowCoverCharacter, " +
+            "snow_condition_description = :snowConditionDescription " +
+            "WHERE id = :resultId")
+    suspend fun updateResult(
+        resultId: Int,
+        degreeOfCoverage: Int,
+        snowCoverCharacter: SnowCoverCharacter,
+        snowConditionDescription: SnowConditionDescription
+    )
 }

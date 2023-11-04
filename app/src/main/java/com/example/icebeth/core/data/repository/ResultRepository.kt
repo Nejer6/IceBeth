@@ -23,14 +23,14 @@ class ResultRepository @Inject constructor(
 ) {
     suspend fun insertResult(result: ResultEntity) = resultDao.insertResult(result)
 
-    suspend fun deleteResult(result: ResultEntity) = resultDao.deleteResult(result)
-
     suspend fun saveResult() {
         appPreferences.setActiveResultId(null)
         uploadResults()
     }
 
     fun getActiveResultId() = appPreferences.getActiveResultId()
+
+    suspend fun deleteResultById(resultId: Int) = resultDao.deleteResultById(resultId)
 
     suspend fun uploadResults() {
         val unloadedResultsWithMeasurements = resultDao.getAllUnloadedResultsWithMeasurements()

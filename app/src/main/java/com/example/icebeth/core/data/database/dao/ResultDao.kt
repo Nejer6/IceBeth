@@ -23,4 +23,7 @@ interface ResultDao {
 
     @Query("SELECT * FROM results WHERE remote_id IS NULL")
     fun getAllUnloadedResultsWithMeasurements(): List<ResultWithMeasurements>
+
+    @Query("DELETE FROM results WHERE id = :resultId")
+    suspend fun deleteResultById(resultId: Int)
 }

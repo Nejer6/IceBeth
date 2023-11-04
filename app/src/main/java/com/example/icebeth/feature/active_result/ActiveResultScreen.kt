@@ -14,14 +14,12 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Save
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -29,14 +27,17 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.icebeth.common.presentation.theme.spacing
+import com.example.icebeth.common.presentation.util.UiEffect
 import com.example.icebeth.core.data.database.model.SoilSurfaceCondition
 import com.example.icebeth.core.domain.util.MeasurementError
+import com.example.icebeth.feature.active_result.components.ActiveResultMoreButton
 import com.example.icebeth.feature.active_result.components.SoilSurfaceConditionDropDownMenu
 
 @Composable
@@ -44,6 +45,17 @@ fun ActiveResultRoute(
     navigateToMain: () -> Unit,
     viewModel: ActiveResultViewModel = hiltViewModel()
 ) {
+    LaunchedEffect(key1 = true) {
+        viewModel.effect.collect {
+            when (it) {
+                UiEffect.NavigateToMainScreen -> {
+                    navigateToMain()
+                }
+                else -> {}
+            }
+        }
+    }
+
     ActiveResultScreen(
         onSaveMeasurement = remember {
             {
@@ -112,7 +124,13 @@ fun ActiveResultRoute(
         snowHeightError = viewModel.snowHeightError,
         snowLayerWaterSaturationError = viewModel.snowLayerWaterSaturationError,
         soilSurfaceConditionError = viewModel.soilSurfaceConditionError,
-        thawedWaterLayerThicknessError = viewModel.thawedWaterLayerThicknessError
+        thawedWaterLayerThicknessError = viewModel.thawedWaterLayerThicknessError,
+
+        forciblyFinish = remember {
+            {
+                viewModel.forciblyFinish()
+            }
+        }
     )
 }
 
@@ -148,6 +166,8 @@ fun ActiveResultScreen(
     snowLayerWaterSaturationError: MeasurementError?,
     thawedWaterLayerThicknessError: MeasurementError?,
     soilSurfaceConditionError: MeasurementError?,
+
+    forciblyFinish: () -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -159,12 +179,7 @@ fun ActiveResultScreen(
                     )
                 },
                 actions = {
-                    IconButton(onClick = { /*TODO*/ }) {
-                        Icon(
-                            imageVector = Icons.Default.MoreVert,
-                            contentDescription = "Дополнительно"
-                        )
-                    }
+                    ActiveResultMoreButton(forciblyFinish = forciblyFinish)
                 }
             )
         }

@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.icebeth.common.presentation.util.UiEffect
 import com.example.icebeth.core.data.database.model.SoilSurfaceCondition
 import com.example.icebeth.core.data.preferences.AppPreferences
 import com.example.icebeth.core.data.repository.MeasurementRepository
@@ -13,7 +14,9 @@ import com.example.icebeth.core.data.repository.ResultRepository
 import com.example.icebeth.core.domain.CreateMeasurementUseCase
 import com.example.icebeth.core.domain.util.MeasurementError
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
@@ -30,6 +33,17 @@ class ActiveResultViewModel @Inject constructor(
         appPreferences.setActiveResultId(newResultId)
         newResultId
     }
+
+    private val _effect = Channel<UiEffect>()
+    val effect = _effect.receiveAsFlow()
+
+    fun forciblyFinish() {
+        viewModelScope.launch {
+            resultRepository.deleteResultById(resultId)
+            _effect.send(UiEffect.NavigateToMainScreen)
+        }
+    }
+
 
     private val measurementsCountFlow = measurementRepository.getCountOfMeasurementsByResultIdFlow(resultId)
 

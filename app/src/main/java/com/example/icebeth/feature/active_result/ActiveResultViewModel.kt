@@ -78,6 +78,9 @@ class ActiveResultViewModel @Inject constructor(
     private var latitude = 0.0
     private var longitude = 0.0
 
+    var locationAvailable by mutableStateOf(locationClient.isLocationAvailable())
+        private set
+
     var snowHeight by mutableStateOf("")
         private set
 
@@ -149,8 +152,13 @@ class ActiveResultViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             locationFlow.collectLatest {
-                latestLatitude = it.latitude
-                latestLongitude = it.longitude
+                if (it == null) {
+                    locationAvailable = false
+                } else {
+                    locationAvailable = true
+                    latestLatitude = it.latitude
+                    latestLongitude = it.longitude
+                }
             }
         }
     }

@@ -27,6 +27,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.icebeth.common.presentation.theme.spacing
 import com.example.icebeth.common.presentation.util.UiEffect
@@ -154,6 +155,8 @@ fun ActiveResultRoute(
         degreeOfCoverageError = viewModel.degreeOfCoverageError,
         snowConditionDescriptionError = viewModel.snowConditionDescriptionError,
         snowCoverCharacterError = viewModel.snowCoverCharacterError,
+
+        locationAvailable = viewModel.locationAvailable,
     )
 }
 
@@ -205,6 +208,8 @@ fun ActiveResultScreen(
     degreeOfCoverageError: ResultError?,
     snowCoverCharacterError: ResultError?,
     snowConditionDescriptionError: ResultError?,
+
+    locationAvailable: Boolean,
 ) {
     Scaffold(
         topBar = {
@@ -326,5 +331,11 @@ fun ActiveResultScreen(
             }
         }
 
+    }
+
+    if (!locationAvailable) {
+        Dialog(onDismissRequest = { }) {
+            Text(text = "Включите GPS чтобы продолжить")
+        }
     }
 }

@@ -5,6 +5,7 @@ import android.content.Context
 import android.location.LocationManager
 import android.os.Looper
 import com.example.icebeth.common.util.hasLocationPermission
+import com.google.android.gms.location.LocationAvailability
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
@@ -30,6 +31,7 @@ class LocationClient(
         val isGpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
         val isNetworkEnabled =
             locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
+
         if (!isGpsEnabled && !isNetworkEnabled) {
             return false
         }
@@ -38,20 +40,20 @@ class LocationClient(
     }
 
     @SuppressLint("MissingPermission")
-    fun getLocationUpdates(interval: Long): Flow<LatLong> {
+    fun getLocationUpdates(interval: Long): Flow<LatLong?> {
         return callbackFlow {
             if (!context.hasLocationPermission()) {
                 throw LocationException("Missing location permission")
             }
 
-            val locationManager =
-                context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-            val isGpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
-            val isNetworkEnabled =
-                locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
-            if (!isGpsEnabled && !isNetworkEnabled) {
-                throw LocationException("GPS is disabled")
-            }
+//            val locationManager =
+//                context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+//            val isGpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+//            val isNetworkEnabled =
+//                locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
+//            if (!isGpsEnabled && !isNetworkEnabled) {
+//                throw LocationException("GPS is disabled")
+//            }
 
             val request = LocationRequest.Builder(
                 Priority.PRIORITY_HIGH_ACCURACY,
@@ -69,6 +71,15 @@ class LocationClient(
                                     longitude = location.longitude
                                 )
                             )
+                        }
+                    }
+                }
+
+                override fun onLocationAvailability(p0: LocationAvailability) {
+                    super.onLocationAvailability(p0)
+                    if (!p0.isLocationAvailable) {
+                        launch {
+                            send(null)
                         }
                     }
                 }

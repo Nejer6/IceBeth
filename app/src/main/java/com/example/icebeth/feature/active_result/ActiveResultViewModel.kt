@@ -10,6 +10,7 @@ import com.example.icebeth.common.presentation.util.UiEffect
 import com.example.icebeth.core.data.database.model.SnowConditionDescription
 import com.example.icebeth.core.data.database.model.SnowCoverCharacter
 import com.example.icebeth.core.data.database.model.SoilSurfaceCondition
+import com.example.icebeth.core.data.location.LocationClient
 import com.example.icebeth.core.data.preferences.AppPreferences
 import com.example.icebeth.core.data.repository.MeasurementRepository
 import com.example.icebeth.core.data.repository.ResultRepository
@@ -19,6 +20,7 @@ import com.example.icebeth.core.domain.util.MeasurementError
 import com.example.icebeth.core.domain.util.ResultError
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -32,7 +34,8 @@ class ActiveResultViewModel @Inject constructor(
     private val resultRepository: ResultRepository,
     measurementRepository: MeasurementRepository,
     private val createMeasurementUseCase: CreateMeasurementUseCase,
-    private val updateResultUseCase: UpdateResultUseCase
+    private val updateResultUseCase: UpdateResultUseCase,
+    locationClient: LocationClient
 ) : ViewModel() {
     private val resultId = appPreferences.getActiveResultId() ?: runBlocking {
         val newResultId = resultRepository.createNewResult().toInt()
@@ -66,6 +69,14 @@ class ActiveResultViewModel @Inject constructor(
     var currentMeasurementNumber by mutableIntStateOf(runBlocking {
         measurementsCountFlow.first() + 1
     })
+
+    private val locationFlow = locationClient.getLocationUpdates(5000)
+
+    private var latestLatitude = 0.0
+    private var latestLongitude = 0.0
+
+    private var latitude = 0.0
+    private var longitude = 0.0
 
     var snowHeight by mutableStateOf("")
         private set
@@ -135,9 +146,24 @@ class ActiveResultViewModel @Inject constructor(
     var snowConditionDescriptionError by mutableStateOf<ResultError?>(null)
         private set
 
+    init {
+        viewModelScope.launch {
+            locationFlow.collectLatest {
+                latestLatitude = it.latitude
+                latestLongitude = it.longitude
+            }
+        }
+    }
+
     fun forciblyFinish() {
         viewModelScope.launch {
             resultRepository.deleteResultById(resultId)
+            finish()
+        }
+    }
+
+    private fun finish() {
+        viewModelScope.launch {
             appPreferences.setActiveResultId(null)
             _effect.send(UiEffect.NavigateToMainScreen)
         }
@@ -146,6 +172,8 @@ class ActiveResultViewModel @Inject constructor(
     fun changeSnowHeight(snowHeight: String) {
         this.snowHeight = snowHeight
         snowHeightError = null
+        latitude = latestLatitude
+        longitude = latestLongitude
     }
 
     fun changeExpandedMeasurement(isExpanded: Boolean) {
@@ -206,8 +234,8 @@ class ActiveResultViewModel @Inject constructor(
         viewModelScope.launch {
             val measurementCreateResult = createMeasurementUseCase(
                 resultId = resultId,
-                latitude = 0.0,
-                longitude = 0.0,
+                latitude = latitude,
+                longitude = longitude,
                 cylinderHeight = cylinderHeight,
                 iceCrustThickness = iceCrustThickness,
                 massOfSnow = massOfSnow,
@@ -254,7 +282,7 @@ class ActiveResultViewModel @Inject constructor(
             )
 
             if (updateResult.isSuccess) {
-
+                finish()
             } else {
                 degreeOfCoverageError = updateResult.degreeOfCoverageError
                 snowConditionDescriptionError = updateResult.snowConditionDescriptionError

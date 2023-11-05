@@ -229,7 +229,6 @@ class ActiveResultViewModel @Inject constructor(
         snowConditionDescriptionError = null
     }
 
-    //todo add latitude and longitude
     private fun saveMeasurement() {
         viewModelScope.launch {
             val measurementCreateResult = createMeasurementUseCase(

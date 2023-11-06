@@ -10,7 +10,6 @@ import com.example.icebeth.core.data.database.model.asCreateRequest
 import com.example.icebeth.core.data.database.model.asResultCreateRequest
 import com.example.icebeth.core.data.network.api.MeasurementApi
 import com.example.icebeth.core.data.network.api.ResultApi
-import com.example.icebeth.core.data.preferences.AppPreferences
 import java.util.Date
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -20,18 +19,8 @@ class ResultRepository @Inject constructor(
     private val resultDao: ResultDao,
     private val resultApi: ResultApi,
     private val measurementApi: MeasurementApi,
-    private val measurementDao: MeasurementDao,
-    private val appPreferences: AppPreferences
+    private val measurementDao: MeasurementDao
 ) {
-    suspend fun insertResult(result: ResultEntity) = resultDao.insertResult(result)
-
-    suspend fun saveResult() {
-        appPreferences.setActiveResultId(null)
-        uploadResults()
-    }
-
-    fun getActiveResultId() = appPreferences.getActiveResultId()
-
     suspend fun deleteResultById(resultId: Int) = resultDao.deleteResultById(resultId)
 
     suspend fun uploadResults() {
@@ -41,11 +30,16 @@ class ResultRepository @Inject constructor(
             when (val resultResponse =
                 resultApi.createResult(resultWithMeasurements.asResultCreateRequest())) {
                 is ApiResponse.Success -> {
-                    resultDao.insertResult(
-                        resultWithMeasurements.result.copy(
-                            remoteId = resultResponse.body.id
-                        )
+                    val remoteId = resultResponse.body.id
+
+                    resultDao.updateRemoteId(
+                        resultId = resultWithMeasurements.result.id,
+                        remoteId = remoteId,
                     )
+
+                    resultWithMeasurements.measurements.forEach {
+                        measurementDao.updateRemoteResultId(it.id, remoteId)
+                    }
                 }
 
                 else -> return
@@ -56,7 +50,9 @@ class ResultRepository @Inject constructor(
 
         unloadedMeasurements.forEach { measurementEntity ->
             when (val measurementResponse =
-                measurementApi.createMeasurement(measurementEntity.asCreateRequest(measurementEntity.resultId))
+                measurementApi.createMeasurement(
+                    measurementEntity.asCreateRequest(measurementEntity.remoteResultId!!)
+                )
             ) {
                 is ApiResponse.Success -> {
                     measurementDao.insertMeasurement(

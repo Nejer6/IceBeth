@@ -40,4 +40,7 @@ interface ResultDao {
         snowCoverCharacter: SnowCoverCharacter,
         snowConditionDescription: SnowConditionDescription
     )
+
+    @Query("UPDATE results SET remote_id = :remoteId WHERE id = :resultId")
+    suspend fun updateRemoteId(resultId: Int, remoteId: Int)
 }

@@ -36,4 +36,7 @@ interface MeasurementDao {
 
     @Query("SELECT COUNT(*) FROM measurements WHERE result_id = :resultId")
     fun getCountOfMeasurementsByResultIdFlow(resultId: Int): Flow<Int>
+
+    @Query("UPDATE measurements SET remote_result_id = :remoteResultId WHERE id = :measurementId")
+    fun updateRemoteResultId(measurementId: Int, remoteResultId: Int)
 }

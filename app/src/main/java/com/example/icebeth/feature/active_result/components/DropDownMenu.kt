@@ -1,6 +1,5 @@
 package com.example.icebeth.feature.active_result.components
 
-import android.util.Log
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DropdownMenuItem
@@ -10,6 +9,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -31,48 +31,48 @@ fun <T : Description> DropDownMenu(
         mutableStateOf(false)
     }
 
-    Log.d("Nejer1", readOnly.toString())
-
-    ExposedDropdownMenuBox(
-        expanded = expanded,
-        onExpandedChange = {
-            if (!readOnly) expanded = !expanded
-        },
-        modifier = modifier
-    ) {
-        TextField(
-            value = selectedItem?.description ?: "",
-            onValueChange = {},
-            modifier = Modifier
-                .fillMaxWidth()
-                .menuAnchor(),
-            readOnly = true,
-            label = {
-                Text(text = label)
+    key(readOnly) {
+        ExposedDropdownMenuBox(
+            expanded = expanded,
+            onExpandedChange = {
+                if (!readOnly) expanded = !expanded
             },
-            isError = isError,
-            supportingText = {
-                if (isError) {
-                    Text(text = "Выберите значение")
-                }
-            }
-        )
-
-        ExposedDropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
-            Divider()
-
-            items.forEach {
-                DropdownMenuItem(
-                    text = {
-                        Text(text = it.description)
-                    },
-                    onClick = {
-                        onItemChange(it)
-                        expanded = false
+            modifier = modifier
+        ) {
+            TextField(
+                value = selectedItem?.description ?: "",
+                onValueChange = {},
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .menuAnchor(),
+                readOnly = true,
+                label = {
+                    Text(text = label)
+                },
+                isError = isError,
+                supportingText = {
+                    if (isError) {
+                        Text(text = "Выберите значение")
                     }
-                )
+                }
+            )
 
+            ExposedDropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
                 Divider()
+
+                items.forEach {
+                    DropdownMenuItem(
+                        text = {
+                            Text(text = it.description)
+                        },
+                        onClick = {
+                            onItemChange(it)
+                            expanded = false
+                        }
+                    )
+
+                    Divider()
+                }
             }
         }
     }

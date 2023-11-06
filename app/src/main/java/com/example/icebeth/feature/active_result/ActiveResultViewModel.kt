@@ -7,6 +7,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.icebeth.common.presentation.util.UiEffect
+import com.example.icebeth.core.data.database.model.MeasurementEntity
 import com.example.icebeth.core.data.database.model.SnowConditionDescription
 import com.example.icebeth.core.data.database.model.SnowCoverCharacter
 import com.example.icebeth.core.data.database.model.SoilSurfaceCondition
@@ -18,6 +19,7 @@ import com.example.icebeth.core.domain.CreateMeasurementUseCase
 import com.example.icebeth.core.domain.UpdateResultUseCase
 import com.example.icebeth.core.domain.util.MeasurementError
 import com.example.icebeth.core.domain.util.ResultError
+import com.example.icebeth.core.model.MeasurementCreateResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.collectLatest
@@ -49,6 +51,8 @@ class ActiveResultViewModel @Inject constructor(
             list.sortedBy { it.time }
         }
 
+    private var measurementsList = emptyList<MeasurementEntity>()
+
     var expandedNumber by mutableStateOf(
         runBlocking {
             val index = measurementsFlow.first().indexOfFirst { it.cylinderHeight != null }
@@ -69,6 +73,12 @@ class ActiveResultViewModel @Inject constructor(
     var currentMeasurementNumber by mutableIntStateOf(runBlocking {
         measurementsCountFlow.first() + 1
     })
+        private set
+
+    var measurementCount by mutableIntStateOf(runBlocking {
+        measurementsCountFlow.first()
+    })
+        private set
 
     private val locationFlow = locationClient.getLocationUpdates(5000)
 
@@ -80,6 +90,8 @@ class ActiveResultViewModel @Inject constructor(
 
     var locationAvailable by mutableStateOf(locationClient.isLocationAvailable())
         private set
+
+    private var lastMeasurementState = LastMeasurementState()
 
     var snowHeight by mutableStateOf("")
         private set
@@ -159,6 +171,18 @@ class ActiveResultViewModel @Inject constructor(
                     latestLatitude = it.latitude
                     latestLongitude = it.longitude
                 }
+            }
+        }
+
+        viewModelScope.launch {
+            measurementsCountFlow.collectLatest {
+                measurementCount = it
+            }
+        }
+
+        viewModelScope.launch {
+            measurementsFlow.collectLatest {
+                measurementsList = it
             }
         }
     }
@@ -255,28 +279,37 @@ class ActiveResultViewModel @Inject constructor(
             )
 
             if (measurementCreateResult.isSuccess) {
-                if (expandedNumber == null) {
-                    if (isExpandedMeasurement) {
-                        expandedNumber = currentMeasurementNumber % 10
-                    } else if (currentMeasurementNumber == 9) {
-                        expandedNumber = 0
-                    }
-                }
+                updateExpandedNumber()
 
+                lastMeasurementState = LastMeasurementState()
 
-                nextInMeasurement()
+                next()
             } else {
-                cylinderHeightError = measurementCreateResult.cylinderHeightError
-                iceCrustThicknessError = measurementCreateResult.iceCrustThicknessError
-                massOfSnowError = measurementCreateResult.massOfSnowError
-                snowHeightError = measurementCreateResult.snowHeightError
-                snowLayerWaterSaturationError =
-                    measurementCreateResult.snowLayerWaterSaturationError
-                soilSurfaceConditionError = measurementCreateResult.soilSurfaceConditionError
-                thawedWaterLayerThicknessError =
-                    measurementCreateResult.thawedWaterLayerThicknessError
+                handleMeasurementErrors(measurementCreateResult)
             }
         }
+    }
+
+    private fun updateExpandedNumber() {
+        if (expandedNumber == null) {
+            if (isExpandedMeasurement) {
+                expandedNumber = currentMeasurementNumber % 10
+            } else if (currentMeasurementNumber == 9) {
+                expandedNumber = 0
+            }
+        }
+    }
+
+    private fun handleMeasurementErrors(measurementCreateResult: MeasurementCreateResult) {
+        cylinderHeightError = measurementCreateResult.cylinderHeightError
+        iceCrustThicknessError = measurementCreateResult.iceCrustThicknessError
+        massOfSnowError = measurementCreateResult.massOfSnowError
+        snowHeightError = measurementCreateResult.snowHeightError
+        snowLayerWaterSaturationError =
+            measurementCreateResult.snowLayerWaterSaturationError
+        soilSurfaceConditionError = measurementCreateResult.soilSurfaceConditionError
+        thawedWaterLayerThicknessError =
+            measurementCreateResult.thawedWaterLayerThicknessError
     }
 
     private fun saveResult() {
@@ -299,7 +332,7 @@ class ActiveResultViewModel @Inject constructor(
     }
 
     fun save() {
-        if (currentMeasurementNumber > 100) {
+        if (measurementCount > 100) {
             saveResult()
         } else {
             saveMeasurement()
@@ -307,39 +340,90 @@ class ActiveResultViewModel @Inject constructor(
     }
 
     private fun resetMeasurement() {
-        snowHeight = ""
-        snowHeightError = null
+        snowHeight = lastMeasurementState.snowHeight
 
+        cylinderHeight = lastMeasurementState.cylinderHeight
+        massOfSnow = lastMeasurementState.massOfSnow
+        snowCrust = lastMeasurementState.snowCrust
+        iceCrustThickness = lastMeasurementState.iceCrustThickness
+        snowLayerWaterSaturation = lastMeasurementState.snowLayerWaterSaturation
+        thawedWaterLayerThickness = lastMeasurementState.thawedWaterLayerThickness
+        soilSurfaceCondition = lastMeasurementState.soilSurfaceCondition
+
+        resetMeasurementErrors()
+
+        if (lastMeasurementState.isExpandedMeasurement != null) {
+            isExpandedMeasurement = lastMeasurementState.isExpandedMeasurement!!
+        } else {
+            handleIsExpandedMeasurement()
+        }
+    }
+
+    private fun resetMeasurementErrors() {
+        snowHeightError = null
+        cylinderHeightError = null
+        massOfSnowError = null
+        iceCrustThicknessError = null
+        snowLayerWaterSaturationError = null
+        thawedWaterLayerThicknessError = null
+        soilSurfaceConditionError = null
+    }
+
+    private fun handleIsExpandedMeasurement() {
         isExpandedMeasurement = if (expandedNumber == null) {
             currentMeasurementNumber == 10
         } else {
             currentMeasurementNumber % 10 == expandedNumber
         }
-
-        cylinderHeight = ""
-        cylinderHeightError = null
-
-        massOfSnow = ""
-        massOfSnowError = null
-
-        snowCrust = false
-
-        iceCrustThickness = ""
-        iceCrustThicknessError = null
-
-        snowLayerWaterSaturation = ""
-        snowLayerWaterSaturationError = null
-
-        thawedWaterLayerThickness = ""
-        thawedWaterLayerThicknessError = null
-
-        soilSurfaceCondition = null
-        soilSurfaceConditionError = null
     }
 
-    private fun nextInMeasurement() {
+    fun next() {
         currentMeasurementNumber += 1
 
-        resetMeasurement()
+        if (currentMeasurementNumber == 101) return
+
+        if (currentMeasurementNumber <= measurementCount) {
+            loadMeasurement()
+        } else {
+            resetMeasurement()
+        }
+    }
+
+    fun previous() {
+        if (currentMeasurementNumber < 101 && currentMeasurementNumber == measurementCount + 1) {
+            lastMeasurementState = LastMeasurementState(
+                snowHeight,
+                cylinderHeight,
+                massOfSnow,
+                iceCrustThickness,
+                snowLayerWaterSaturation,
+                thawedWaterLayerThickness,
+                soilSurfaceCondition,
+                snowCrust,
+                isExpandedMeasurement
+            )
+        }
+
+        currentMeasurementNumber -= 1
+
+        loadMeasurement()
+    }
+
+    private fun loadMeasurement() {
+        val measurement = measurementsList[currentMeasurementNumber - 1]
+
+        resetMeasurementErrors()
+
+        isExpandedMeasurement = measurement.cylinderHeight != null
+
+        snowHeight = measurement.snowHeight.toString()
+
+        cylinderHeight = measurement.cylinderHeight?.toString() ?: ""
+        massOfSnow = measurement.massOfSnow?.toString() ?: ""
+        snowCrust = measurement.snowCrust ?: false
+        iceCrustThickness = measurement.iceCrustThickness?.toString() ?: ""
+        snowLayerWaterSaturation = measurement.snowLayerWaterSaturation?.toString() ?: ""
+        thawedWaterLayerThickness = measurement.thawedWaterLayerThickness?.toString() ?: ""
+        soilSurfaceCondition = measurement.soilSurfaceCondition
     }
 }

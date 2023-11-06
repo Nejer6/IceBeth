@@ -1,9 +1,7 @@
 package com.example.icebeth.feature.active_result
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,6 +11,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Save
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
@@ -157,6 +157,19 @@ fun ActiveResultRoute(
         snowCoverCharacterError = viewModel.snowCoverCharacterError,
 
         locationAvailable = viewModel.locationAvailable,
+
+        measurementCount = viewModel.measurementCount,
+
+        next = remember {
+            {
+                viewModel.next()
+            }
+        },
+        previous = remember {
+            {
+                viewModel.previous()
+            }
+        },
     )
 }
 
@@ -210,6 +223,11 @@ fun ActiveResultScreen(
     snowConditionDescriptionError: ResultError?,
 
     locationAvailable: Boolean,
+
+    measurementCount: Int,
+
+    next: () -> Unit,
+    previous: () -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -236,8 +254,8 @@ fun ActiveResultScreen(
                     .fillMaxWidth(),
             ) {
                 LinearProgressIndicator(
-                    progress = if (currentMeasurementNumber < 100) {
-                        currentMeasurementNumber / 100f
+                    progress = if (measurementCount < 100) {
+                        measurementCount / 100f
                     } else {
                         1f
                     },
@@ -284,6 +302,8 @@ fun ActiveResultScreen(
 
                             expandedNumber = expandedNumber,
 
+                            isPreviousMeasurement = currentMeasurementNumber < measurementCount + 1,
+
                             modifier = Modifier.fillMaxWidth(),
                         )
                     } else {
@@ -306,28 +326,46 @@ fun ActiveResultScreen(
                 }
             }
 
-            Row(
+            Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .align(Alignment.BottomCenter)
                     .padding(MaterialTheme.spacing.medium),
-                horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                if (currentMeasurementNumber == 1) {
-                    Spacer(modifier = Modifier)
-                } else {
-                    FloatingActionButton(onClick = { /*TODO*/ }) {
+                if (currentMeasurementNumber > 1) {
+                    FloatingActionButton(
+                        onClick = previous,
+                        modifier = Modifier.align(Alignment.CenterStart)
+                    ) {
                         Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Назад")
                     }
                 }
 
-//                FloatingActionButton(onClick = { /*TODO*/ }) {
-//                    Icon(imageVector = Icons.Default.ArrowForward, contentDescription = "Дальше")
-//                }
-
-                FloatingActionButton(onClick = onSave) {
-                    Icon(imageVector = Icons.Default.Save, contentDescription = "Сохранить")
+                if (currentMeasurementNumber < measurementCount + 1) {
+                    FloatingActionButton(
+                        onClick = { /*TODO*/ },
+                        modifier = Modifier.align(Alignment.Center)
+                    ) {
+                        Icon(imageVector = Icons.Default.Edit, contentDescription = "Редактировать")
+                    }
                 }
+
+                if (currentMeasurementNumber == 101 || currentMeasurementNumber == measurementCount + 1) {
+                    FloatingActionButton(
+                        onClick = onSave,
+                        modifier = Modifier.align(Alignment.CenterEnd)
+                    ) {
+                        Icon(imageVector = Icons.Default.Save, contentDescription = "Сохранить")
+                    }
+                } else {
+                    FloatingActionButton(
+                        onClick = next,
+                        modifier = Modifier.align(Alignment.CenterEnd)
+                    ) {
+                        Icon(imageVector = Icons.Default.ArrowForward, contentDescription = "Дальше")
+                    }
+                }
+
             }
         }
 

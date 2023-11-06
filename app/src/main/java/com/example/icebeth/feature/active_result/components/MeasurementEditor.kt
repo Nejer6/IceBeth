@@ -51,6 +51,8 @@ fun MeasurementEditor(
 
     expandedNumber: Int?,
 
+    isPreviousMeasurement: Boolean,
+
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -225,7 +227,7 @@ fun MeasurementEditor(
             }
         }
 
-        if (expandedNumber == null) {
+        if (!isPreviousMeasurement && expandedNumber == null) {
             Button(onClick = { onChangeExpandedMeasurement(!isExpandedMeasurement) }) {
                 Text(
                     text = when (isExpandedMeasurement) {

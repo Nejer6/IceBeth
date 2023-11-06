@@ -20,7 +20,7 @@ data class ResultEntity(
     val snowConditionDescription: SnowConditionDescription?
 )
 
-enum class SnowCoverCharacter(val description: String) {
+enum class SnowCoverCharacter(override val description: String) : Description {
     UNIFORM_FROZEN_SOIL("Равномерный, почва замерзшая"),
     UNIFORM_THAWED_SOIL("Равномерный, почва оттаявшая"),
     UNIFORM_UNKNOWN_SOIL("Равномерный, состояние почвы неизвестно"),
@@ -31,7 +31,7 @@ enum class SnowCoverCharacter(val description: String) {
     VERY_UNEVEN_THAWED_SOIL("Очень неравномерный, почва оттаявшая")
 }
 
-enum class SnowConditionDescription(val description: String) {
+enum class SnowConditionDescription(override val description: String) : Description {
     FRESH_POWDERY("Свежий пылевидный"),
     FRESH_FLUFFY("Свежий пушистый"),
     FRESH_STICKY("Свежий липкий"),

@@ -55,7 +55,7 @@ data class MeasurementEntity(
     val thawedWaterLayerThickness: Int?
 )
 
-enum class SoilSurfaceCondition(val description: String) {
+enum class SoilSurfaceCondition(override val description: String) : Description {
     THAWED("Талая"),
     FROZEN_DRY_CEMENTED("Мерзлая сухая, сцементирована льдом, кристаллов льда не видно"),
     FROZEN_WEAKLY_CEMENTED("Мерзлая, слабо сцементирована льдом, не слитная, умеренно твердая"),
@@ -78,3 +78,7 @@ fun MeasurementEntity.asCreateRequest(remoteResultId: Int) = MeasurementCreateRe
     snowLayerWaterSaturation = snowLayerWaterSaturation,
     thawedWaterLayerThickness = thawedWaterLayerThickness
 )
+
+interface Description {
+    val description: String
+}

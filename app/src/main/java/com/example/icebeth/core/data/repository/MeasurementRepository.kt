@@ -2,6 +2,7 @@ package com.example.icebeth.core.data.repository
 
 import com.example.icebeth.core.data.database.dao.MeasurementDao
 import com.example.icebeth.core.data.database.model.MeasurementEntity
+import com.example.icebeth.core.data.database.model.SoilSurfaceCondition
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -14,10 +15,6 @@ class MeasurementRepository @Inject constructor(
         measurementDao.insertMeasurement(measurement)
     }
 
-    suspend fun deleteMeasurement(measurementId: Int) {
-        measurementDao.markMeasurementAsDeleted(measurementId)
-    }
-
     suspend fun getCountOfMeasurementsByResultId(resultId: Int) =
         measurementDao.getCountOfMeasurementsByResultId(resultId)
 
@@ -26,4 +23,26 @@ class MeasurementRepository @Inject constructor(
 
     fun getCountOfMeasurementsByResultIdFlow(resultId: Int) =
         measurementDao.getCountOfMeasurementsByResultIdFlow(resultId)
+
+    suspend fun updateMeasurement(
+        measurementId: Int,
+        snowHeight: Int,
+        cylinderHeight: Int?,
+        massOfSnow: Double?,
+        soilSurfaceCondition: SoilSurfaceCondition?,
+        snowCrust: Boolean?,
+        iceCrustThickness: Int?,
+        snowLayerWaterSaturation: Int?,
+        thawedWaterLayerThickness: Int?
+    ) = measurementDao.updateMeasurement(
+        measurementId,
+        snowHeight,
+        cylinderHeight,
+        massOfSnow,
+        soilSurfaceCondition,
+        snowCrust,
+        iceCrustThickness,
+        snowLayerWaterSaturation,
+        thawedWaterLayerThickness
+    )
 }

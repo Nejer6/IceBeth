@@ -16,6 +16,7 @@ import com.example.icebeth.core.data.preferences.AppPreferences
 import com.example.icebeth.core.data.repository.MeasurementRepository
 import com.example.icebeth.core.data.repository.ResultRepository
 import com.example.icebeth.core.domain.CreateMeasurementUseCase
+import com.example.icebeth.core.domain.UpdateMeasurementUseCase
 import com.example.icebeth.core.domain.UpdateResultUseCase
 import com.example.icebeth.core.domain.util.MeasurementError
 import com.example.icebeth.core.domain.util.ResultError
@@ -37,6 +38,7 @@ class ActiveResultViewModel @Inject constructor(
     measurementRepository: MeasurementRepository,
     private val createMeasurementUseCase: CreateMeasurementUseCase,
     private val updateResultUseCase: UpdateResultUseCase,
+    private val updateMeasurementUseCase: UpdateMeasurementUseCase,
     locationClient: LocationClient
 ) : ViewModel() {
     private val resultId = appPreferences.getActiveResultId() ?: runBlocking {
@@ -80,6 +82,8 @@ class ActiveResultViewModel @Inject constructor(
     })
         private set
 
+    private var measurementId = 0
+
     private val locationFlow = locationClient.getLocationUpdates(5000)
 
     private var latestLatitude = 0.0
@@ -92,6 +96,9 @@ class ActiveResultViewModel @Inject constructor(
         private set
 
     private var lastMeasurementState = LastMeasurementState()
+
+    var isEditMode by mutableStateOf(false)
+        private set
 
     var snowHeight by mutableStateOf("")
         private set
@@ -414,6 +421,8 @@ class ActiveResultViewModel @Inject constructor(
 
         resetMeasurementErrors()
 
+        measurementId = measurement.id
+
         isExpandedMeasurement = measurement.cylinderHeight != null
 
         snowHeight = measurement.snowHeight.toString()
@@ -425,5 +434,42 @@ class ActiveResultViewModel @Inject constructor(
         snowLayerWaterSaturation = measurement.snowLayerWaterSaturation?.toString() ?: ""
         thawedWaterLayerThickness = measurement.thawedWaterLayerThickness?.toString() ?: ""
         soilSurfaceCondition = measurement.soilSurfaceCondition
+    }
+
+    fun goToEditMode() {
+        isEditMode = true
+    }
+
+    private fun exitEditMode() {
+        isEditMode = false
+    }
+
+    fun undo() {
+        exitEditMode()
+
+        loadMeasurement()
+    }
+
+    fun editSave() {
+        viewModelScope.launch {
+            val measurementCreateResult = updateMeasurementUseCase(
+                measurementId = measurementId,
+                cylinderHeight = cylinderHeight,
+                iceCrustThickness = iceCrustThickness,
+                massOfSnow = massOfSnow,
+                snowCrust = snowCrust,
+                snowHeight = snowHeight,
+                snowLayerWaterSaturation = snowLayerWaterSaturation,
+                soilSurfaceCondition = soilSurfaceCondition,
+                thawedWaterLayerThickness = thawedWaterLayerThickness,
+                isExpanded = isExpandedMeasurement
+            )
+
+            if (measurementCreateResult.isSuccess) {
+                exitEditMode()
+            } else {
+                handleMeasurementErrors(measurementCreateResult)
+            }
+        }
     }
 }

@@ -22,7 +22,8 @@ fun SoilSurfaceConditionDropDownMenu(
     soilSurfaceCondition: SoilSurfaceCondition?,
     onSoilSurfaceConditionChange: (SoilSurfaceCondition) -> Unit,
     soilSurfaceConditionError: MeasurementError?,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    readOnly: Boolean = false,
 ) {
     var expanded by remember {
         mutableStateOf(false)
@@ -30,7 +31,11 @@ fun SoilSurfaceConditionDropDownMenu(
 
     ExposedDropdownMenuBox(
         expanded = expanded,
-        onExpandedChange = { expanded = !expanded },
+        onExpandedChange = {
+            if (!readOnly) {
+                expanded = !expanded
+            }
+        },
         modifier = modifier
     ) {
         TextField(
@@ -46,10 +51,12 @@ fun SoilSurfaceConditionDropDownMenu(
             isError = soilSurfaceConditionError != null,
             supportingText = {
                 if (soilSurfaceConditionError != null) {
-                    Text(text = when (soilSurfaceConditionError) {
-                        MeasurementError.Empty -> "Выберите значение"
-                        else -> ""
-                    })
+                    Text(
+                        text = when (soilSurfaceConditionError) {
+                            MeasurementError.Empty -> "Выберите значение"
+                            else -> ""
+                        }
+                    )
                 }
             }
         )

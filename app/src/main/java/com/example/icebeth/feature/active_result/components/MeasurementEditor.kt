@@ -53,6 +53,8 @@ fun MeasurementEditor(
 
     isPreviousMeasurement: Boolean,
 
+    isEditMode: Boolean,
+
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -82,7 +84,8 @@ fun MeasurementEditor(
                         }
                     )
                 }
-            }
+            },
+            readOnly = isPreviousMeasurement && !isEditMode
         )
 
         if (isExpandedMeasurement) {
@@ -108,7 +111,8 @@ fun MeasurementEditor(
                             }
                         )
                     }
-                }
+                },
+                readOnly = isPreviousMeasurement && !isEditMode
             )
 
             OutlinedTextField(
@@ -133,7 +137,8 @@ fun MeasurementEditor(
                             }
                         )
                     }
-                }
+                },
+                readOnly = isPreviousMeasurement && !isEditMode
             )
 
             OutlinedTextField(
@@ -158,7 +163,8 @@ fun MeasurementEditor(
                             }
                         )
                     }
-                }
+                },
+                readOnly = isPreviousMeasurement && !isEditMode
             )
 
             OutlinedTextField(
@@ -183,7 +189,8 @@ fun MeasurementEditor(
                             }
                         )
                     }
-                }
+                },
+                readOnly = isPreviousMeasurement && !isEditMode
             )
 
             OutlinedTextField(
@@ -208,13 +215,15 @@ fun MeasurementEditor(
                             }
                         )
                     }
-                }
+                },
+                readOnly = isPreviousMeasurement && !isEditMode
             )
 
             SoilSurfaceConditionDropDownMenu(
                 soilSurfaceCondition = soilSurfaceCondition(),
                 onSoilSurfaceConditionChange = onChangeSoilSurfaceCondition,
-                soilSurfaceConditionError = soilSurfaceConditionError
+                soilSurfaceConditionError = soilSurfaceConditionError,
+                readOnly = isPreviousMeasurement && !isEditMode
             )
 
             Row(
@@ -223,7 +232,11 @@ fun MeasurementEditor(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(text = "Снежная корка", style = MaterialTheme.typography.titleMedium)
-                Checkbox(checked = snowCrust, onCheckedChange = onChangeSnowCrust)
+                Checkbox(
+                    checked = snowCrust,
+                    onCheckedChange = onChangeSnowCrust,
+                    enabled = !isPreviousMeasurement || isEditMode
+                )
             }
         }
 

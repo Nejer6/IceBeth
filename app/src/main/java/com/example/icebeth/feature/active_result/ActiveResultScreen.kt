@@ -1,5 +1,6 @@
 package com.example.icebeth.feature.active_result
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -14,6 +15,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Save
+import androidx.compose.material.icons.filled.Undo
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -170,6 +172,23 @@ fun ActiveResultRoute(
                 viewModel.previous()
             }
         },
+
+        isEditMode = viewModel.isEditMode,
+        goToEditMode = remember {
+            {
+                viewModel.goToEditMode()
+            }
+        },
+        undo = remember {
+            {
+                viewModel.undo()
+            }
+        },
+        editSave = remember {
+            {
+                viewModel.editSave()
+            }
+        }
     )
 }
 
@@ -227,8 +246,19 @@ fun ActiveResultScreen(
     measurementCount: Int,
 
     next: () -> Unit,
-    previous: () -> Unit
+    previous: () -> Unit,
+
+    isEditMode: Boolean,
+    goToEditMode: () -> Unit,
+    undo: () -> Unit,
+    editSave: () -> Unit,
 ) {
+    BackHandler(
+        enabled = isEditMode
+    ) {
+        undo()
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -304,6 +334,8 @@ fun ActiveResultScreen(
 
                             isPreviousMeasurement = currentMeasurementNumber < measurementCount + 1,
 
+                            isEditMode = isEditMode,
+
                             modifier = Modifier.fillMaxWidth(),
                         )
                     } else {
@@ -332,40 +364,55 @@ fun ActiveResultScreen(
                     .align(Alignment.BottomCenter)
                     .padding(MaterialTheme.spacing.medium),
             ) {
-                if (currentMeasurementNumber > 1) {
-                    FloatingActionButton(
-                        onClick = previous,
-                        modifier = Modifier.align(Alignment.CenterStart)
-                    ) {
-                        Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Назад")
+                if (!isEditMode) {
+                    if (currentMeasurementNumber > 1) {
+                        FloatingActionButton(
+                            onClick = previous,
+                            modifier = Modifier.align(Alignment.CenterStart)
+                        ) {
+                            Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Назад")
+                        }
                     }
-                }
 
-                if (currentMeasurementNumber < measurementCount + 1) {
-                    FloatingActionButton(
-                        onClick = { /*TODO*/ },
-                        modifier = Modifier.align(Alignment.Center)
-                    ) {
-                        Icon(imageVector = Icons.Default.Edit, contentDescription = "Редактировать")
+                    if (currentMeasurementNumber < measurementCount + 1) {
+                        FloatingActionButton(
+                            onClick = goToEditMode,
+                            modifier = Modifier.align(Alignment.Center)
+                        ) {
+                            Icon(imageVector = Icons.Default.Edit, contentDescription = "Редактировать")
+                        }
                     }
-                }
 
-                if (currentMeasurementNumber == 101 || currentMeasurementNumber == measurementCount + 1) {
+                    if (currentMeasurementNumber == 101 || currentMeasurementNumber == measurementCount + 1) {
+                        FloatingActionButton(
+                            onClick = onSave,
+                            modifier = Modifier.align(Alignment.CenterEnd)
+                        ) {
+                            Icon(imageVector = Icons.Default.Save, contentDescription = "Сохранить")
+                        }
+                    } else {
+                        FloatingActionButton(
+                            onClick = next,
+                            modifier = Modifier.align(Alignment.CenterEnd)
+                        ) {
+                            Icon(imageVector = Icons.Default.ArrowForward, contentDescription = "Дальше")
+                        }
+                    }
+                } else {
                     FloatingActionButton(
-                        onClick = onSave,
+                        onClick = editSave,
                         modifier = Modifier.align(Alignment.CenterEnd)
                     ) {
                         Icon(imageVector = Icons.Default.Save, contentDescription = "Сохранить")
                     }
-                } else {
+
                     FloatingActionButton(
-                        onClick = next,
-                        modifier = Modifier.align(Alignment.CenterEnd)
+                        onClick = undo,
+                        modifier = Modifier.align(Alignment.CenterStart)
                     ) {
-                        Icon(imageVector = Icons.Default.ArrowForward, contentDescription = "Дальше")
+                        Icon(imageVector = Icons.Default.Undo, contentDescription = "Отменить")
                     }
                 }
-
             }
         }
 

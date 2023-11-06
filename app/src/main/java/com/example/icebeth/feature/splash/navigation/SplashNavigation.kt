@@ -8,12 +8,12 @@ const val splashRoute = "splash_route"
 
 fun NavGraphBuilder.splashScreen(
     onAuthorized: () -> Unit,
-    onUnauthorized: () -> Unit
+    onUnauthorized: () -> Unit,
 ) {
     composable(splashRoute) {
         SplashScreenDestination(
             onAuthorized = onAuthorized,
-            onUnauthorized = onUnauthorized
+            onUnauthorized = onUnauthorized,
         )
     }
 }

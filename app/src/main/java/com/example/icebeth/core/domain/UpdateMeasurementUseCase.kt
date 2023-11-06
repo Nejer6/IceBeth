@@ -1,8 +1,8 @@
 package com.example.icebeth.core.domain
 
-import com.example.icebeth.core.model.Measurement
-import com.example.icebeth.features.measurements.domain.models.MeasurementCreateResult
+import com.example.icebeth.core.data.database.model.SoilSurfaceCondition
 import com.example.icebeth.core.domain.util.MeasurementError
+import com.example.icebeth.core.model.MeasurementCreateResult
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -11,57 +11,105 @@ class UpdateMeasurementUseCase @Inject constructor(
     private val measurementRepository: com.example.icebeth.core.data.repository.MeasurementRepository
 ) {
     suspend operator fun invoke(
-        cylinderHeight: String,
-        groundFrozzed: Boolean,
-        massOfSnow: String,
-        snowCrust: Boolean,
+        measurementId: Int,
         snowHeight: String,
-        id: Int,
-        time: Long,
-        resultId: Int,
-        latitude: Double,
-        longitude: Double
+        cylinderHeight: String?,
+        iceCrustThickness: String?,
+        massOfSnow: String?,
+        snowCrust: Boolean?,
+        snowLayerWaterSaturation: String?,
+        soilSurfaceCondition: SoilSurfaceCondition?,
+        thawedWaterLayerThickness: String?,
+        isExpanded: Boolean
     ): MeasurementCreateResult {
-        fun validate(string: String): MeasurementError? {
-            return string.let {
-                if (it.isBlank()) return@let MeasurementError.Empty
-                if (it.toFloatOrNull() == null) return@let MeasurementError.NotNumber
-                if (it.toFloat() < 0f) return@let MeasurementError.NegativeNumber
-                return@let null
+        val snowHeightError = validateInteger(snowHeight)
+
+        if (!isExpanded) {
+            if (snowHeightError != null) {
+                return MeasurementCreateResult(
+                    snowHeightError = snowHeightError,
+                    isSuccess = false
+                )
+            } else {
+                measurementRepository.updateMeasurement(
+                    measurementId = measurementId,
+                    snowHeight = snowHeight.toInt(),
+                    cylinderHeight = null,
+                    massOfSnow = null,
+                    soilSurfaceCondition = null,
+                    snowCrust = null,
+                    iceCrustThickness = null,
+                    snowLayerWaterSaturation = null,
+                    thawedWaterLayerThickness = null
+                )
+
+                return MeasurementCreateResult(isSuccess = true)
             }
         }
 
-        val newCylinderHeight = cylinderHeight.replace(',', '.')
-        val newMassOfSnow = massOfSnow.replace(',', '.')
-        val newSnowHeight = snowHeight.replace(',', '.')
+        val cylinderHeightError = validateInteger(cylinderHeight!!)
 
-        val cylinderHeightError = validate(newCylinderHeight)
-        val massOfSnowError = validate(newMassOfSnow)
-        val snowHeightError = validate(newSnowHeight)
+        val newMassOfSnow = massOfSnow?.replace(',', '.')
+        val massOfSnowError = validateDouble(newMassOfSnow!!)
+        val iceCrustThicknessError = validateInteger(iceCrustThickness!!)
+        val snowLayerWaterSaturationError = validateInteger(snowLayerWaterSaturation!!)
+        val soilSurfaceConditionError = soilSurfaceCondition.let {
+            if (it != null) return@let null
+            else return@let MeasurementError.Empty
+        }
+        val thawedWaterLayerThicknessError = validateInteger(thawedWaterLayerThickness!!)
 
-        if (cylinderHeightError != null || massOfSnowError != null || snowHeightError != null) {
+        if (
+            cylinderHeightError != null ||
+            massOfSnowError != null ||
+            snowHeightError != null ||
+            iceCrustThicknessError != null ||
+            snowLayerWaterSaturationError != null ||
+            soilSurfaceConditionError != null ||
+            thawedWaterLayerThicknessError != null
+        ) {
             return MeasurementCreateResult(
-                cylinderHeightError, massOfSnowError, snowHeightError, false
+                cylinderHeightError = cylinderHeightError,
+                massOfSnowError = massOfSnowError,
+                snowHeightError = snowHeightError,
+                iceCrustThicknessError = iceCrustThicknessError,
+                snowLayerWaterSaturationError = snowLayerWaterSaturationError,
+                soilSurfaceConditionError = soilSurfaceConditionError,
+                thawedWaterLayerThicknessError = thawedWaterLayerThicknessError,
+                isSuccess = false
             )
         }
 
-        measurementRepository.insertMeasurement(
-            Measurement(
-                newCylinderHeight.toFloat(),
-                groundFrozzed,
-                id,
-                newMassOfSnow.toFloat(),
-                resultId = resultId,
-                snowCrust = snowCrust,
-                snowHeight = newSnowHeight.toFloat(),
-                time = time,
-                latitude = latitude,
-                longitude = longitude
-            )
+        measurementRepository.updateMeasurement(
+            measurementId = measurementId,
+            snowHeight = snowHeight.toInt(),
+            cylinderHeight = cylinderHeight.toInt(),
+            massOfSnow = newMassOfSnow.toDouble(),
+            soilSurfaceCondition = soilSurfaceCondition!!,
+            snowCrust = snowCrust!!,
+            iceCrustThickness = iceCrustThickness.toInt(),
+            snowLayerWaterSaturation = snowLayerWaterSaturation.toInt(),
+            thawedWaterLayerThickness = thawedWaterLayerThickness.toInt()
         )
 
-        return MeasurementCreateResult(
-            isSuccess = true
-        )
+        return MeasurementCreateResult(isSuccess = true)
+    }
+
+    private fun validateDouble(string: String): MeasurementError? {
+        return string.let {
+            if (it.isBlank()) return@let MeasurementError.Empty
+            if (it.toDoubleOrNull() == null) return@let MeasurementError.NotDouble
+            if (it.toDouble() < 0f) return@let MeasurementError.NegativeNumber
+            return@let null
+        }
+    }
+
+    private fun validateInteger(string: String): MeasurementError? {
+        return string.let {
+            if (it.isBlank()) return@let MeasurementError.Empty
+            if (it.toIntOrNull() == null) return@let MeasurementError.NotInt
+            if (it.toInt() < 0) return@let MeasurementError.NegativeNumber
+            return@let null
+        }
     }
 }

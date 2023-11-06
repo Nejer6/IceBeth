@@ -5,71 +5,76 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import com.example.icebeth.core.data.network.model.request.MeasurementCreateRequest
-import com.example.icebeth.core.model.Measurement
 
 @Entity(
     tableName = "measurements",
     foreignKeys = [ForeignKey(
         entity = ResultEntity::class,
         parentColumns = ["id"],
-        childColumns = ["resultId"],
+        childColumns = ["result_id"],
         onDelete = ForeignKey.CASCADE
     )]
 )
 data class MeasurementEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
-    @ColumnInfo(name = "cylinder_height")
-    val cylinderHeight: Float,
-    @ColumnInfo(name = "ground_frozzed")
-    val groundFrozzed: Boolean,
-    @ColumnInfo(name = "mass_of_snow")
-    val massOfSnow: Float,
-    @ColumnInfo(name = "snow_crust")
-    val snowCrust: Boolean,
-    @ColumnInfo(name = "snow_height")
-    val snowHeight: Float,
+    @ColumnInfo(name = "result_id", defaultValue = "1")
     val resultId: Int,
-    val time: Long,
-    @ColumnInfo(name = "is_deleted")
-    val isDeleted: Boolean = false,
-    @ColumnInfo(name = "is_updated")
-    val isUpdated: Boolean = false,
     @ColumnInfo(name = "remote_id")
     val remoteId: Int? = null,
     @ColumnInfo(name = "remote_result_id")
     val remoteResultId: Int? = null,
-    @ColumnInfo(defaultValue = "0.0")
-    val latitude: Double = 0.0,
-    @ColumnInfo(defaultValue = "0.0")
-    val longitude: Double = 0.0
+
+    @ColumnInfo(name = "is_deleted")
+    val isDeleted: Boolean = false,
+    @ColumnInfo(name = "is_updated")
+    val isUpdated: Boolean = false,
+
+    val time: Long,
+    val latitude: Double,
+    val longitude: Double,
+
+    @ColumnInfo(name = "snow_height")
+    val snowHeight: Int,
+
+    @ColumnInfo(name = "cylinder_height")
+    val cylinderHeight: Int?,
+    @ColumnInfo(name = "mass_of_snow")
+    val massOfSnow: Double?,
+
+    @ColumnInfo(name = "soil_surface_condition")
+    val soilSurfaceCondition: SoilSurfaceCondition?,
+    @ColumnInfo(name = "snow_crust")
+    val snowCrust: Boolean?,
+
+    @ColumnInfo(name = "ice_crust_thickness")
+    val iceCrustThickness: Int?,
+    @ColumnInfo(name = "snow_layer_water_saturation")
+    val snowLayerWaterSaturation: Int?,
+    @ColumnInfo(name = "thawed_water_layer_thickness")
+    val thawedWaterLayerThickness: Int?
 )
 
-fun MeasurementEntity.asExternalModel() = Measurement(
-    id = id,
-    cylinderHeight = cylinderHeight,
-    groundFrozzed = groundFrozzed,
-    massOfSnow = massOfSnow,
-    snowCrust = snowCrust,
-    snowHeight = snowHeight,
-    resultId = resultId,
-    time = time,
-    isDeleted = isDeleted,
-    isUpdated = isUpdated,
-    remoteId = remoteId,
-    remoteResultId = remoteResultId,
-    latitude = latitude,
-    longitude = longitude
-)
+enum class SoilSurfaceCondition(val description: String) {
+    THAWED("Талая"),
+    FROZEN_DRY_CEMENTED("Мерзлая сухая, сцементирована льдом, кристаллов льда не видно"),
+    FROZEN_WEAKLY_CEMENTED("Мерзлая, слабо сцементирована льдом, не слитная, умеренно твердая"),
+    FROZEN_MODERATELY_CEMENTED("Мерзлая, умеренно сцементированная льдом, слитная и твердая"),
+    FROZEN_STRONGLY_CEMENTED("Мерзлая, сильно сцементирована льдом, очень слитная и твердая"),
+    UNKNOWN("Неизвестно")
+}
 
 fun MeasurementEntity.asCreateRequest(remoteResultId: Int) = MeasurementCreateRequest(
-    cylinderHeight,
-    groundFrozzed,
-    massOfSnow,
-    snowCrust,
-    snowHeight,
-    remoteResultId,
-    time,
+    resultId = remoteResultId,
+    time = time,
     latitude = latitude,
-    longitude = longitude
+    longitude = longitude,
+    snowHeight = snowHeight,
+    cylinderHeight = cylinderHeight,
+    massOfSnow = massOfSnow,
+    soilSurfaceCondition = soilSurfaceCondition?.ordinal,
+    snowCrust = snowCrust,
+    iceCrustThickness = iceCrustThickness,
+    snowLayerWaterSaturation = snowLayerWaterSaturation,
+    thawedWaterLayerThickness = thawedWaterLayerThickness
 )

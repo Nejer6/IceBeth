@@ -1,64 +1,62 @@
 package com.example.icebeth.core.presentation.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navOptions
-import com.example.icebeth.feature.add_measurement.navigation.addMeasurementScreen
-import com.example.icebeth.feature.add_measurement.navigation.navigateToAddMeasurement
+import com.example.icebeth.feature.active_result.navigation.activeResultScreen
+import com.example.icebeth.feature.active_result.navigation.navigateToActiveResult
 import com.example.icebeth.feature.login.navigation.loginScreen
 import com.example.icebeth.feature.login.navigation.navigateToLogin
 import com.example.icebeth.feature.splash.navigation.splashRoute
 import com.example.icebeth.feature.splash.navigation.splashScreen
 
 @Composable
-fun AppNavigation() {
+fun AppNavigation(
+    viewModel: AppViewModel = hiltViewModel()
+) {
 
     val navController = rememberNavController()
 
     NavHost(navController = navController, startDestination = splashRoute) {
         splashScreen(
             onAuthorized = {
-                navController.navigateToMainGraph(navOptions {
-                    popUpTo(splashRoute) {
-                        inclusive = true
-                    }
-                })
+                navController.popBackStack()
+                if (viewModel.activeResultId == null) {
+                    navController.navigateToMainGraph()
+                } else {
+                    navController.navigateToActiveResult()
+                }
             },
             onUnauthorized = {
-                navController.navigateToLogin(navOptions {
-                    popUpTo(splashRoute) {
-                        inclusive = true
-                    }
-                })
+                navController.popBackStack()
+                navController.navigateToLogin()
             }
         )
 
         mainGraph(
             logout = {
                 navController.popBackStack()
-                navController.navigateToLogin(navOptions {
-                    popUpTo(splashRoute) {
-                        inclusive = true
-                    }
-                })
+                navController.navigateToLogin()
             },
-            navigateToAddMeasurement = navController::navigateToAddMeasurement
+            navigateToActiveResult = {
+                navController.popBackStack()
+                navController.navigateToActiveResult()
+            }
         )
 
         loginScreen(
             onLogin = {
                 navController.popBackStack()
-                navController.navigateToMainGraph(navOptions {
-                    popUpTo(splashRoute) {
-                        inclusive = true
-                    }
-                })
+                navController.navigateToMainGraph()
             }
         )
 
-        addMeasurementScreen(
-            navController::navigateUp
+        activeResultScreen(
+            navigateToMain = {
+                navController.popBackStack()
+                navController.navigateToMainGraph()
+            }
         )
     }
 }

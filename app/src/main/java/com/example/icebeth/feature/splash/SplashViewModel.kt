@@ -12,9 +12,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SplashViewModel @Inject constructor(
-    authRepository: AuthRepository
+    authRepository: AuthRepository,
 ) : ViewModel() {
-
     private val _eventFlow = MutableSharedFlow<UiEffect>()
     val eventFlow = _eventFlow.asSharedFlow()
 

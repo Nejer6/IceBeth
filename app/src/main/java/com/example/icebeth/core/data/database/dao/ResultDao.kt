@@ -29,11 +29,13 @@ interface ResultDao {
     @Query("DELETE FROM results WHERE id = :resultId")
     suspend fun deleteResultById(resultId: Int)
 
-    @Query("UPDATE results SET " +
+    @Query(
+        "UPDATE results SET " +
             "degree_of_coverage = :degreeOfCoverage, " +
             "snow_cover_character = :snowCoverCharacter, " +
             "snow_condition_description = :snowConditionDescription " +
-            "WHERE id = :resultId")
+            "WHERE id = :resultId"
+    )
     suspend fun updateResult(
         resultId: Int,
         degreeOfCoverage: Int,

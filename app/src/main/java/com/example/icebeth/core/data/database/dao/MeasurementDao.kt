@@ -15,7 +15,7 @@ interface MeasurementDao {
     fun getAllMeasurements(): Flow<List<MeasurementEntity>>
 
     @Query("SELECT * FROM measurements WHERE result_id = :resultId")
-    fun getMeasurementsByResultId(resultId: Int) : Flow<List<MeasurementEntity>>
+    fun getMeasurementsByResultId(resultId: Int): Flow<List<MeasurementEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertMeasurement(measurement: MeasurementEntity)
@@ -41,7 +41,8 @@ interface MeasurementDao {
     @Query("UPDATE measurements SET remote_result_id = :remoteResultId WHERE id = :measurementId")
     fun updateRemoteResultId(measurementId: Int, remoteResultId: Int)
 
-    @Query("UPDATE measurements SET " +
+    @Query(
+        "UPDATE measurements SET " +
             "snow_height = :snowHeight, " +
             "cylinder_height = :cylinderHeight, " +
             "mass_of_snow = :massOfSnow, " +
@@ -50,7 +51,8 @@ interface MeasurementDao {
             "ice_crust_thickness = :iceCrustThickness, " +
             "snow_layer_water_saturation = :snowLayerWaterSaturation, " +
             "thawed_water_layer_thickness = :thawedWaterLayerThickness " +
-            "WHERE id = :measurementId")
+            "WHERE id = :measurementId"
+    )
     suspend fun updateMeasurement(
         measurementId: Int,
         snowHeight: Int,

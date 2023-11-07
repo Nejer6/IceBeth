@@ -38,10 +38,10 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.icebeth.core.domain.util.AuthError
 import com.example.icebeth.common.presentation.theme.IceBethTheme
 import com.example.icebeth.common.presentation.theme.spacing
 import com.example.icebeth.core.data.util.ConnectivityObserver
+import com.example.icebeth.core.domain.util.AuthError
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -53,7 +53,6 @@ fun LoginScreen(
     snackbarHostState: SnackbarHostState,
     loading: Boolean
 ) {
-
     Scaffold(
         snackbarHost = {
             SnackbarHost(hostState = snackbarHostState)
@@ -196,7 +195,6 @@ fun LoginScreen(
             }
         }
     }
-
 }
 
 @Preview

@@ -47,15 +47,15 @@ class MainActivity : ComponentActivity() {
                                 perms[Manifest.permission.ACCESS_FINE_LOCATION] == true
                             isCoarseLocationPermissionGranted =
                                 perms[Manifest.permission.ACCESS_COARSE_LOCATION] == true
-                        },
+                        }
                     )
 
                 LaunchedEffect(key1 = isCoarseLocationPermissionGranted) {
                     locationPermissionResultLauncher.launch(
                         arrayOf(
                             Manifest.permission.ACCESS_FINE_LOCATION,
-                            Manifest.permission.ACCESS_COARSE_LOCATION,
-                        ),
+                            Manifest.permission.ACCESS_COARSE_LOCATION
+                        )
                     )
                 }
 
@@ -71,7 +71,7 @@ class MainActivity : ComponentActivity() {
 
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background,
+                    color = MaterialTheme.colorScheme.background
                 ) {
                     AppNavigation()
 
@@ -80,17 +80,17 @@ class MainActivity : ComponentActivity() {
                             permissionTextProvider = LocationPermissionTextProvider(),
                             isPermanentlyDeclined =
                             !shouldShowRequestPermissionRationale(
-                                Manifest.permission.ACCESS_FINE_LOCATION,
+                                Manifest.permission.ACCESS_FINE_LOCATION
                             ),
                             onDismiss = { },
                             onOkClick = {
                                 locationPermissionResultLauncher.launch(
                                     arrayOf(
-                                        Manifest.permission.ACCESS_FINE_LOCATION,
-                                    ),
+                                        Manifest.permission.ACCESS_FINE_LOCATION
+                                    )
                                 )
                             },
-                            onGoToAppSettingsClick = ::openAppSettings,
+                            onGoToAppSettingsClick = ::openAppSettings
                         )
                     }
                 }

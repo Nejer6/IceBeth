@@ -1,9 +1,9 @@
 package com.example.icebeth.core.data.network.api
 
-import com.example.icebeth.core.data.network.model.response.LoginResponse
-import com.example.icebeth.core.data.network.model.response.UserResponse
 import com.example.icebeth.common.util.ApiResponse
 import com.example.icebeth.common.util.safeRequest
+import com.example.icebeth.core.data.network.model.response.LoginResponse
+import com.example.icebeth.core.data.network.model.response.UserResponse
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.auth.Auth
 import io.ktor.client.plugins.auth.providers.BearerTokens
@@ -24,11 +24,14 @@ class AuthApi @Inject constructor(
     suspend fun login(email: String, password: String): ApiResponse<LoginResponse> {
         return httpClient.safeRequest<LoginResponse> {
             post("login/access-token") {
-                body = "grant_type=&username=${email}&password=${password}&scope=&client_id=&client_secret="
-                headers.appendAll(headersOf(
-                    "accept" to listOf("application/json"),
-                    "Content-type" to listOf("application/x-www-form-urlencoded")
-                ))
+                body = "grant_type=&username=$email&" +
+                    "password=$password&scope=&client_id=&client_secret="
+                headers.appendAll(
+                    headersOf(
+                        "accept" to listOf("application/json"),
+                        "Content-type" to listOf("application/x-www-form-urlencoded")
+                    )
+                )
             }
         }.apply {
             when (val response = this) {
@@ -41,7 +44,6 @@ class AuthApi @Inject constructor(
                 }
                 else -> {}
             }
-
         }
     }
 

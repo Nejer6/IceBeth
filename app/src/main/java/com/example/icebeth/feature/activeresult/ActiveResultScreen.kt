@@ -1,4 +1,4 @@
-package com.example.icebeth.feature.active_result
+package com.example.icebeth.feature.activeresult
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Box
@@ -38,9 +38,9 @@ import com.example.icebeth.core.data.database.model.SnowCoverCharacter
 import com.example.icebeth.core.data.database.model.SoilSurfaceCondition
 import com.example.icebeth.core.domain.util.MeasurementError
 import com.example.icebeth.core.domain.util.ResultError
-import com.example.icebeth.feature.active_result.components.ActiveResultMoreButton
-import com.example.icebeth.feature.active_result.components.MeasurementEditor
-import com.example.icebeth.feature.active_result.components.ResultEditor
+import com.example.icebeth.feature.activeresult.components.ActiveResultMoreButton
+import com.example.icebeth.feature.activeresult.components.MeasurementEditor
+import com.example.icebeth.feature.activeresult.components.ResultEditor
 
 @Composable
 fun ActiveResultRoute(
@@ -53,6 +53,7 @@ fun ActiveResultRoute(
                 UiEffect.NavigateToMainScreen -> {
                     navigateToMain()
                 }
+
                 else -> {}
             }
         }
@@ -192,7 +193,6 @@ fun ActiveResultRoute(
     )
 }
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ActiveResultScreen(
@@ -251,7 +251,7 @@ fun ActiveResultScreen(
     isEditMode: Boolean,
     goToEditMode: () -> Unit,
     undo: () -> Unit,
-    editSave: () -> Unit,
+    editSave: () -> Unit
 ) {
     BackHandler(
         enabled = isEditMode
@@ -264,8 +264,11 @@ fun ActiveResultScreen(
             TopAppBar(
                 title = {
                     Text(
-                        text = if (currentMeasurementNumber > 100) "Общая характеристика"
-                        else "$currentMeasurementNumber/100"
+                        text = if (currentMeasurementNumber > 100) {
+                            "Общая характеристика"
+                        } else {
+                            "$currentMeasurementNumber/100"
+                        }
                     )
                 },
                 actions = {
@@ -281,7 +284,7 @@ fun ActiveResultScreen(
         ) {
             Column(
                 modifier = Modifier
-                    .fillMaxWidth(),
+                    .fillMaxWidth()
             ) {
                 LinearProgressIndicator(
                     progress = if (measurementCount < 100) {
@@ -300,7 +303,6 @@ fun ActiveResultScreen(
                         .padding(horizontal = MaterialTheme.spacing.medium)
                         .verticalScroll(rememberScrollState())
                 ) {
-
                     if (currentMeasurementNumber <= 100) {
                         MeasurementEditor(
                             snowHeight = snowHeight,
@@ -336,7 +338,7 @@ fun ActiveResultScreen(
 
                             isEditMode = isEditMode,
 
-                            modifier = Modifier.fillMaxWidth(),
+                            modifier = Modifier.fillMaxWidth()
                         )
                     } else {
                         ResultEditor(
@@ -362,7 +364,7 @@ fun ActiveResultScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .align(Alignment.BottomCenter)
-                    .padding(MaterialTheme.spacing.medium),
+                    .padding(MaterialTheme.spacing.medium)
             ) {
                 if (!isEditMode) {
                     if (currentMeasurementNumber > 1) {
@@ -370,7 +372,10 @@ fun ActiveResultScreen(
                             onClick = previous,
                             modifier = Modifier.align(Alignment.CenterStart)
                         ) {
-                            Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Назад")
+                            Icon(
+                                imageVector = Icons.Default.ArrowBack,
+                                contentDescription = "Назад"
+                            )
                         }
                     }
 
@@ -379,11 +384,17 @@ fun ActiveResultScreen(
                             onClick = goToEditMode,
                             modifier = Modifier.align(Alignment.Center)
                         ) {
-                            Icon(imageVector = Icons.Default.Edit, contentDescription = "Редактировать")
+                            Icon(
+                                imageVector = Icons.Default.Edit,
+                                contentDescription = "Редактировать"
+                            )
                         }
                     }
 
-                    if (currentMeasurementNumber == 101 || currentMeasurementNumber == measurementCount + 1) {
+                    if (
+                        currentMeasurementNumber == 101 ||
+                        currentMeasurementNumber == measurementCount + 1
+                    ) {
                         FloatingActionButton(
                             onClick = onSave,
                             modifier = Modifier.align(Alignment.CenterEnd)
@@ -395,7 +406,10 @@ fun ActiveResultScreen(
                             onClick = next,
                             modifier = Modifier.align(Alignment.CenterEnd)
                         ) {
-                            Icon(imageVector = Icons.Default.ArrowForward, contentDescription = "Дальше")
+                            Icon(
+                                imageVector = Icons.Default.ArrowForward,
+                                contentDescription = "Дальше"
+                            )
                         }
                     }
                 } else {
@@ -415,7 +429,6 @@ fun ActiveResultScreen(
                 }
             }
         }
-
     }
 
     if (!locationAvailable) {

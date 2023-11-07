@@ -93,7 +93,7 @@ fun MainNavigation(
             },
             Icons.Default.Logout,
             null
-        ),
+        )
     )
 
     LaunchedEffect(key1 = true) {

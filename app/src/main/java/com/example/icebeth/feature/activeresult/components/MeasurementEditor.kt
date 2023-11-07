@@ -1,4 +1,4 @@
-package com.example.icebeth.feature.active_result.components
+package com.example.icebeth.feature.activeresult.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -55,7 +55,7 @@ fun MeasurementEditor(
 
     isEditMode: Boolean,
 
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier,

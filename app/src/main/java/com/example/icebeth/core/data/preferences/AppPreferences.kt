@@ -13,8 +13,11 @@ class AppPreferences @Inject constructor(
 
     fun getActiveResultId(): Int? {
         return sharedPreferences.getInt(ACTIVE_RESULT_ID, -1).let {
-            if (it == -1) null
-            else it
+            if (it == -1) {
+                null
+            } else {
+                it
+            }
         }
     }
 

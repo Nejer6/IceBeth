@@ -7,7 +7,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 fun SplashScreenDestination(
     onAuthorized: () -> Unit,
     onUnauthorized: () -> Unit,
-    viewModel: SplashViewModel = hiltViewModel(),
+    viewModel: SplashViewModel = hiltViewModel()
 ) {
 //    LaunchedEffect(key1 = true) {
 //        viewModel.eventFlow.collect {

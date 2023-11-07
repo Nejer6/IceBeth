@@ -1,4 +1,4 @@
-package com.example.icebeth.feature.active_result.components
+package com.example.icebeth.feature.activeresult.components
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.material.icons.Icons
@@ -19,7 +19,7 @@ import androidx.compose.ui.Modifier
 @Composable
 fun ActiveResultMoreButton(
     forciblyFinish: () -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     var expanded by remember {
         mutableStateOf(false)

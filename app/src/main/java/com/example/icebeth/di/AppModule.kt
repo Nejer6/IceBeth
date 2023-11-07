@@ -16,8 +16,8 @@ import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.http.URLProtocol
 import io.ktor.serialization.kotlinx.json.json
-import kotlinx.serialization.json.Json
 import javax.inject.Singleton
+import kotlinx.serialization.json.Json
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -32,10 +32,12 @@ object AppModule {
             }
 
             install(ContentNegotiation) {
-                json(Json {
-                    ignoreUnknownKeys = true
-                    encodeDefaults = true
-                })
+                json(
+                    Json {
+                        ignoreUnknownKeys = true
+                        encodeDefaults = true
+                    }
+                )
             }
 
             install(Auth) {

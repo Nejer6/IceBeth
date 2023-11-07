@@ -1,8 +1,8 @@
 package com.example.icebeth.feature.login
 
-import com.example.icebeth.core.domain.util.AuthError
 import com.example.icebeth.common.presentation.ViewEvent
 import com.example.icebeth.common.presentation.ViewState
+import com.example.icebeth.core.domain.util.AuthError
 
 class LoginContract {
 

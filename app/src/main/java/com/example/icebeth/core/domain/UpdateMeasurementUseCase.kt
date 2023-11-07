@@ -1,6 +1,7 @@
 package com.example.icebeth.core.domain
 
 import com.example.icebeth.core.data.database.model.SoilSurfaceCondition
+import com.example.icebeth.core.data.repository.MeasurementRepository
 import com.example.icebeth.core.domain.util.MeasurementError
 import com.example.icebeth.core.model.MeasurementCreateResult
 import javax.inject.Inject
@@ -8,7 +9,7 @@ import javax.inject.Singleton
 
 @Singleton
 class UpdateMeasurementUseCase @Inject constructor(
-    private val measurementRepository: com.example.icebeth.core.data.repository.MeasurementRepository
+    private val measurementRepository: MeasurementRepository
 ) {
     suspend operator fun invoke(
         measurementId: Int,
@@ -54,8 +55,11 @@ class UpdateMeasurementUseCase @Inject constructor(
         val iceCrustThicknessError = validateInteger(iceCrustThickness!!)
         val snowLayerWaterSaturationError = validateInteger(snowLayerWaterSaturation!!)
         val soilSurfaceConditionError = soilSurfaceCondition.let {
-            if (it != null) return@let null
-            else return@let MeasurementError.Empty
+            if (it != null) {
+                return@let null
+            } else {
+                return@let MeasurementError.Empty
+            }
         }
         val thawedWaterLayerThicknessError = validateInteger(thawedWaterLayerThickness!!)
 

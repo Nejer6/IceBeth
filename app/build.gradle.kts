@@ -5,6 +5,7 @@ plugins {
     id("com.google.dagger.hilt.android")
     id("org.jetbrains.kotlin.plugin.serialization") version "1.9.10"
     id("com.google.devtools.ksp")
+    id("org.jlleitschuh.gradle.ktlint") version "11.6.1"
 }
 
 android {
@@ -58,6 +59,19 @@ android {
     }
 }
 
+tasks.getByPath("preBuild").dependsOn("ktlintFormat")
+
+ktlint {
+    android.set(true)
+    ignoreFailures.set(false)
+    enableExperimentalRules.set(false)
+    reporters {
+        reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.PLAIN)
+        reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.CHECKSTYLE)
+        reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.SARIF)
+    }
+}
+
 dependencies {
 
     implementation("androidx.core:core-ktx:1.12.0")
@@ -77,18 +91,18 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
-    //Navigation
+    // Navigation
     implementation("androidx.navigation:navigation-compose:2.7.5")
 
-    //hilt
+    // hilt
     implementation("com.google.dagger:hilt-android:2.48.1")
     implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
     kapt("com.google.dagger:hilt-compiler:2.48.1")
 
-    //Icons
+    // Icons
     implementation("androidx.compose.material:material-icons-extended")
 
-    //Ktor
+    // Ktor
     implementation("io.ktor:ktor-client-core:2.3.4")
     implementation("io.ktor:ktor-client-android:2.3.2")
     implementation("io.ktor:ktor-client-serialization:2.3.2")
@@ -97,7 +111,7 @@ dependencies {
     implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.4")
     implementation("io.ktor:ktor-client-auth:2.3.2")
 
-    //Room
+    // Room
     implementation("androidx.room:room-runtime:2.6.0")
     annotationProcessor("androidx.room:room-compiler:2.6.0")
     ksp("androidx.room:room-compiler:2.6.0")

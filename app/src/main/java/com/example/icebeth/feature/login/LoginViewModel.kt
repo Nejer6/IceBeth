@@ -4,15 +4,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
-import com.example.icebeth.core.domain.LoginUseCase
 import com.example.icebeth.common.presentation.BaseViewModel
 import com.example.icebeth.common.presentation.util.UiEffect
 import com.example.icebeth.common.util.ApiResponse
 import com.example.icebeth.core.data.util.ConnectivityObserver
+import com.example.icebeth.core.domain.LoginUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.ktor.http.HttpStatusCode
-import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlinx.coroutines.launch
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
@@ -75,9 +75,9 @@ class LoginViewModel @Inject constructor(
                 when (result) {
                     is ApiResponse.Error.Http -> {
                         when (result.status) {
-                           HttpStatusCode.BadRequest -> {
-                               isForbidden = true
-                           }
+                            HttpStatusCode.BadRequest -> {
+                                isForbidden = true
+                            }
                         }
                     }
                     ApiResponse.Error.Network -> setEffect {

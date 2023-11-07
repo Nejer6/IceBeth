@@ -16,7 +16,8 @@ interface ViewState
 
 interface ViewSideEffect
 
-abstract class BaseViewModel<Event: ViewEvent, UiState: ViewState, Effect: ViewSideEffect> : ViewModel() {
+abstract class BaseViewModel<Event : ViewEvent, UiState : ViewState, Effect : ViewSideEffect> :
+    ViewModel() {
 
     abstract fun setInitialState(): UiState
     abstract fun handleEvents(event: Event)
@@ -56,5 +57,4 @@ abstract class BaseViewModel<Event: ViewEvent, UiState: ViewState, Effect: ViewS
         val effectValue = builder()
         viewModelScope.launch { _effect.send(effectValue) }
     }
-
 }

@@ -6,13 +6,13 @@ import androidx.lifecycle.ViewModel
 import com.example.icebeth.common.presentation.util.UiEffect
 import com.example.icebeth.core.data.repository.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import javax.inject.Inject
 
 @HiltViewModel
 class SplashViewModel @Inject constructor(
-    authRepository: AuthRepository,
+    authRepository: AuthRepository
 ) : ViewModel() {
     private val _eventFlow = MutableSharedFlow<UiEffect>()
     val eventFlow = _eventFlow.asSharedFlow()
@@ -32,19 +32,19 @@ class SplashViewModel @Inject constructor(
 //            }
 //        }
 //
-////        viewModelScope.launch {
-////            when (authRepository.authenticate()) {
-////                is ApiResponse.Success -> {
-////                    _eventFlow.emit(
-////                        UiEffect.Navigate(AppRoute.MainRoute.route)
-////                    )
-////                }
-////                else -> {
-////                    _eventFlow.emit(
-////                        UiEffect.Navigate(AppRoute.LoginScreen.route)
-////                    )
-////                }
-////            }
-////        }
+// //        viewModelScope.launch {
+// //            when (authRepository.authenticate()) {
+// //                is ApiResponse.Success -> {
+// //                    _eventFlow.emit(
+// //                        UiEffect.Navigate(AppRoute.MainRoute.route)
+// //                    )
+// //                }
+// //                else -> {
+// //                    _eventFlow.emit(
+// //                        UiEffect.Navigate(AppRoute.LoginScreen.route)
+// //                    )
+// //                }
+// //            }
+// //        }
 //    }
 }

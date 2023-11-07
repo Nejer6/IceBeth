@@ -16,7 +16,7 @@ class UpdateResultUseCase @Inject constructor(
         resultId: Int,
         degreeOfCoverage: String,
         snowCoverCharacter: SnowCoverCharacter?,
-        snowConditionDescription: SnowConditionDescription?,
+        snowConditionDescription: SnowConditionDescription?
     ): ResultUpdateResult {
         val degreeOfCoverageInt = degreeOfCoverage.toIntOrNull()
 

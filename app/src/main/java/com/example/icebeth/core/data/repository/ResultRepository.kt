@@ -27,14 +27,16 @@ class ResultRepository @Inject constructor(
         val unloadedResultsWithMeasurements = resultDao.getAllUnloadedResultsWithMeasurements()
 
         unloadedResultsWithMeasurements.forEach { resultWithMeasurements ->
-            when (val resultResponse =
-                resultApi.createResult(resultWithMeasurements.asResultCreateRequest())) {
+            when (
+                val resultResponse =
+                    resultApi.createResult(resultWithMeasurements.asResultCreateRequest())
+            ) {
                 is ApiResponse.Success -> {
                     val remoteId = resultResponse.body.id
 
                     resultDao.updateRemoteId(
                         resultId = resultWithMeasurements.result.id,
-                        remoteId = remoteId,
+                        remoteId = remoteId
                     )
 
                     resultWithMeasurements.measurements.forEach {
@@ -49,10 +51,11 @@ class ResultRepository @Inject constructor(
         val unloadedMeasurements = measurementDao.getAllUnloadedMeasurements()
 
         unloadedMeasurements.forEach { measurementEntity ->
-            when (val measurementResponse =
-                measurementApi.createMeasurement(
-                    measurementEntity.asCreateRequest(measurementEntity.remoteResultId!!)
-                )
+            when (
+                val measurementResponse =
+                    measurementApi.createMeasurement(
+                        measurementEntity.asCreateRequest(measurementEntity.remoteResultId!!)
+                    )
             ) {
                 is ApiResponse.Success -> {
                     measurementDao.insertMeasurement(
@@ -90,6 +93,6 @@ class ResultRepository @Inject constructor(
         resultId = resultId,
         degreeOfCoverage = degreeOfCoverage,
         snowCoverCharacter = snowCoverCharacter,
-        snowConditionDescription = snowConditionDescription,
+        snowConditionDescription = snowConditionDescription
     )
 }

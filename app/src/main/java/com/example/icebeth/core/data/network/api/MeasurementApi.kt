@@ -17,7 +17,9 @@ class MeasurementApi @Inject constructor(
     private val httpClient: HttpClient
 ) {
 
-    suspend fun createMeasurement(measurementCreateRequest: MeasurementCreateRequest): ApiResponse<MeasurementResponse> {
+    suspend fun createMeasurement(
+        measurementCreateRequest: MeasurementCreateRequest
+    ): ApiResponse<MeasurementResponse> {
         return httpClient.safeRequest {
             post("misures/") {
                 setBody(measurementCreateRequest)
@@ -25,6 +27,4 @@ class MeasurementApi @Inject constructor(
             }
         }
     }
-
-
 }

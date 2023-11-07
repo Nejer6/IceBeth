@@ -13,7 +13,7 @@ sealed class ApiResponse<out T> {
      *
      * @property body The response body.
      */
-    data class Success<T>(val body: T): ApiResponse<T>()
+    data class Success<T>(val body: T) : ApiResponse<T>()
 
     /**
      * Represents an error response, which can be an HTTP error or a network error.

@@ -1,4 +1,4 @@
-package com.example.icebeth.feature.active_result.components
+package com.example.icebeth.feature.activeresult.components
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -11,7 +11,7 @@ fun SoilSurfaceConditionDropDownMenu(
     onSoilSurfaceConditionChange: (SoilSurfaceCondition) -> Unit,
     soilSurfaceConditionError: MeasurementError?,
     modifier: Modifier = Modifier,
-    readOnly: Boolean = false,
+    readOnly: Boolean = false
 ) {
     DropDownMenu(
         selectedItem = soilSurfaceCondition,

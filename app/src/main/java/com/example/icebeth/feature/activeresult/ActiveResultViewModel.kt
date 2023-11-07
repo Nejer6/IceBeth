@@ -1,4 +1,4 @@
-package com.example.icebeth.feature.active_result
+package com.example.icebeth.feature.activeresult
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -22,6 +22,7 @@ import com.example.icebeth.core.domain.util.MeasurementError
 import com.example.icebeth.core.domain.util.ResultError
 import com.example.icebeth.core.model.MeasurementCreateResult
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
@@ -29,7 +30,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import javax.inject.Inject
 
 @HiltViewModel
 class ActiveResultViewModel @Inject constructor(
@@ -72,14 +72,18 @@ class ActiveResultViewModel @Inject constructor(
     private val measurementsCountFlow =
         measurementRepository.getCountOfMeasurementsByResultIdFlow(resultId)
 
-    var currentMeasurementNumber by mutableIntStateOf(runBlocking {
-        measurementsCountFlow.first() + 1
-    })
+    var currentMeasurementNumber by mutableIntStateOf(
+        runBlocking {
+            measurementsCountFlow.first() + 1
+        }
+    )
         private set
 
-    var measurementCount by mutableIntStateOf(runBlocking {
-        measurementsCountFlow.first()
-    })
+    var measurementCount by mutableIntStateOf(
+        runBlocking {
+            measurementsCountFlow.first()
+        }
+    )
         private set
 
     private var measurementId = 0

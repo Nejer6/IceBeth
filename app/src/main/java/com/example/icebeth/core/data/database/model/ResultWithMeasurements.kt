@@ -24,7 +24,6 @@ fun ResultWithMeasurements.asResultCreateRequest(): ResultCreateRequest {
     val density = everyTenthMeasurements
         .sumOf { it.massOfSnow!! / (10 * it.cylinderHeight!!) } / 10
 
-
     val snowLayerWaterSaturationThickness = everyTenthMeasurements
         .sumOf { it.snowLayerWaterSaturation!! }
         .toDouble() / 10
@@ -48,9 +47,9 @@ fun ResultWithMeasurements.asResultCreateRequest(): ResultCreateRequest {
 
     //
     val totalWaterSupply = snowWaterEquivalent + snowWaterContent + iceCrustWaterSupply +
-            thawedWaterSupply
+        thawedWaterSupply
 
-    ///
+    // /
     val heightGreaterThan30 = measurements.count { it.snowHeight > 30 }
     val sum13 = measurements.count { it.snowHeight in 1..3 }
     val sum46 = measurements.count { it.snowHeight in 4..6 }

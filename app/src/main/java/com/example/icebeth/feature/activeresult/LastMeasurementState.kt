@@ -1,4 +1,4 @@
-package com.example.icebeth.feature.active_result
+package com.example.icebeth.feature.activeresult
 
 import com.example.icebeth.core.data.database.model.SoilSurfaceCondition
 

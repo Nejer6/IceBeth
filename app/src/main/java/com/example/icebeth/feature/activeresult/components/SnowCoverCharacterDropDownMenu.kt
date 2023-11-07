@@ -1,4 +1,4 @@
-package com.example.icebeth.feature.active_result.components
+package com.example.icebeth.feature.activeresult.components
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier

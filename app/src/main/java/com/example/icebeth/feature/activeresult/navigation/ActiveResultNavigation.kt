@@ -1,10 +1,10 @@
-package com.example.icebeth.feature.active_result.navigation
+package com.example.icebeth.feature.activeresult.navigation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import com.example.icebeth.feature.active_result.ActiveResultRoute
+import com.example.icebeth.feature.activeresult.ActiveResultRoute
 
 const val activeResultRoute = "active_result"
 

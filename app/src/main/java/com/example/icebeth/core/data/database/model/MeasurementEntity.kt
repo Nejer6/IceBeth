@@ -8,12 +8,14 @@ import com.example.icebeth.core.data.network.model.request.MeasurementCreateRequ
 
 @Entity(
     tableName = "measurements",
-    foreignKeys = [ForeignKey(
-        entity = ResultEntity::class,
-        parentColumns = ["id"],
-        childColumns = ["result_id"],
-        onDelete = ForeignKey.CASCADE
-    )]
+    foreignKeys = [
+        ForeignKey(
+            entity = ResultEntity::class,
+            parentColumns = ["id"],
+            childColumns = ["result_id"],
+            onDelete = ForeignKey.CASCADE
+        )
+    ]
 )
 data class MeasurementEntity(
     @PrimaryKey(autoGenerate = true)

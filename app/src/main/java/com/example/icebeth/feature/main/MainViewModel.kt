@@ -5,12 +5,12 @@ import androidx.lifecycle.viewModelScope
 import com.example.icebeth.core.data.repository.ResultRepository
 import com.example.icebeth.core.data.util.ConnectivityObserver
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(

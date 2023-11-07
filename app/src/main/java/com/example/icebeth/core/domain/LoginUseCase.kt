@@ -1,8 +1,8 @@
 package com.example.icebeth.core.domain
 
 import com.example.icebeth.core.data.repository.AuthRepository
-import com.example.icebeth.core.model.LoginResult
 import com.example.icebeth.core.domain.util.AuthError
+import com.example.icebeth.core.model.LoginResult
 import javax.inject.Inject
 import javax.inject.Singleton
 

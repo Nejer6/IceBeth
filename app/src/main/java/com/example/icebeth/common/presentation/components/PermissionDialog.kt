@@ -52,8 +52,8 @@ class LocationPermissionTextProvider : PermissionTextProvider {
     override fun getDescription(isPermanentlyDeclined: Boolean): String {
         return if (isPermanentlyDeclined) {
             "Похоже, вы отказались от разрешения доступа приложения к данным о " +
-                    "местоположении устройства. Вы можете перейти в настройки приложения, " +
-                    "чтобы предоставить его."
+                "местоположении устройства. Вы можете перейти в настройки приложения, " +
+                "чтобы предоставить его."
         } else {
             "Этому приложению необходим доступ к данным о местоположении устройства."
         }

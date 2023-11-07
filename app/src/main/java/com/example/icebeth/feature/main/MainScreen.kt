@@ -29,9 +29,11 @@ fun MainRoute(
     navigateToActiveResult: () -> Unit,
     viewModel: MainViewModel = hiltViewModel()
 ) {
-    val countOfResultsWithNullRemoteId by viewModel.countOfResultsWithNullRemoteIdFlow.collectAsState(
-        initial = 0
-    )
+    val countOfResultsWithNullRemoteId by viewModel
+        .countOfResultsWithNullRemoteIdFlow
+        .collectAsState(
+            initial = 0
+        )
 
     MainScreen(
         openDrawer = openDrawer,
@@ -68,37 +70,35 @@ fun MainScreen(
         },
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         floatingActionButton = {
-
             ExtendedFloatingActionButton(
                 text = { Text(text = "Начать съемку") },
                 icon = { Icon(imageVector = Icons.Default.Start, contentDescription = null) },
                 onClick = onStartMeasuring
             )
-
         }
     ) { paddingValues ->
         Box(
             modifier =
             Modifier
                 .padding(paddingValues)
-                .fillMaxSize(),
+                .fillMaxSize()
         ) {
             if (countOfResultsWithNullRemoteId > 0) {
                 Text(
                     text = "Не загружено на сервер: $countOfResultsWithNullRemoteId ${
-                        "cъем".getCorrectEnding(
-                            countOfResultsWithNullRemoteId,
-                            "ка",
-                            "ки",
-                            "ок",
-                        )
+                    "cъем".getCorrectEnding(
+                        countOfResultsWithNullRemoteId,
+                        "ка",
+                        "ки",
+                        "ок"
+                    )
                     }.",
-                    modifier = Modifier.align(Alignment.Center),
+                    modifier = Modifier.align(Alignment.Center)
                 )
             } else {
                 Text(
                     text = "Все съемки отправлены.",
-                    modifier = Modifier.align(Alignment.Center),
+                    modifier = Modifier.align(Alignment.Center)
                 )
             }
         }

@@ -65,11 +65,6 @@ ktlint {
     android.set(true)
     ignoreFailures.set(false)
     enableExperimentalRules.set(false)
-    reporters {
-        reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.PLAIN)
-        reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.CHECKSTYLE)
-        reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.SARIF)
-    }
 }
 
 dependencies {

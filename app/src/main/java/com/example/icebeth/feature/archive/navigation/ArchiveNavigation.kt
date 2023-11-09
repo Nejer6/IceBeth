@@ -13,11 +13,13 @@ fun NavController.navigateToArchive(navOptions: NavOptions? = null) {
 }
 
 fun NavGraphBuilder.archiveScreen(
-    openDrawer: () -> Unit
+    openDrawer: () -> Unit,
+    navigateToResult: (Int) -> Unit
 ) {
     composable(archiveRoute) {
         ArchiveRoute(
-            openDrawer = openDrawer
+            openDrawer = openDrawer,
+            navigateToResult = navigateToResult
         )
     }
 }

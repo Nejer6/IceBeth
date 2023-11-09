@@ -48,4 +48,7 @@ interface ResultDao {
 
     @Query("SELECT * FROM results")
     fun getAllResults(): Flow<List<ResultEntity>>
+
+    @Query("SELECT * FROM results WHERE id = :resultId")
+    fun getResultById(resultId: Int): Flow<ResultEntity>
 }

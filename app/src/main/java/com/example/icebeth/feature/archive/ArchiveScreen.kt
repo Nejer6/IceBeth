@@ -24,7 +24,8 @@ import com.example.icebeth.common.util.formatDateFromTimestamp
 @Composable
 fun ArchiveScreen(
     openDrawer: () -> Unit,
-    state: ArchiveState
+    state: ArchiveState,
+    navigateToResult: (Int) -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -48,7 +49,7 @@ fun ArchiveScreen(
         ) {
             items(state.results) {
                 Card(
-                    onClick = { /*TODO*/ },
+                    onClick = { navigateToResult(it.id) },
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(

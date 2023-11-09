@@ -97,4 +97,6 @@ class ResultRepository @Inject constructor(
     )
 
     fun getAllResults() = resultDao.getAllResults()
+
+    fun getResultById(resultId: Int) = resultDao.getResultById(resultId)
 }

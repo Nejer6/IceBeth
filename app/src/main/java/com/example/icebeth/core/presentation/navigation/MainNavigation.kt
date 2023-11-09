@@ -52,12 +52,14 @@ fun NavController.navigateToMainGraph(navOptions: NavOptions? = null) {
 
 fun NavGraphBuilder.mainGraph(
     logout: () -> Unit,
-    navigateToActiveResult: () -> Unit
+    navigateToActiveResult: () -> Unit,
+    navigateToResult: (Int) -> Unit
 ) {
     composable(mainGraph) {
         MainNavigation(
             logout = logout,
-            navigateToActiveResult = navigateToActiveResult
+            navigateToActiveResult = navigateToActiveResult,
+            navigateToResult = navigateToResult
         )
     }
 }
@@ -67,7 +69,8 @@ fun NavGraphBuilder.mainGraph(
 fun MainNavigation(
     logout: () -> Unit,
     navigateToActiveResult: () -> Unit,
-    viewModel: MainViewModel = hiltViewModel()
+    viewModel: MainViewModel = hiltViewModel(),
+    navigateToResult: (Int) -> Unit
 ) {
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -171,7 +174,8 @@ fun MainNavigation(
             archiveScreen(
                 openDrawer = {
                     scope.launch { drawerState.open() }
-                }
+                },
+                navigateToResult = navigateToResult
             )
         }
     }

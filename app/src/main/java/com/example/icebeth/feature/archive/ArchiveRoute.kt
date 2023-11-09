@@ -6,10 +6,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 @Composable
 fun ArchiveRoute(
     openDrawer: () -> Unit,
-    viewModel: ArchiveViewModel = hiltViewModel()
+    viewModel: ArchiveViewModel = hiltViewModel(),
+    navigateToResult: (Int) -> Unit
 ) {
     ArchiveScreen(
         openDrawer = openDrawer,
-        state = viewModel.state
+        state = viewModel.state,
+        navigateToResult = navigateToResult
     )
 }

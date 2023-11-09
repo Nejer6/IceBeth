@@ -36,6 +36,11 @@ fun SnowHeightCard(state: ResultState) {
                 text2 = state.result.maxSnowHeight.toString(),
                 Modifier.fillMaxWidth()
             )
+            SplitText(
+                text1 = "Сумма высот снега:",
+                text2 = state.result.sumOfSnowHeights.toString(),
+                Modifier.fillMaxWidth()
+            )
         }
     }
 }

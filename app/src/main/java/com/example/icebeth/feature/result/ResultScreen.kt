@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import com.example.icebeth.common.presentation.theme.spacing
 import com.example.icebeth.common.util.formatDateFromTimestamp
 import com.example.icebeth.feature.result.components.SnowHeightCard
+import com.example.icebeth.feature.result.components.SnowHeightCountCard
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -47,7 +48,8 @@ fun ResultScreen(
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small)
         ) {
             SnowHeightCard(state)
+
+            SnowHeightCountCard(state)
         }
     }
 }
-

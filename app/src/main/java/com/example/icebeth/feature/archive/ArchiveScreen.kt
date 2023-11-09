@@ -1,5 +1,7 @@
 package com.example.icebeth.feature.archive
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -16,6 +18,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.example.icebeth.common.presentation.theme.spacing
+import com.example.icebeth.common.util.formatDateFromTimestamp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -40,11 +43,18 @@ fun ArchiveScreen(
         LazyColumn(
             modifier = Modifier
                 .padding(it)
-                .padding(horizontal = MaterialTheme.spacing.medium)
+                .padding(horizontal = MaterialTheme.spacing.medium),
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small)
         ) {
             items(state.results) {
-                Card(onClick = { /*TODO*/ }) {
-                    Text(text = it.time.toString())
+                Card(
+                    onClick = { /*TODO*/ },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(
+                        text = "Снегосъемка: ${it.time.formatDateFromTimestamp()}",
+                        modifier = Modifier.padding(MaterialTheme.spacing.medium)
+                    )
                 }
             }
         }

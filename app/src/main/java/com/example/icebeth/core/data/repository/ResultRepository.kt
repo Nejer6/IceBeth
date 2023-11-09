@@ -95,4 +95,6 @@ class ResultRepository @Inject constructor(
         snowCoverCharacter = snowCoverCharacter,
         snowConditionDescription = snowConditionDescription
     )
+
+    fun getAllResults() = resultDao.getAllResults()
 }

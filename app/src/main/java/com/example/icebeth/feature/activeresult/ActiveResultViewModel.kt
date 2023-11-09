@@ -343,7 +343,7 @@ class ActiveResultViewModel @Inject constructor(
     }
 
     fun save() {
-        if (measurementCount > 100) {
+        if (measurementCount == 100) {
             saveResult()
         } else {
             saveMeasurement()

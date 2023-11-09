@@ -35,10 +35,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navOptions
 import com.example.icebeth.common.presentation.theme.spacing
 import com.example.icebeth.common.presentation.util.UiEffect
 import com.example.icebeth.feature.archive.navigation.archiveRoute
 import com.example.icebeth.feature.archive.navigation.archiveScreen
+import com.example.icebeth.feature.archive.navigation.navigateToArchive
 import com.example.icebeth.feature.main.navigation.mainRoute
 import com.example.icebeth.feature.main.navigation.mainScreen
 import kotlinx.coroutines.flow.collectLatest
@@ -95,10 +97,12 @@ fun MainNavigation(
         NavigationDrawerData(
             "Архив",
             onClick = {
-                navController.navigate(archiveRoute) {
-                    launchSingleTop = true
-                    popUpTo(mainRoute)
-                }
+                navController.navigateToArchive(
+                    navOptions {
+                        launchSingleTop = true
+                        popUpTo(mainRoute)
+                    }
+                )
             },
             Icons.Default.Archive,
             archiveRoute

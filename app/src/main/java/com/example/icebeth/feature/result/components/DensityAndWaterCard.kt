@@ -11,7 +11,7 @@ import com.example.icebeth.common.presentation.theme.spacing
 import com.example.icebeth.feature.result.ResultState
 
 @Composable
-fun SnowHeightCard(state: ResultState) {
+fun DensityAndWaterCard(state: ResultState) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -22,23 +22,13 @@ fun SnowHeightCard(state: ResultState) {
                 .fillMaxWidth()
         ) {
             SplitText(
-                text1 = "Средняя высота снега: ",
-                text2 = String.format("%.1f", state.result.averageSnowHeight),
+                text1 = "Плотность снега: ",
+                text2 = String.format("%.7f", state.result.density),
                 Modifier.fillMaxWidth()
             )
             SplitText(
-                text1 = "Минимальная высота снега: ",
-                text2 = state.result.minSnowHeight.toString(),
-                Modifier.fillMaxWidth()
-            )
-            SplitText(
-                text1 = "Максимальная высота снега: ",
-                text2 = state.result.maxSnowHeight.toString(),
-                Modifier.fillMaxWidth()
-            )
-            SplitText(
-                text1 = "Сумма высот снега: ",
-                text2 = state.result.sumOfSnowHeights.toString(),
+                text1 = "Общий запас воды: ",
+                text2 = String.format("%.1f", state.result.totalWaterSupply),
                 Modifier.fillMaxWidth()
             )
         }

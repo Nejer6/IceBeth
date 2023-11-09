@@ -17,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.example.icebeth.common.presentation.theme.spacing
 import com.example.icebeth.common.util.formatDateFromTimestamp
+import com.example.icebeth.feature.result.components.DensityAndWaterCard
 import com.example.icebeth.feature.result.components.SnowHeightCard
 import com.example.icebeth.feature.result.components.SnowHeightCountCard
 
@@ -50,6 +51,8 @@ fun ResultScreen(
             SnowHeightCard(state)
 
             SnowHeightCountCard(state)
+
+            DensityAndWaterCard(state)
         }
     }
 }

@@ -26,7 +26,7 @@ class ResultViewModel @Inject constructor(
 
     var state by mutableStateOf(
         ResultState(
-            resultEntity = runBlocking {
+            result = runBlocking {
                 resultFlow.first()
             }
         )
@@ -36,7 +36,7 @@ class ResultViewModel @Inject constructor(
         viewModelScope.launch {
             resultFlow.collectLatest {
                 state = state.copy(
-                    resultEntity = it
+                    result = it
                 )
             }
         }

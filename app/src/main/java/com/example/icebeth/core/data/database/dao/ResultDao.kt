@@ -50,5 +50,5 @@ interface ResultDao {
     fun getAllResults(): Flow<List<ResultEntity>>
 
     @Query("SELECT * FROM results WHERE id = :resultId")
-    fun getResultById(resultId: Int): Flow<ResultEntity>
+    fun getResultWithMeasurementsById(resultId: Int): Flow<ResultWithMeasurements>
 }

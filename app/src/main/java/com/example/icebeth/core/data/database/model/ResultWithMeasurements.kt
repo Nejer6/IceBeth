@@ -2,7 +2,7 @@ package com.example.icebeth.core.data.database.model
 
 import androidx.room.Embedded
 import androidx.room.Relation
-import com.example.icebeth.core.data.network.model.request.ResultCreateRequest
+import com.example.icebeth.core.model.Result
 
 data class ResultWithMeasurements(
     @Embedded
@@ -14,7 +14,7 @@ data class ResultWithMeasurements(
     val measurements: List<MeasurementEntity>
 )
 
-fun ResultWithMeasurements.asResultCreateRequest(): ResultCreateRequest {
+fun ResultWithMeasurements.asResult(): Result {
     val everyTenthMeasurements = measurements
         .filter { it.cylinderHeight != null }
 
@@ -54,7 +54,7 @@ fun ResultWithMeasurements.asResultCreateRequest(): ResultCreateRequest {
     val sum13 = measurements.count { it.snowHeight in 1..3 }
     val sum46 = measurements.count { it.snowHeight in 4..6 }
 
-    return ResultCreateRequest(
+    return Result(
         time = result.time,
         averageSnowHeight = averageSnowHeight,
         minSnowHeight = measurements.minOf { it.snowHeight },
@@ -63,10 +63,12 @@ fun ResultWithMeasurements.asResultCreateRequest(): ResultCreateRequest {
         density = density,
         totalWaterSupply = totalWaterSupply,
         degreeOfCoverage = result.degreeOfCoverage!!,
-        snowCoverCharacter = result.snowCoverCharacter!!.ordinal,
-        snowConditionDescription = result.snowConditionDescription!!.ordinal,
+        snowCoverCharacter = result.snowCoverCharacter!!,
+        snowConditionDescription = result.snowConditionDescription!!,
         heightGreaterThan30 = heightGreaterThan30,
         sum13 = sum13,
-        sum46 = sum46
+        sum46 = sum46,
+        id = result.id,
+        measurements = measurements
     )
 }

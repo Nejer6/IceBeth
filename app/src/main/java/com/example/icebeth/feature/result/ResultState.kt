@@ -1,9 +1,9 @@
 package com.example.icebeth.feature.result
 
 import androidx.compose.runtime.Stable
-import com.example.icebeth.core.data.database.model.ResultEntity
+import com.example.icebeth.core.model.Result
 
 @Stable
 data class ResultState(
-    val resultEntity: ResultEntity
+    val result: Result
 )

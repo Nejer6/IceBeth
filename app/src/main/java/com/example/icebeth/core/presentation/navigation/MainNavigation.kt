@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Archive
 import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material.icons.filled.Straighten
 import androidx.compose.material3.Divider
@@ -34,8 +35,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navOptions
 import com.example.icebeth.common.presentation.theme.spacing
 import com.example.icebeth.common.presentation.util.UiEffect
+import com.example.icebeth.feature.archive.navigation.archiveRoute
+import com.example.icebeth.feature.archive.navigation.archiveScreen
+import com.example.icebeth.feature.archive.navigation.navigateToArchive
 import com.example.icebeth.feature.main.navigation.mainRoute
 import com.example.icebeth.feature.main.navigation.mainScreen
 import kotlinx.coroutines.flow.collectLatest
@@ -49,12 +54,14 @@ fun NavController.navigateToMainGraph(navOptions: NavOptions? = null) {
 
 fun NavGraphBuilder.mainGraph(
     logout: () -> Unit,
-    navigateToActiveResult: () -> Unit
+    navigateToActiveResult: () -> Unit,
+    navigateToResult: (Int) -> Unit
 ) {
     composable(mainGraph) {
         MainNavigation(
             logout = logout,
-            navigateToActiveResult = navigateToActiveResult
+            navigateToActiveResult = navigateToActiveResult,
+            navigateToResult = navigateToResult
         )
     }
 }
@@ -64,7 +71,8 @@ fun NavGraphBuilder.mainGraph(
 fun MainNavigation(
     logout: () -> Unit,
     navigateToActiveResult: () -> Unit,
-    viewModel: MainViewModel = hiltViewModel()
+    viewModel: MainViewModel = hiltViewModel(),
+    navigateToResult: (Int) -> Unit
 ) {
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -85,6 +93,19 @@ fun MainNavigation(
             },
             Icons.Default.Straighten,
             mainRoute
+        ),
+        NavigationDrawerData(
+            "Архив",
+            onClick = {
+                navController.navigateToArchive(
+                    navOptions {
+                        launchSingleTop = true
+                        popUpTo(mainRoute)
+                    }
+                )
+            },
+            Icons.Default.Archive,
+            archiveRoute
         ),
         NavigationDrawerData(
             "Выйти",
@@ -152,6 +173,13 @@ fun MainNavigation(
                     scope.launch { drawerState.open() }
                 },
                 navigateToActiveResult = navigateToActiveResult
+            )
+
+            archiveScreen(
+                openDrawer = {
+                    scope.launch { drawerState.open() }
+                },
+                navigateToResult = navigateToResult
             )
         }
     }

@@ -8,6 +8,8 @@ import com.example.icebeth.feature.activeresult.navigation.activeResultScreen
 import com.example.icebeth.feature.activeresult.navigation.navigateToActiveResult
 import com.example.icebeth.feature.login.navigation.loginScreen
 import com.example.icebeth.feature.login.navigation.navigateToLogin
+import com.example.icebeth.feature.result.navigation.navigateToResult
+import com.example.icebeth.feature.result.navigation.resultScreen
 import com.example.icebeth.feature.splash.navigation.splashRoute
 import com.example.icebeth.feature.splash.navigation.splashScreen
 
@@ -41,7 +43,8 @@ fun AppNavigation(
             navigateToActiveResult = {
                 navController.popBackStack()
                 navController.navigateToActiveResult()
-            }
+            },
+            navigateToResult = navController::navigateToResult
         )
 
         loginScreen(
@@ -56,6 +59,10 @@ fun AppNavigation(
                 navController.popBackStack()
                 navController.navigateToMainGraph()
             }
+        )
+
+        resultScreen(
+            navigateUp = navController::navigateUp
         )
     }
 }

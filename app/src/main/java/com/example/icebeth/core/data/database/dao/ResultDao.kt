@@ -45,4 +45,10 @@ interface ResultDao {
 
     @Query("UPDATE results SET remote_id = :remoteId WHERE id = :resultId")
     suspend fun updateRemoteId(resultId: Int, remoteId: Int)
+
+    @Query("SELECT * FROM results")
+    fun getAllResults(): Flow<List<ResultEntity>>
+
+    @Query("SELECT * FROM results WHERE id = :resultId")
+    fun getResultWithMeasurementsById(resultId: Int): Flow<ResultWithMeasurements>
 }

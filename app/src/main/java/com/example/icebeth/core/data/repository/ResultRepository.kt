@@ -7,12 +7,14 @@ import com.example.icebeth.core.data.database.model.ResultEntity
 import com.example.icebeth.core.data.database.model.SnowConditionDescription
 import com.example.icebeth.core.data.database.model.SnowCoverCharacter
 import com.example.icebeth.core.data.database.model.asCreateRequest
-import com.example.icebeth.core.data.database.model.asResultCreateRequest
+import com.example.icebeth.core.data.database.model.asResult
 import com.example.icebeth.core.data.network.api.MeasurementApi
 import com.example.icebeth.core.data.network.api.ResultApi
+import com.example.icebeth.core.model.asResultCreateRequest
 import java.util.Date
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlinx.coroutines.flow.map
 
 @Singleton
 class ResultRepository @Inject constructor(
@@ -29,7 +31,9 @@ class ResultRepository @Inject constructor(
         unloadedResultsWithMeasurements.forEach { resultWithMeasurements ->
             when (
                 val resultResponse =
-                    resultApi.createResult(resultWithMeasurements.asResultCreateRequest())
+                    resultApi.createResult(
+                        resultWithMeasurements.asResult().asResultCreateRequest()
+                    )
             ) {
                 is ApiResponse.Success -> {
                     val remoteId = resultResponse.body.id
@@ -95,4 +99,10 @@ class ResultRepository @Inject constructor(
         snowCoverCharacter = snowCoverCharacter,
         snowConditionDescription = snowConditionDescription
     )
+
+    fun getAllResults() = resultDao.getAllResults()
+
+    fun getResultById(resultId: Int) = resultDao
+        .getResultWithMeasurementsById(resultId)
+        .map { it.asResult() }
 }

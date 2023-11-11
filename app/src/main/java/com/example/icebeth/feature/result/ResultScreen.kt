@@ -10,10 +10,12 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.example.icebeth.common.presentation.theme.spacing
 import com.example.icebeth.common.util.formatDateFromTimestamp
@@ -26,7 +28,8 @@ import com.example.icebeth.feature.result.components.SnowHeightCountCard
 @Composable
 fun ResultScreen(
     state: ResultState,
-    navigateUp: () -> Unit
+    navigateUp: () -> Unit,
+    navigateToMeasurements: (Int) -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -47,7 +50,8 @@ fun ResultScreen(
                 .padding(it)
                 .padding(horizontal = MaterialTheme.spacing.medium)
                 .fillMaxWidth(),
-            verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small)
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             MainResultCard(state)
 
@@ -56,6 +60,10 @@ fun ResultScreen(
             SnowHeightCountCard(state)
 
             DensityAndWaterCard(state)
+
+            OutlinedButton(onClick = { navigateToMeasurements(state.result.id) }) {
+                Text(text = "Измерения")
+            }
         }
     }
 }

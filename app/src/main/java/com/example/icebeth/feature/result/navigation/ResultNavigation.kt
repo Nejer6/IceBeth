@@ -26,7 +26,8 @@ fun NavController.navigateToResult(resultId: Int, navOptions: NavOptions? = null
 }
 
 fun NavGraphBuilder.resultScreen(
-    navigateUp: () -> Unit
+    navigateUp: () -> Unit,
+    navigateToMeasurements: (Int) -> Unit
 ) {
     composable(
         "$resultRoute/{$RESULT_ID_ARG}",
@@ -35,7 +36,8 @@ fun NavGraphBuilder.resultScreen(
         )
     ) {
         ResultRoute(
-            navigateUp = navigateUp
+            navigateUp = navigateUp,
+            navigateToMeasurements = navigateToMeasurements
         )
     }
 }

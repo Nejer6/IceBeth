@@ -6,10 +6,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 @Composable
 fun ResultRoute(
     viewModel: ResultViewModel = hiltViewModel(),
-    navigateUp: () -> Unit
+    navigateUp: () -> Unit,
+    navigateToMeasurements: (Int) -> Unit
 ) {
     ResultScreen(
         state = viewModel.state,
-        navigateUp = navigateUp
+        navigateUp = navigateUp,
+        navigateToMeasurements = navigateToMeasurements
     )
 }

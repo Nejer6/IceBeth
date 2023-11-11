@@ -8,6 +8,8 @@ import com.example.icebeth.feature.activeresult.navigation.activeResultScreen
 import com.example.icebeth.feature.activeresult.navigation.navigateToActiveResult
 import com.example.icebeth.feature.login.navigation.loginScreen
 import com.example.icebeth.feature.login.navigation.navigateToLogin
+import com.example.icebeth.feature.measurements.navigation.measurementsScreen
+import com.example.icebeth.feature.measurements.navigation.navigateToMeasurements
 import com.example.icebeth.feature.result.navigation.navigateToResult
 import com.example.icebeth.feature.result.navigation.resultScreen
 import com.example.icebeth.feature.splash.navigation.splashRoute
@@ -62,6 +64,11 @@ fun AppNavigation(
         )
 
         resultScreen(
+            navigateUp = navController::navigateUp,
+            navigateToMeasurements = navController::navigateToMeasurements
+        )
+
+        measurementsScreen(
             navigateUp = navController::navigateUp
         )
     }

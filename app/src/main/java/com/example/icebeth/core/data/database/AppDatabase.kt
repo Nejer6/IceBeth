@@ -10,7 +10,7 @@ import com.example.icebeth.core.data.database.model.MeasurementEntity
 import com.example.icebeth.core.data.database.model.ResultEntity
 
 @Database(
-    version = 6,
+    version = 7,
     exportSchema = true,
     entities = [
         MeasurementEntity::class,
@@ -19,7 +19,8 @@ import com.example.icebeth.core.data.database.model.ResultEntity
     autoMigrations = [
         AutoMigration(from = 3, to = 4, spec = DatabaseMigrations.Schema3to4::class),
         AutoMigration(from = 4, to = 5),
-        AutoMigration(from = 5, to = 6, spec = DatabaseMigrations.Schema5to6::class)
+        AutoMigration(from = 5, to = 6, spec = DatabaseMigrations.Schema5to6::class),
+        AutoMigration(from = 6, to = 7)
     ]
 )
 @TypeConverters(Converters::class)

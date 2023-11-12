@@ -9,14 +9,14 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class UpdateResultUseCase @Inject constructor(
+class FinishResultUseCase @Inject constructor(
     private val resultRepository: ResultRepository
 ) {
     suspend operator fun invoke(
         resultId: Int,
         degreeOfCoverage: String,
-        snowCoverCharacter: SnowCoverCharacter,
-        snowConditionDescription: SnowConditionDescription
+        snowCoverCharacter: SnowCoverCharacter?,
+        snowConditionDescription: SnowConditionDescription?
     ): ResultUpdateResult {
         val degreeOfCoverageInt = degreeOfCoverage.toIntOrNull()
 
@@ -28,13 +28,26 @@ class UpdateResultUseCase @Inject constructor(
             else -> null
         }
 
-        if (degreeOfCoverageError == null) {
+        val snowCoverCharacterError = when (snowCoverCharacter) {
+            null -> ResultError.Empty
+            else -> null
+        }
+
+        val snowConditionDescriptionError = when (snowConditionDescription) {
+            null -> ResultError.Empty
+            else -> null
+        }
+
+        if (degreeOfCoverageError == null &&
+            snowCoverCharacterError == null &&
+            snowConditionDescriptionError == null
+        ) {
             resultRepository.updateResult(
                 resultId = resultId,
                 degreeOfCoverage = degreeOfCoverageInt!!,
-                snowCoverCharacter = snowCoverCharacter,
-                snowConditionDescription = snowConditionDescription,
-                isUpdated = true
+                snowCoverCharacter = snowCoverCharacter!!,
+                snowConditionDescription = snowConditionDescription!!,
+                isUpdated = false
             )
 
             return ResultUpdateResult(isSuccess = true)
@@ -42,8 +55,8 @@ class UpdateResultUseCase @Inject constructor(
 
         return ResultUpdateResult(
             degreeOfCoverageError = degreeOfCoverageError,
-            snowCoverCharacterError = null,
-            snowConditionDescriptionError = null,
+            snowCoverCharacterError = snowCoverCharacterError,
+            snowConditionDescriptionError = snowConditionDescriptionError,
             isSuccess = false
         )
     }

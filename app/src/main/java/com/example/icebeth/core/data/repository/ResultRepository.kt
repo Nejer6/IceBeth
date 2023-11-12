@@ -92,12 +92,14 @@ class ResultRepository @Inject constructor(
         resultId: Int,
         degreeOfCoverage: Int,
         snowCoverCharacter: SnowCoverCharacter,
-        snowConditionDescription: SnowConditionDescription
+        snowConditionDescription: SnowConditionDescription,
+        isUpdated: Boolean
     ) = resultDao.updateResult(
         resultId = resultId,
         degreeOfCoverage = degreeOfCoverage,
         snowCoverCharacter = snowCoverCharacter,
-        snowConditionDescription = snowConditionDescription
+        snowConditionDescription = snowConditionDescription,
+        isUpdated = isUpdated
     )
 
     fun getAllResults() = resultDao.getAllResults()

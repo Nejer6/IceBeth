@@ -17,7 +17,10 @@ data class ResultEntity(
     @ColumnInfo(name = "snow_cover_character")
     val snowCoverCharacter: SnowCoverCharacter?,
     @ColumnInfo(name = "snow_condition_description")
-    val snowConditionDescription: SnowConditionDescription?
+    val snowConditionDescription: SnowConditionDescription?,
+
+    @ColumnInfo(name = "is_updated", defaultValue = "false")
+    val isUpdated: Boolean = false
 )
 
 enum class SnowCoverCharacter(override val description: String) : Description {

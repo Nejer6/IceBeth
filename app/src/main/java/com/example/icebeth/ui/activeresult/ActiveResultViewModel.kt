@@ -16,8 +16,8 @@ import com.example.icebeth.core.data.preferences.AppPreferences
 import com.example.icebeth.core.data.repository.MeasurementRepository
 import com.example.icebeth.core.data.repository.ResultRepository
 import com.example.icebeth.core.domain.CreateMeasurementUseCase
+import com.example.icebeth.core.domain.FinishResultUseCase
 import com.example.icebeth.core.domain.UpdateMeasurementUseCase
-import com.example.icebeth.core.domain.UpdateResultUseCase
 import com.example.icebeth.core.domain.util.MeasurementError
 import com.example.icebeth.core.domain.util.ResultError
 import com.example.icebeth.core.model.MeasurementCreateResult
@@ -37,7 +37,7 @@ class ActiveResultViewModel @Inject constructor(
     private val resultRepository: ResultRepository,
     measurementRepository: MeasurementRepository,
     private val createMeasurementUseCase: CreateMeasurementUseCase,
-    private val updateResultUseCase: UpdateResultUseCase,
+    private val finishResultUseCase: FinishResultUseCase,
     private val updateMeasurementUseCase: UpdateMeasurementUseCase,
     locationClient: LocationClient
 ) : ViewModel() {
@@ -325,7 +325,7 @@ class ActiveResultViewModel @Inject constructor(
 
     private fun saveResult() {
         viewModelScope.launch {
-            val updateResult = updateResultUseCase(
+            val updateResult = finishResultUseCase(
                 resultId = resultId,
                 degreeOfCoverage = degreeOfCoverage,
                 snowCoverCharacter = snowCoverCharacter,

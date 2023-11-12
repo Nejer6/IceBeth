@@ -33,14 +33,16 @@ interface ResultDao {
         "UPDATE results SET " +
             "degree_of_coverage = :degreeOfCoverage, " +
             "snow_cover_character = :snowCoverCharacter, " +
-            "snow_condition_description = :snowConditionDescription " +
+            "snow_condition_description = :snowConditionDescription, " +
+            "is_updated = :isUpdated " +
             "WHERE id = :resultId"
     )
     suspend fun updateResult(
         resultId: Int,
         degreeOfCoverage: Int,
         snowCoverCharacter: SnowCoverCharacter,
-        snowConditionDescription: SnowConditionDescription
+        snowConditionDescription: SnowConditionDescription,
+        isUpdated: Boolean
     )
 
     @Query("UPDATE results SET remote_id = :remoteId WHERE id = :resultId")

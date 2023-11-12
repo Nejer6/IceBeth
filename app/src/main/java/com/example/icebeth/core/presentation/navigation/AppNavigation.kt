@@ -4,16 +4,18 @@ import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import com.example.icebeth.feature.activeresult.navigation.activeResultScreen
-import com.example.icebeth.feature.activeresult.navigation.navigateToActiveResult
-import com.example.icebeth.feature.login.navigation.loginScreen
-import com.example.icebeth.feature.login.navigation.navigateToLogin
-import com.example.icebeth.feature.measurements.navigation.measurementsScreen
-import com.example.icebeth.feature.measurements.navigation.navigateToMeasurements
-import com.example.icebeth.feature.result.navigation.navigateToResult
-import com.example.icebeth.feature.result.navigation.resultScreen
-import com.example.icebeth.feature.splash.navigation.splashRoute
-import com.example.icebeth.feature.splash.navigation.splashScreen
+import com.example.icebeth.ui.activeresult.navigation.activeResultScreen
+import com.example.icebeth.ui.activeresult.navigation.navigateToActiveResult
+import com.example.icebeth.ui.login.navigation.loginScreen
+import com.example.icebeth.ui.login.navigation.navigateToLogin
+import com.example.icebeth.ui.measurements.navigation.measurementsScreen
+import com.example.icebeth.ui.measurements.navigation.navigateToMeasurements
+import com.example.icebeth.ui.result.navigation.navigateToResult
+import com.example.icebeth.ui.result.navigation.resultScreen
+import com.example.icebeth.ui.resultedit.navigation.navigateToResultEdit
+import com.example.icebeth.ui.resultedit.navigation.resultEditScreen
+import com.example.icebeth.ui.splash.navigation.splashRoute
+import com.example.icebeth.ui.splash.navigation.splashScreen
 
 @Composable
 fun AppNavigation(
@@ -65,10 +67,15 @@ fun AppNavigation(
 
         resultScreen(
             navigateUp = navController::navigateUp,
-            navigateToMeasurements = navController::navigateToMeasurements
+            navigateToMeasurements = navController::navigateToMeasurements,
+            navigateToResultEdit = navController::navigateToResultEdit
         )
 
         measurementsScreen(
+            navigateUp = navController::navigateUp
+        )
+
+        resultEditScreen(
             navigateUp = navController::navigateUp
         )
     }

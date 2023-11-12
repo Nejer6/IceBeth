@@ -38,11 +38,11 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import com.example.icebeth.common.presentation.theme.spacing
 import com.example.icebeth.common.presentation.util.UiEffect
-import com.example.icebeth.feature.archive.navigation.archiveRoute
-import com.example.icebeth.feature.archive.navigation.archiveScreen
-import com.example.icebeth.feature.archive.navigation.navigateToArchive
-import com.example.icebeth.feature.main.navigation.mainRoute
-import com.example.icebeth.feature.main.navigation.mainScreen
+import com.example.icebeth.ui.archive.navigation.archiveRoute
+import com.example.icebeth.ui.archive.navigation.archiveScreen
+import com.example.icebeth.ui.archive.navigation.navigateToArchive
+import com.example.icebeth.ui.main.navigation.mainRoute
+import com.example.icebeth.ui.main.navigation.mainScreen
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 

@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.icebeth.core.data.repository.ResultRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 @HiltViewModel
@@ -18,11 +19,16 @@ class ArchiveViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            resultRepository.getAllResults().collect {
-                state = state.copy(
-                    results = it
-                )
-            }
+            resultRepository
+                .getAllResults()
+                .map { resultEntities ->
+                    resultEntities.sortedByDescending { it.time }
+                }
+                .collect {
+                    state = state.copy(
+                        results = it
+                    )
+                }
         }
     }
 }

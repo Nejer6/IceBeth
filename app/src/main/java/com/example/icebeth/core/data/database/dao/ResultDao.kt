@@ -20,10 +20,16 @@ interface ResultDao {
     @Delete
     suspend fun deleteResult(resultEntity: ResultEntity)
 
-    @Query("SELECT COUNT(*) FROM results WHERE (remote_id IS NULL) OR (is_updated = 1)")
+    @Query(
+        "SELECT COUNT(*) FROM results WHERE ((remote_id IS NULL) OR (is_updated = 1)) AND " +
+            "(degree_of_coverage IS NOT NULL)"
+    )
     fun getCountOfUnaploadedResults(): Flow<Int>
 
-    @Query("SELECT * FROM results WHERE (remote_id IS NULL) OR (is_updated = 1)")
+    @Query(
+        "SELECT * FROM results WHERE ((remote_id IS NULL) OR (is_updated = 1)) AND " +
+            "(degree_of_coverage IS NOT NULL)"
+    )
     fun getAllUnloadedResultsWithMeasurements(): List<ResultWithMeasurements>
 
     @Query("DELETE FROM results WHERE id = :resultId")

@@ -33,7 +33,8 @@ class MeasurementRepository @Inject constructor(
         snowCrust: Boolean?,
         iceCrustThickness: Int?,
         snowLayerWaterSaturation: Int?,
-        thawedWaterLayerThickness: Int?
+        thawedWaterLayerThickness: Int?,
+        isUpdated: Boolean
     ) = measurementDao.updateMeasurement(
         measurementId,
         snowHeight,
@@ -43,7 +44,8 @@ class MeasurementRepository @Inject constructor(
         snowCrust,
         iceCrustThickness,
         snowLayerWaterSaturation,
-        thawedWaterLayerThickness
+        thawedWaterLayerThickness,
+        isUpdated
     )
 
     suspend fun getMeasurementById(measurementId: Int) =

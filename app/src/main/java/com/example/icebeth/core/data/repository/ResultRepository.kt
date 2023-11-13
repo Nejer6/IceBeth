@@ -7,6 +7,7 @@ import com.example.icebeth.core.data.database.model.SnowConditionDescription
 import com.example.icebeth.core.data.database.model.SnowCoverCharacter
 import com.example.icebeth.core.data.database.model.asCreateRequest
 import com.example.icebeth.core.data.database.model.asResult
+import com.example.icebeth.core.data.database.model.asUpdateRequest
 import com.example.icebeth.core.data.network.api.MeasurementApi
 import com.example.icebeth.core.data.network.api.ResultApi
 import com.example.icebeth.core.data.network.util.ApiResponse
@@ -71,23 +72,42 @@ class ResultRepository @Inject constructor(
         val unloadedMeasurements = measurementDao.getAllUnloadedMeasurements()
 
         unloadedMeasurements.forEach { measurementEntity ->
-            when (
-                val measurementResponse =
-                    measurementApi.createMeasurement(
-                        measurementEntity.asCreateRequest(measurementEntity.remoteResultId!!)
-                    )
-            ) {
-                is ApiResponse.Success -> {
-                    measurementDao.insertMeasurement(
-                        measurementEntity.copy(
-                            remoteId = measurementResponse.body.id,
-                            remoteResultId = measurementResponse.body.resultId,
-                            isUpdated = false
+            if (measurementEntity.remoteId == null) {
+                when (
+                    val measurementResponse =
+                        measurementApi.createMeasurement(
+                            measurementEntity.asCreateRequest(measurementEntity.remoteResultId!!)
                         )
-                    )
-                }
+                ) {
+                    is ApiResponse.Success -> {
+                        measurementDao.insertMeasurement(
+                            measurementEntity.copy(
+                                remoteId = measurementResponse.body.id,
+                                remoteResultId = measurementResponse.body.resultId,
+                                isUpdated = false
+                            )
+                        )
+                    }
 
-                else -> return
+                    else -> return
+                }
+            } else if (measurementEntity.isUpdated) {
+                when (
+                    measurementApi.updateMeasurement(
+                        measurementEntity.remoteId,
+                        measurementEntity.asUpdateRequest()
+                    )
+                ) {
+                    is ApiResponse.Success -> {
+                        measurementDao.insertMeasurement(
+                            measurementEntity.copy(
+                                isUpdated = false
+                            )
+                        )
+                    }
+
+                    else -> return
+                }
             }
         }
     }
@@ -124,4 +144,7 @@ class ResultRepository @Inject constructor(
     fun getResultById(resultId: Int) = resultDao
         .getResultWithMeasurementsById(resultId)
         .map { it.asResult() }
+
+    suspend fun updateIsUpdated(resultId: Int, isUpdated: Boolean) =
+        resultDao.updateIsUpdated(resultId, isUpdated)
 }

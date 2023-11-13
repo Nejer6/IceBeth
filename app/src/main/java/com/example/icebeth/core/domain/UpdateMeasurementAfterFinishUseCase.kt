@@ -2,17 +2,20 @@ package com.example.icebeth.core.domain
 
 import com.example.icebeth.core.data.database.model.SoilSurfaceCondition
 import com.example.icebeth.core.data.repository.MeasurementRepository
+import com.example.icebeth.core.data.repository.ResultRepository
 import com.example.icebeth.core.domain.util.MeasurementError
 import com.example.icebeth.core.model.MeasurementCreateResult
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class UpdateMeasurementUseCase @Inject constructor(
-    private val measurementRepository: MeasurementRepository
+class UpdateMeasurementAfterFinishUseCase @Inject constructor(
+    private val measurementRepository: MeasurementRepository,
+    private val resultRepository: ResultRepository
 ) {
     suspend operator fun invoke(
         measurementId: Int,
+        resultId: Int,
         snowHeight: String,
         cylinderHeight: String?,
         iceCrustThickness: String?,
@@ -42,8 +45,10 @@ class UpdateMeasurementUseCase @Inject constructor(
                     iceCrustThickness = null,
                     snowLayerWaterSaturation = null,
                     thawedWaterLayerThickness = null,
-                    isUpdated = false
+                    isUpdated = true
                 )
+
+                resultRepository.updateIsUpdated(resultId, true)
 
                 return MeasurementCreateResult(isSuccess = true)
             }
@@ -85,6 +90,8 @@ class UpdateMeasurementUseCase @Inject constructor(
             )
         }
 
+        resultRepository.updateIsUpdated(resultId, true)
+
         measurementRepository.updateMeasurement(
             measurementId = measurementId,
             snowHeight = snowHeight.toInt(),
@@ -95,7 +102,7 @@ class UpdateMeasurementUseCase @Inject constructor(
             iceCrustThickness = iceCrustThickness.toInt(),
             snowLayerWaterSaturation = snowLayerWaterSaturation.toInt(),
             thawedWaterLayerThickness = thawedWaterLayerThickness.toInt(),
-            isUpdated = false
+            isUpdated = true
         )
 
         return MeasurementCreateResult(isSuccess = true)

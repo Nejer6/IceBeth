@@ -4,6 +4,9 @@ import com.example.icebeth.core.data.database.model.SoilSurfaceCondition
 import com.example.icebeth.core.domain.util.MeasurementError
 
 data class MeasurementEditState(
+    val measurementId: Int,
+    val resultId: Int,
+
     val snowHeight: String,
     val snowHeightError: MeasurementError? = null,
 

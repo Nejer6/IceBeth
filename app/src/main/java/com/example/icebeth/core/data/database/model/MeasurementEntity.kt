@@ -5,6 +5,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import com.example.icebeth.core.data.network.model.request.MeasurementCreateRequest
+import com.example.icebeth.core.data.network.model.request.MeasurementUpdateRequest
 
 @Entity(
     tableName = "measurements",
@@ -71,6 +72,17 @@ fun MeasurementEntity.asCreateRequest(remoteResultId: Int) = MeasurementCreateRe
     time = time,
     latitude = latitude,
     longitude = longitude,
+    snowHeight = snowHeight,
+    cylinderHeight = cylinderHeight,
+    massOfSnow = massOfSnow,
+    soilSurfaceCondition = soilSurfaceCondition?.ordinal,
+    snowCrust = snowCrust,
+    iceCrustThickness = iceCrustThickness,
+    snowLayerWaterSaturation = snowLayerWaterSaturation,
+    thawedWaterLayerThickness = thawedWaterLayerThickness
+)
+
+fun MeasurementEntity.asUpdateRequest() = MeasurementUpdateRequest(
     snowHeight = snowHeight,
     cylinderHeight = cylinderHeight,
     massOfSnow = massOfSnow,

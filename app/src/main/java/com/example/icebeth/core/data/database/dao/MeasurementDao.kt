@@ -50,7 +50,8 @@ interface MeasurementDao {
             "snow_crust = :snowCrust, " +
             "ice_crust_thickness = :iceCrustThickness, " +
             "snow_layer_water_saturation = :snowLayerWaterSaturation, " +
-            "thawed_water_layer_thickness = :thawedWaterLayerThickness " +
+            "thawed_water_layer_thickness = :thawedWaterLayerThickness, " +
+            "is_updated = :isUpdated " +
             "WHERE id = :measurementId"
     )
     suspend fun updateMeasurement(
@@ -62,7 +63,8 @@ interface MeasurementDao {
         snowCrust: Boolean?,
         iceCrustThickness: Int?,
         snowLayerWaterSaturation: Int?,
-        thawedWaterLayerThickness: Int?
+        thawedWaterLayerThickness: Int?,
+        isUpdated: Boolean
     )
 
     @Query("SELECT * FROM measurements WHERE id = :measurementId")

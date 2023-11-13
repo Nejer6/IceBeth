@@ -5,15 +5,21 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.icebeth.core.data.repository.MeasurementRepository
+import com.example.icebeth.core.domain.UpdateMeasurementAfterFinishUseCase
 import com.example.icebeth.ui.screens.measurementedit.navigation.MeasurementEditArgs
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 @HiltViewModel
 class MeasurementEditViewModel @Inject constructor(
     private val measurementRepository: MeasurementRepository,
+    private val updateMeasurementAfterFinishUseCase: UpdateMeasurementAfterFinishUseCase,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     private val measurementEditArgs = MeasurementEditArgs(savedStateHandle)
@@ -31,10 +37,15 @@ class MeasurementEditViewModel @Inject constructor(
                 snowLayerWaterCondition = measurement.snowLayerWaterSaturation?.toString(),
                 soilSurfaceCondition = measurement.soilSurfaceCondition,
                 thawedWaterLayerThickness = measurement.thawedWaterLayerThickness?.toString(),
-                isExpandedMeasurement = measurement.cylinderHeight != null
+                isExpandedMeasurement = measurement.cylinderHeight != null,
+                measurementId = measurement.id,
+                resultId = measurement.resultId
             )
         }
     )
+
+    private val _effect = Channel<MeasurementEditEffect>()
+    val effect = _effect.receiveAsFlow()
 
     fun onEvent(event: MeasurementEditEvent) {
         when (event) {
@@ -86,7 +97,38 @@ class MeasurementEditViewModel @Inject constructor(
                 )
             }
 
-            MeasurementEditEvent.Save -> TODO()
+            MeasurementEditEvent.Save -> {
+                viewModelScope.launch {
+                    val measurementUpdateResult = updateMeasurementAfterFinishUseCase(
+                        measurementId = state.measurementId,
+                        resultId = state.resultId,
+                        cylinderHeight = state.cylinderHeight,
+                        iceCrustThickness = state.iceCrustThickness,
+                        isExpanded = state.isExpandedMeasurement,
+                        massOfSnow = state.massOfSnow,
+                        snowCrust = state.snowCrust,
+                        snowHeight = state.snowHeight,
+                        snowLayerWaterSaturation = state.snowLayerWaterCondition,
+                        soilSurfaceCondition = state.soilSurfaceCondition,
+                        thawedWaterLayerThickness = state.thawedWaterLayerThickness
+                    )
+
+                    if (measurementUpdateResult.isSuccess) {
+                        _effect.send(MeasurementEditEffect.NavigateUp)
+                    } else {
+                        state = state.copy(
+                            cylinderHeightError = measurementUpdateResult.cylinderHeightError,
+                            iceCrustThicknessError = measurementUpdateResult.iceCrustThicknessError,
+                            massOfSnowError = measurementUpdateResult.massOfSnowError,
+                            snowHeightError = measurementUpdateResult.snowHeightError,
+                            snowLayerWaterConditionError =
+                            measurementUpdateResult.snowLayerWaterSaturationError,
+                            thawedWaterLayerThicknessError =
+                            measurementUpdateResult.thawedWaterLayerThicknessError
+                        )
+                    }
+                }
+            }
         }
     }
 }

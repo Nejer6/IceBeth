@@ -17,9 +17,11 @@ import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import com.example.icebeth.ui.theme.spacing
 import com.example.icebeth.util.formatDateFromTimestamp
 
@@ -30,6 +32,8 @@ fun ArchiveScreen(
     state: ArchiveState,
     navigateToResult: (Int) -> Unit
 ) {
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -40,9 +44,11 @@ fun ArchiveScreen(
                     IconButton(onClick = openDrawer) {
                         Icon(imageVector = Icons.Default.Menu, contentDescription = "Меню")
                     }
-                }
+                },
+                scrollBehavior = scrollBehavior
             )
-        }
+        },
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
     ) {
         LazyColumn(
             modifier = Modifier

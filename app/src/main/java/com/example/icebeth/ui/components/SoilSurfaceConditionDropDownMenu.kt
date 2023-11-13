@@ -1,10 +1,9 @@
-package com.example.icebeth.ui.screens.activeresult.components
+package com.example.icebeth.ui.components
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.example.icebeth.core.data.database.model.SoilSurfaceCondition
 import com.example.icebeth.core.domain.util.MeasurementError
-import com.example.icebeth.ui.components.DropDownMenu
 
 @Composable
 fun SoilSurfaceConditionDropDownMenu(

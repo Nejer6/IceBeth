@@ -57,9 +57,14 @@ class ActiveResultViewModel @Inject constructor(
 
     var expandedNumber by mutableStateOf(
         runBlocking {
-            val index = measurementsFlow.first().indexOfFirst { it.cylinderHeight != null }
+            val measurements = measurementsFlow.first()
+            val index = measurements.indexOfFirst { it.cylinderHeight != null }
             if (index == -1) {
-                null
+                if (measurements.size == 9) {
+                    0
+                } else {
+                    null
+                }
             } else {
                 (index + 1) % 10
             }

@@ -24,7 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import com.example.icebeth.core.domain.util.MeasurementError
-import com.example.icebeth.ui.screens.activeresult.components.SoilSurfaceConditionDropDownMenu
+import com.example.icebeth.ui.components.SoilSurfaceConditionDropDownMenu
 import com.example.icebeth.ui.theme.spacing
 
 @OptIn(ExperimentalMaterial3Api::class)

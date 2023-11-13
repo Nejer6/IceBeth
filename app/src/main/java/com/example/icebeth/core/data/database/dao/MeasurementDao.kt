@@ -64,4 +64,7 @@ interface MeasurementDao {
         snowLayerWaterSaturation: Int?,
         thawedWaterLayerThickness: Int?
     )
+
+    @Query("SELECT * FROM measurements WHERE id = :measurementId")
+    suspend fun getMeasurementById(measurementId: Int): MeasurementEntity
 }

@@ -2,6 +2,7 @@ package com.example.icebeth.ui.screens.measurements
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,12 +14,16 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.EditOff
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -35,7 +40,10 @@ import com.example.icebeth.util.formatTimeFromTimestamp
 @Composable
 fun MeasurementsScreen(
     navigateUp: () -> Unit,
-    state: MeasurementsState
+    state: MeasurementsState,
+    snackbarHostState: SnackbarHostState,
+    onEvent: (MeasurementsEvent) -> Unit,
+    navigateToMeasurementEdit: (Int) -> Unit
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
 
@@ -50,10 +58,30 @@ fun MeasurementsScreen(
                         Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Назад")
                     }
                 },
-                scrollBehavior = scrollBehavior
+                scrollBehavior = scrollBehavior,
+                actions = {
+                    if (state.isEditMode) {
+                        IconButton(onClick = { onEvent(MeasurementsEvent.ToggleEditMode) }) {
+                            Icon(
+                                imageVector = Icons.Default.EditOff,
+                                contentDescription = "Закончить редактирование"
+                            )
+                        }
+                    } else {
+                        IconButton(onClick = { onEvent(MeasurementsEvent.ToggleEditMode) }) {
+                            Icon(
+                                imageVector = Icons.Default.Edit,
+                                contentDescription = "Редактировать"
+                            )
+                        }
+                    }
+                }
             )
         },
-        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState)
+        }
     ) { paddingValues ->
         val extendedMeasurements = remember(key1 = state.measurements) {
             state.measurements.filter { it.cylinderHeight != null }
@@ -67,7 +95,11 @@ fun MeasurementsScreen(
         ) {
             itemsIndexed(extendedMeasurements) { index, it ->
                 Column(
-                    modifier = Modifier.padding(MaterialTheme.spacing.small)
+                    modifier = Modifier
+                        .clickable(state.isEditMode) {
+                            navigateToMeasurementEdit(it.id)
+                        }
+                        .padding(MaterialTheme.spacing.small)
                 ) {
                     Row(
                         horizontalArrangement = Arrangement.SpaceBetween,
@@ -154,6 +186,7 @@ fun MeasurementsScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .background(MaterialTheme.colorScheme.background)
+                        .padding(MaterialTheme.spacing.small)
                 ) {
                     Text(
                         text = "№",
@@ -180,7 +213,12 @@ fun MeasurementsScreen(
 
             itemsIndexed(state.measurements) { index, item ->
                 Row(
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable(state.isEditMode) {
+                            navigateToMeasurementEdit(item.id)
+                        }
+                        .padding(MaterialTheme.spacing.small)
                 ) {
                     Text(
                         text = (index + 1).toString(),

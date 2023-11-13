@@ -45,4 +45,7 @@ class MeasurementRepository @Inject constructor(
         snowLayerWaterSaturation,
         thawedWaterLayerThickness
     )
+
+    suspend fun getMeasurementById(measurementId: Int) =
+        measurementDao.getMeasurementById(measurementId)
 }

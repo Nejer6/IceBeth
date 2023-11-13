@@ -24,7 +24,8 @@ class MeasurementsArgs(
 }
 
 fun NavGraphBuilder.measurementsScreen(
-    navigateUp: () -> Unit
+    navigateUp: () -> Unit,
+    navigateToMeasurementEdit: (Int) -> Unit
 ) {
     composable(
         "$measurementsRoute/{$RESULT_ID_ARG}",
@@ -33,7 +34,8 @@ fun NavGraphBuilder.measurementsScreen(
         )
     ) {
         MeasurementsRoute(
-            navigateUp = navigateUp
+            navigateUp = navigateUp,
+            navigateToMeasurementEdit = navigateToMeasurementEdit
         )
     }
 }

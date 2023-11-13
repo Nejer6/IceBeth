@@ -5,5 +5,6 @@ import com.example.icebeth.core.data.database.model.MeasurementEntity
 
 @Stable
 data class MeasurementsState(
-    val measurements: List<MeasurementEntity> = emptyList()
+    val measurements: List<MeasurementEntity> = emptyList(),
+    val isEditMode: Boolean = false
 )

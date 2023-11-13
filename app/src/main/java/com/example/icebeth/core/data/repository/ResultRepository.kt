@@ -1,6 +1,5 @@
 package com.example.icebeth.core.data.repository
 
-import com.example.icebeth.common.util.ApiResponse
 import com.example.icebeth.core.data.database.dao.MeasurementDao
 import com.example.icebeth.core.data.database.dao.ResultDao
 import com.example.icebeth.core.data.database.model.ResultEntity
@@ -10,11 +9,13 @@ import com.example.icebeth.core.data.database.model.asCreateRequest
 import com.example.icebeth.core.data.database.model.asResult
 import com.example.icebeth.core.data.network.api.MeasurementApi
 import com.example.icebeth.core.data.network.api.ResultApi
+import com.example.icebeth.core.data.network.util.ApiResponse
 import com.example.icebeth.core.model.asResultCreateRequest
+import com.example.icebeth.core.model.asResultUpdateRequest
+import kotlinx.coroutines.flow.map
 import java.util.Date
 import javax.inject.Inject
 import javax.inject.Singleton
-import kotlinx.coroutines.flow.map
 
 @Singleton
 class ResultRepository @Inject constructor(
@@ -29,26 +30,41 @@ class ResultRepository @Inject constructor(
         val unloadedResultsWithMeasurements = resultDao.getAllUnloadedResultsWithMeasurements()
 
         unloadedResultsWithMeasurements.forEach { resultWithMeasurements ->
-            when (
-                val resultResponse =
-                    resultApi.createResult(
-                        resultWithMeasurements.asResult().asResultCreateRequest()
-                    )
-            ) {
-                is ApiResponse.Success -> {
-                    val remoteId = resultResponse.body.id
+            if (resultWithMeasurements.result.remoteId == null) {
+                when (
+                    val resultResponse =
+                        resultApi.createResult(
+                            resultWithMeasurements.asResult().asResultCreateRequest()
+                        )
+                ) {
+                    is ApiResponse.Success -> {
+                        val remoteId = resultResponse.body.id
 
-                    resultDao.updateRemoteId(
-                        resultId = resultWithMeasurements.result.id,
-                        remoteId = remoteId
-                    )
+                        resultDao.updateRemoteId(
+                            resultId = resultWithMeasurements.result.id,
+                            remoteId = remoteId
+                        )
 
-                    resultWithMeasurements.measurements.forEach {
-                        measurementDao.updateRemoteResultId(it.id, remoteId)
+                        resultWithMeasurements.measurements.forEach {
+                            measurementDao.updateRemoteResultId(it.id, remoteId)
+                        }
                     }
-                }
 
-                else -> return
+                    else -> return
+                }
+            } else if (resultWithMeasurements.result.isUpdated) {
+                when (
+                    resultApi.updateResult(
+                        resultWithMeasurements.result.remoteId,
+                        resultWithMeasurements.asResult().asResultUpdateRequest()
+                    )
+                ) {
+                    is ApiResponse.Success -> {
+                        resultDao.updateIsUpdated(resultWithMeasurements.result.id, false)
+                    }
+
+                    else -> return
+                }
             }
         }
 
@@ -65,7 +81,8 @@ class ResultRepository @Inject constructor(
                     measurementDao.insertMeasurement(
                         measurementEntity.copy(
                             remoteId = measurementResponse.body.id,
-                            remoteResultId = measurementResponse.body.resultId
+                            remoteResultId = measurementResponse.body.resultId,
+                            isUpdated = false
                         )
                     )
                 }

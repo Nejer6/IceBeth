@@ -11,10 +11,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
-import com.example.icebeth.common.presentation.theme.spacing
 import com.example.icebeth.core.data.database.model.SnowConditionDescription
 import com.example.icebeth.core.data.database.model.SnowCoverCharacter
 import com.example.icebeth.core.domain.util.ResultError
+import com.example.icebeth.ui.theme.spacing
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

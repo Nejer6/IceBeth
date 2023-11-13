@@ -1,9 +1,9 @@
 package com.example.icebeth.core.data.network.api
 
-import com.example.icebeth.common.util.ApiResponse
-import com.example.icebeth.common.util.safeRequest
 import com.example.icebeth.core.data.network.model.response.LoginResponse
 import com.example.icebeth.core.data.network.model.response.UserResponse
+import com.example.icebeth.core.data.network.util.ApiResponse
+import com.example.icebeth.core.data.network.util.safeRequest
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.auth.Auth
 import io.ktor.client.plugins.auth.providers.BearerTokens

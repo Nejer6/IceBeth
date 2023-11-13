@@ -23,7 +23,7 @@ interface ResultDao {
     @Query("SELECT COUNT(*) FROM results WHERE remote_id IS NULL")
     fun getCountOfResultsWithNullRemoteId(): Flow<Int>
 
-    @Query("SELECT * FROM results WHERE remote_id IS NULL")
+    @Query("SELECT * FROM results WHERE (remote_id IS NULL) OR (is_updated = 1)")
     fun getAllUnloadedResultsWithMeasurements(): List<ResultWithMeasurements>
 
     @Query("DELETE FROM results WHERE id = :resultId")
@@ -45,7 +45,7 @@ interface ResultDao {
         isUpdated: Boolean
     )
 
-    @Query("UPDATE results SET remote_id = :remoteId WHERE id = :resultId")
+    @Query("UPDATE results SET remote_id = :remoteId, is_updated = 0 WHERE id = :resultId")
     suspend fun updateRemoteId(resultId: Int, remoteId: Int)
 
     @Query("SELECT * FROM results")
@@ -53,4 +53,7 @@ interface ResultDao {
 
     @Query("SELECT * FROM results WHERE id = :resultId")
     fun getResultWithMeasurementsById(resultId: Int): Flow<ResultWithMeasurements>
+
+    @Query("UPDATE results SET is_updated = :isUpdated WHERE id = :resultId")
+    suspend fun updateIsUpdated(resultId: Int, isUpdated: Boolean)
 }

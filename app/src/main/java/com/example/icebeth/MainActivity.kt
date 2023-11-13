@@ -16,13 +16,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.Lifecycle
-import com.example.icebeth.common.presentation.components.LocationPermissionTextProvider
-import com.example.icebeth.common.presentation.components.OnLifecycleEvent
-import com.example.icebeth.common.presentation.components.PermissionDialog
-import com.example.icebeth.common.presentation.theme.IceBethTheme
-import com.example.icebeth.common.util.hasLocationPermission
-import com.example.icebeth.common.util.openAppSettings
-import com.example.icebeth.core.presentation.navigation.AppNavigation
+import com.example.icebeth.ui.components.LocationPermissionTextProvider
+import com.example.icebeth.ui.components.OnLifecycleEvent
+import com.example.icebeth.ui.components.PermissionDialog
+import com.example.icebeth.ui.navigation.AppNavigation
+import com.example.icebeth.ui.theme.IceBethTheme
+import com.example.icebeth.util.hasLocationPermission
+import com.example.icebeth.util.openAppSettings
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

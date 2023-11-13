@@ -1,9 +1,9 @@
 package com.example.icebeth.core.data.network.api
 
-import com.example.icebeth.common.util.ApiResponse
-import com.example.icebeth.common.util.safeRequest
 import com.example.icebeth.core.data.network.model.request.MeasurementCreateRequest
 import com.example.icebeth.core.data.network.model.response.MeasurementResponse
+import com.example.icebeth.core.data.network.util.ApiResponse
+import com.example.icebeth.core.data.network.util.safeRequest
 import io.ktor.client.HttpClient
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody

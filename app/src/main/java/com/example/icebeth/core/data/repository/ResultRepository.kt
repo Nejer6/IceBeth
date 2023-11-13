@@ -112,7 +112,7 @@ class ResultRepository @Inject constructor(
         }
     }
 
-    fun getCountOfResultsWithNullRemoteId() = resultDao.getCountOfResultsWithNullRemoteId()
+    fun getCountOfResultsWithNullRemoteId() = resultDao.getCountOfUnaploadedResults()
 
     suspend fun createNewResult() = resultDao.insertResult(
         ResultEntity(

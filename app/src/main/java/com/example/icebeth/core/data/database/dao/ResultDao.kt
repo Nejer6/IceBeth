@@ -20,8 +20,8 @@ interface ResultDao {
     @Delete
     suspend fun deleteResult(resultEntity: ResultEntity)
 
-    @Query("SELECT COUNT(*) FROM results WHERE remote_id IS NULL")
-    fun getCountOfResultsWithNullRemoteId(): Flow<Int>
+    @Query("SELECT COUNT(*) FROM results WHERE (remote_id IS NULL) OR (is_updated = 1)")
+    fun getCountOfUnaploadedResults(): Flow<Int>
 
     @Query("SELECT * FROM results WHERE (remote_id IS NULL) OR (is_updated = 1)")
     fun getAllUnloadedResultsWithMeasurements(): List<ResultWithMeasurements>

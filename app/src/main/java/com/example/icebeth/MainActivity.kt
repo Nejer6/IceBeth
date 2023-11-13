@@ -16,10 +16,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.Lifecycle
+import com.example.icebeth.ui.app.IceBethApp
 import com.example.icebeth.ui.components.LocationPermissionTextProvider
 import com.example.icebeth.ui.components.OnLifecycleEvent
 import com.example.icebeth.ui.components.PermissionDialog
-import com.example.icebeth.ui.navigation.AppNavigation
 import com.example.icebeth.ui.theme.IceBethTheme
 import com.example.icebeth.util.hasLocationPermission
 import com.example.icebeth.util.openAppSettings
@@ -73,7 +73,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    AppNavigation()
+                    IceBethApp()
 
                     if (!isFineLocationPermissionGranted) {
                         PermissionDialog(
